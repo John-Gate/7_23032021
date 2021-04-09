@@ -1,14 +1,13 @@
 <template>
 <div class="login-box">
   <h2 class="cardTitle">Connexion à Groupomania</h2>
-
   <form>
     <div class="user-box">
-      <input type="text" name="" required="">
-      <label>Nom d'utilisateur</label>
+      <input type="email" name="" required="" v-model="dataLogin.email">
+      <label>Email</label>
     </div>
     <div class="user-box">
-      <input type="password" name="" required="">
+      <input type="password" name="" required="" v-model="dataLogin.password">
       <label>Mot de passe</label>
     </div>
     <a @click="logIn">Se Connecter</a>
@@ -18,14 +17,22 @@
 </template>
 <script>
 import axios from "axios"
-
 export default {
   name: "Login",
    data() {
       return {
-        text: ''
-      }
-    },
+     dataLogin: {
+                email: null,
+                password: null
+            }
+            
+    };
+   },
+     mounted() {
+    if (sessionStorage.token) {
+      this.token = sessionStorage.token;
+    }
+  },
   computed: {
       dateDuJour() {
         let currentTime = new Date()
@@ -42,16 +49,16 @@ export default {
         this.dataLogin.email !== null || this.dataLogin.password !== null 
       ) {
         axios
-          .post("http://localhost:3000/api/user/login", this.dataLogin)
+          .post("http://localhost:3000/api/auth/login", this.dataLogin)
           .then(response => {
-            localStorage.setItem('token',response.data.token)
-            this.$router.go()
+            sessionStorage.setItem('token',response.data.token)
+            console.log(response.data.token)
+            location.replace("/Home")
           })
           .catch(error => { 
             console.log(error)
             this.revele = !this.revele
             })
-          
       } else {
         console.log("erreur");
       }

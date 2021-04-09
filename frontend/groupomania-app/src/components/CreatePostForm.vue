@@ -1,7 +1,7 @@
 <template>
 <div class="login-box">
   <h2 class="cardTitle">Creer Un Nouvel Article</h2>
-  <form>
+  <form v-if="connexion">
     <div class="form-group">
             <label for="title" class="labelTitle">Titre</label>
             <input type="text" class="form-control " id="title" v-model="title" required>
@@ -10,13 +10,15 @@
             <label for="content" class="labelTitle">Contenu</label>
             <textarea class="form-control form-control__contenu" id="content" v-model="content" rows=8  required placeholder="Ecrivez votre contenu ici"></textarea>
         </div>
-    <a href="#">Partager</a>
+    <a  @submit.prevent="createPost">Partager</a>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>
   </form>
 </div>
 </template>
 
 <script>
+import axios from "axios";
+import jwt from 'jsonwebtoken'
 export default {
     name: 'CreatePostForm',
     data () {
@@ -24,37 +26,40 @@ export default {
             id_users: '',
             title: '',
             content: '',
+            connexion:false
         }
     },
+     mounted(){
+       // Verifie si user bien connecte
+    if(this.connexion === true) {
+      const token = JSON.parse(localStorage.groupomaniaUser).token                           
+      let decodedToken = jwt.verify(token, process.env.VUE_APP_JWT_AUTH_SECRET_TOKEN);       
+      this.sessionUserId = decodedToken.userId                                                
+      this.sessionUserAcces = decodedToken.niveau_acces                                       
+    }
+  },
+   created(){             
+    this.connectedUser()
+  },
+
     methods:{
-        createPost() {
-            let idUser = parseInt(localStorage.getItem("Id"));
-            let dataForm = {id_users: idUser, title: this.title, content: this.content, userId: 0};
-            let jsonDataForm = JSON.stringify(dataForm)
-            console.log(dataForm)
-            async function postForm(dataToSend) {
-                try {
-                    let response = await fetch("http://localhost:3000/api/post", {
-                        method: 'POST',
-                        headers: {
-                            'content-type': 'application/json',
-                            'authorization': 'bearer ' + localStorage.getItem('token')
-                        },
-                        body: dataToSend,
-                    });
-                        if (response.ok) {
-                            let responseId = await response.json();
-                            window.location.href = " http://localhost:8080/signup#/allpost";
-                            console.log(responseId);
-                        } else {
-                            console.error('Retour du serveur : ', response.status);
-                        }
-                } catch (e) {
-                console.log(e);
-                }
-            }
-        postForm(jsonDataForm);
-        }
+       connectedUser(){                                       
+      if(sessionStorage.groupomaniaUser == undefined){
+        this.approuvedConnexion = false;
+        this.$router.push({ name:'Home' })
+      } else {
+        this.approuvedConnexion = true;
+      }
+    },
+    createPost(e) {
+			axios.post("http://localhost:3000/api/posts", this.post)
+			.then((result) => {
+				console.log(result)
+				alert('Post successfully created!');
+			})
+			.then(() => this.$router.push("/"))
+			e.preventDefault();
+		}
     }
 }
 </script>
@@ -211,3 +216,4 @@ body {
   width: 350px;
 }
 </style>
+

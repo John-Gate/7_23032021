@@ -3,26 +3,22 @@
   <h2 class="cardTitle">Inscription à Groupomania</h2>
   <form>
     <div class="user-box">
-      <input type="lastName" name="" required="">
+      <input type="lastName" name="" required="" v-model="dataSignup.lastName">
       <label>Nom</label>
     </div>
     <div class="user-box">
-      <input type="firstName" name="" required="">
+      <input type="firstName" name="" required="" v-model="dataSignup.firstName">
       <label>Prénom</label>
     </div>
     <div class="user-box">
-      <input type="text" name="" required="">
-      <label>Nom d'utilisateur</label>
-    </div>
-    <div class="user-box">
-      <input type="email" required="" name="email">
+      <input type="email" required="" name="email" v-model="dataSignup.email">
       <label for="email">Email</label>
     </div>
     <div class="user-box">
-      <input type="password" name="" required="">
+      <input type="password" name="" required="" v-model="dataSignup.password">
       <label>Mot de passe</label>
     </div>
-    <a @click="signUpUser">
+    <a @click="sendSignup" type="submit">
       S'Inscrire
     </a>
       <a href="/Login" class="linkInscription">Déjà inscrit?</a>
@@ -31,41 +27,45 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-    name: 'Inscription',
-    data() { return {
-        email: '',
-        password: ''
-        }
+    name: "Signup",
+    data() {
+        return {
+            dataSignup: {
+                lastName: null,
+                firstName: null,
+                email: null,
+                password: null
+            }
+        };
     },
     methods: {
-        signUpUser() {
-            let dataForm = JSON.stringify({email: this.email, username: this.username, password: this.password, photo: this.photo});
-            async function signUp(dataForm) {
-                try {
-                let response = await fetch("http://localhost:3000/api/user/signup", {
-                    method: 'POST',
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: dataForm,
-                });
-                    if (response.ok) {
-                        let responseId = await response.json();
-                        console.log(responseId);
-                    
-                    } else {
-                        console.error('Retour du serveur : ', response.status);
-                    }
-                } catch (e) {
-                console.log(e);
-                }
+        sendSignup() {
+              if (
+                (this.dataSignup.email !== null ||
+                    this.dataSignup.lastName !== null ||
+                    this.dataSignup.firstName !== null ||
+                    this.dataSignup.password !== null) 
+            ) {
+                axios
+                    .post(
+                        "http://localhost:3000/api/auth/signup",
+                        this.dataSignup
+                    )
+                    .then((response) => {
+                        console.log(response);
+                        location.replace(location.origin);
+                    })
+                    .catch((error) => console.log(error));
+            } else {
+                alert(
+                    "Le mot de passe doit contenir de 8 à 15 caractères,au moins une lettre minuscule, une lettre majuscule, un chiffre et un de ces caractères spéciaux: $ @ % * + - _ !"
+                );
             }
-            signUp(dataForm)
-            window.location.href = "http://localhost:8080/signup#/login";
-        }
-    }
-}
+        },
+    },
+};
 </script>
 <style lang="scss" scoped>
 $base-color: #fff;

@@ -1,72 +1,134 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const models = require('../models');
+const utilsjwtoken = require('../utils/jwtoken');
+const checkinput = require('../utils/checkinput');
 
-//const userValidator = require('./admin');
 
 //CREATION COMPTE fct signup qui va crypter password, va cree un nouveau user avec ce password et l email, et l'enregistre
-exports.signup = (req, res, next) => {
-  console.log(req.body)
-  bcrypt.hash(req.body.password, 10)
-      .then(hash => {
-          User.create({
-              firstName : req.body.firstName,
-              lastName: req.body.lastName,
-              email: req.body.email,
-              password: hash,
-              role: 2
-          })
-          .then(() => res.status(201).json({message: 'Utilisateur crée !'}))
-          .catch(error => res.status(400).json({error}));
-      })
-      .catch(error => res.status(500).json({error}));
+exports.signup = (req, res) => {
+    let email = req.body.email;
+    let lastName = req.body.lastName;
+    let firstName = req.body.firstName;
+    let password = req.body.password;
+    if (email == null || lastName == null || firstName == null || password == null) {
+        res.status(400).json({ error: 'Tous les champs sont obligatoires' })
+    }
+    //vérification inputs user
+    let emailOK = checkinput.validEmail(email);
+    let passwordOK = checkinput.validPassword(password);
+    let lastNameOK = checkinput.validUsername(lastName);
+    let firstNameOK = checkinput.validUsername(firstName);
+    if (emailOK == true && passwordOK == true && lastNameOK == true && firstNameOK == true) {
+      console.log("ok0");
+        //vérification si user n'existe pas déjà
+        models.User.findOne({
+            attributes: ['email'],
+            where: { email: email }
+        })
+            .then(user => {
+                console.log("ok1");
+                if (!user) {
+                  console.log("ok2");
+                    bcrypt.hash(password, 10, function (error, hash) {
+                        //création user
+                        const newUser = models.User.create({
+                            email: email,
+                            firstName: firstName,
+                            lastName: lastName,
+                            password: hash,
+                            role: 2
+                        })
+                            .then(userNew => { res.status(201).json({ 'Utilisateur créé ! Id': userNew.idUser }) })
+                            .catch(err => {
+                                res.status(500).json({ error })
+                            })
+                    })
+                }
+                else {
+                    res.status(400).json({ error: 'Cet utilisateur existe déjà' })
+                }
+            })
+            .catch(error => { res.status(501).json({ error }) })
+    } else {
+        console.log('Erreur')
+    }
 };
 
-//LOGIN
-exports.login = (req, res, next) => {
-  const username = req.body.username
-  const password = req.body.password
-if (username && password) {
-    db.query('SELECT * FROM user WHERE username= ?', username, (error, results, _fields) => {
-         if (results.length > 0) {
-          bcrypt.compare(password, results[0].password).then((valid) => {
-            if (!valid) {
-              res.status(401).json({ message: 'Utilisateur ou mot de passe inconnu' })
+exports.login = (req, res) => {
+    //récupération et validation des paramètres
+    let email = req.body.email;
+    let password = req.body.password;
+    if (email == null || password == null) {
+        res.status(400).json({ error: 'Il manque une information' })
+    }
+    //user existe-t-il?
+    models.User.findOne({
+        where: { email: email }
+    })
+        .then(user => {
+            if (user) {
+                bcrypt.compare(password, user.password, (errComparePassword, resComparePassword) => {
+                    if (resComparePassword) {
+                         res.status(200).json({
+                             userId: user.id,
+                             token: utilsjwtoken.generateToken(user)
+                         })
+                    } else {
+                        res.status(403).json({ error: 'invalid password' });
+                    };
+                })
             } else {
-              console.log(username, "s'est connecté")
-              let status = ''
-              if (results[0].isAdmin === 1) {
-                status = 'admin'
-              } else {
-                status = 'membre'
-              }
-              res.status(200).json({
-                userId: results[0].id,
-                username: results[0].username,
-                status: status,
-                token: jwt.sign({ userId: results[0].id, status: status },TOKEN,{ expiresIn: '24h' })
-              })
-              
+                res.status(404).json({ 'erreur': 'Cet utilisateur n\'existe pas' })
             }
-          })
-        } 
-        else {
-          res.status(401).json({ message: 'Utilisateur ou mot de passe inconnu' })
-        }
-      }
-    )
-  } else {
-    res.status(500).json({ message: "Entrez votre email et votre mot de passe" })
-  }
+        })
+        .catch(err => { res.status(500).json({ err }) })
 };
 
-//profil d'un user
-exports.userProfil = (req, res) => {
-  let id = utils.getUserId(req.headers.authorization)
-  models.User.findOne({
-      attributes: ['id', 'email', 'username','isAdmin'],
-      where: { id: id }
-  })
-      .then(user => res.status(200).json(user))
-      .catch(error => res.status(500).json(error))
-};
+exports.createPublication = (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+    const userId = decodedToken.userId;
+    // Recherche de l'utilisateur courant
+    return userManager
+        .findOne({
+            'id': userId
+        })
+        .then(user => {
+            // On vérifie le retour de la requête sql
+            if (null == user) {
+                return res.status(400).json({
+                    'error': 'Utilisateur non trouvé.',
+                    'userId': userId
+                })
+            }
+            let data = {
+                'UserId': userId,
+                'title': req.body.title,
+                'content': req.body.content
+            };
+            // Création d'une publication
+            return publicationManager
+                .create(data)
+                .then((newPost) => {
+                    return res.status(200).json({
+                        'user': user,
+                        'newPost': newPost
+                    })
+                })
+                .catch((error) => {
+                    return res.status(400).json({
+                        'error': error,
+                        'user': user,
+                        'data': data
+                    })
+                });
+        })
+        .catch(error => {
+            return res.status(500).json({
+                'error': error,
+                'userId': userId
+            })
+        });
+  };
+  

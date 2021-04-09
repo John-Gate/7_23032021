@@ -1,26 +1,39 @@
 <template>
-  <div v-if="token!=null">
-  <!-- Afficher les posts, sinon page d accueille -->
-  
-  </div>
-  <div v-else> 
-     <div class="login-box">
-      <h2>Bienvenu Sur Groupomania</h2>
-      <div class="card-date">
-      <p>Nous sommes le {{ dateDuJour }}</p>
-      </div>
+<div class="login-box">
+  <h2 class="cardTitle">SECTION RESERVER AUX ADMINISTRATEURS</h2>
+
+  <form>
+    <div class="user-box">
+      <input type="email" name="" required="" v-model="dataLogin.email">
+      <label>Email</label>
     </div>
+    <div class="user-box">
+      <input type="password" name="" required="" v-model="dataLogin.password">
+      <label>Mot de passe</label>
     </div>
+    <a @click="logIn">Se Connecter</a>
+      <a href="/Inscription" class="linkInscription">Pas encore inscrit?</a>
+  </form>
+</div>
 </template>
-
 <script>
-
+import axios from "axios"
 export default {
+ 
+  name: "Admin",
    data() {
       return {
-        token: sessionStorage.getItem('token')
-      }
-    },
+     dataLogin: {
+                email: null,
+                password: null
+            }
+    };
+   },
+     mounted() {
+    if (sessionStorage.token) {
+      this.token = sessionStorage.token;
+    }
+  },
   computed: {
       dateDuJour() {
         let currentTime = new Date()
@@ -32,6 +45,26 @@ export default {
 		}
   },
     methods: {
+    logIn() {
+      if (
+        this.dataLogin.email !== null || this.dataLogin.password !== null 
+      ) {
+        axios
+          .post("http://localhost:3000/api/auth/login", this.dataLogin)
+          .then(response => {
+            sessionStorage.setItem('token',response.data.token)
+            console.log(response.data.token)
+            this.$router.go()
+          })
+          .catch(error => { 
+            console.log(error)
+            this.revele = !this.revele
+            })
+          
+      } else {
+        console.log("erreur");
+      }
+    }
   }
 }
 </script>
@@ -71,7 +104,20 @@ body {
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
 }
-
+.cardTitle {
+    --fill-color: #fc2700;
+    position: relative;
+    display: block;
+    padding: 4px 0;
+    font: 700 2rem Raleway, sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    -webkit-text-stroke: 2px var(--fill-color);
+    background: linear-gradient(var(--fill-color) 0 100%) left / 0 no-repeat;
+    color: transparent;
+    background-clip: text;
+    transition: 0.5s linear; 
+    }
 .login-box {
   position: absolute;
   top: 50%;
@@ -151,84 +197,5 @@ body {
               0 0 100px $base-color;
 }
 
-.login-box a span {
-  position: absolute;
-  display: block;
-}
-
-.login-box a span:nth-child(1) {
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, $base-color);
-  animation: btn-anim1 1s linear infinite;
-}
-
-@keyframes btn-anim1 {
-  0% {
-    left: -100%;
-  }
-  50%,100% {
-    left: 100%;
-  }
-}
-
-.login-box a span:nth-child(2) {
-  top: -100%;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, $base-color);
-  animation: btn-anim2 1s linear infinite;
-  animation-delay: .25s
-}
-
-@keyframes btn-anim2 {
-  0% {
-    top: -100%;
-  }
-  50%,100% {
-    top: 100%;
-  }
-}
-
-.login-box a span:nth-child(3) {
-  bottom: 0;
-  right: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(270deg, transparent, $base-color);
-  animation: btn-anim3 1s linear infinite;
-  animation-delay: .5s
-}
-
-@keyframes btn-anim3 {
-  0% {
-    right: -100%;
-  }
-  50%,100% {
-    right: 100%;
-  }
-}
-
-.login-box a span:nth-child(4) {
-  bottom: -100%;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, $base-color);
-  animation: btn-anim4 1s linear infinite;
-  animation-delay: .75s
-}
-
-@keyframes btn-anim4 {
-  0% {
-    bottom: -100%;
-  }
-  50%,100% {
-    bottom: 100%;
-  }
-}
 
 </style>

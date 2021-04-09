@@ -1,19 +1,16 @@
-const sequelize = require("sequelize");
-module.exports = (sequelize, DataTypes)=>{
-  const post = sequelize.define("post", {
-    title: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    img: DataTypes.STRING,
-    content:DataTypes.STRING,
-    attachement:DataTypes.STRING
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const Post = sequelize.define('post', {
+    content: DataTypes.STRING,
+    title: DataTypes.STRING
   },
-  {});
-  post.associate=(models)=>{
-    models.post.belongsTo(models.user, {
-      foreignKey:{
-        allowNull:false // rend cle etrangere obligatoire
-      }
-    })
-  }
-  return post;
+    {});
+  // Post.associate = function (models) {
+  //   models.Post.belongsTo(models.User, {
+  //     foreignKey: { //application clé étrangère posée sur la table
+  //       allowNull: false
+  //     }
+  //   });
+  // };
+  return Post;
 };

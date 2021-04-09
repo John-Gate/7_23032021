@@ -17,6 +17,7 @@
 <!-- METTRE VIF SI CONNECTER SINON "Se Deconnecter"-->
     <li><a href="/Login">S'IDENTIFIER</a></li>
     <li><a href="/Inscription">S'Inscrire</a></li>
+    <li><a href="/Admin">admin</a></li>
   </ul>
 
 </body>

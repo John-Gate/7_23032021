@@ -1,11 +1,14 @@
 //Imporation
 const express = require("express");
 const router = express.Router();
+/*const dbRouter = require("../models/DB")*/
 // //Raccourci
-// const auth = require("../middleware/auth");
+
 const userCtrl = require("../controllers/user");
+const auth = require("../middleware/auth");
 //Routage
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.post('/profile', userCtrl.userProfil);//rajout AUTH possible
+router.post('/createPublication', userCtrl.createPublication);
+/*router.post('/profile', auth, userCtrl.userProfil);//rajout AUTH possible*/
 module.exports = router;
