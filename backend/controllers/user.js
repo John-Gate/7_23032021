@@ -19,8 +19,8 @@ exports.signup = (req, res) => {
     let passwordOK = checkinput.validPassword(password);
     let lastNameOK = checkinput.validUsername(lastName);
     let firstNameOK = checkinput.validUsername(firstName);
+    console.log(emailOK, passwordOK, lastNameOK, firstNameOK)
     if (emailOK == true && passwordOK == true && lastNameOK == true && firstNameOK == true) {
-      console.log("ok0");
         //vérification si user n'existe pas déjà
         models.User.findOne({
             attributes: ['email'],
