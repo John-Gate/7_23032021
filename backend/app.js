@@ -11,6 +11,7 @@ require('dotenv').config();
 //routage 
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
+const adminRoutes = require('./routes/admin');
 const app = express();
 
 
@@ -34,6 +35,7 @@ app.use(helmet());
 app.use('/images', express.static(path.join(__dirname, 'images')));//indique a express qu il faut gerer la ressource de maniere statiqueun sous-répertoire de notre répertoire de base, __dirname ) à chaque fois qu'elle reçoit une requête vers la route /images
 app.use('/api/auth', userRoutes);
 app.use('/post', postRoutes);
+app.use('/admin', adminRoutes);
 
 //envoit
 module.exports = app;

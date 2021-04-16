@@ -3,11 +3,12 @@ const jwt = require('jsonwebtoken');
 const models = require('../models');
 const utilsjwtoken = require('../utils/jwtoken');
 const checkinput = require('../utils/checkinput');
+let currentUser ;
 
 exports.createPublication = (req, res, next) => {
     //const token = req.headers.authorization.split(' ')[1];
     //const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    const userId = 1; 
+    const userId = req.body.currentUser; 
         models.User.findOne({
             attributes: ["id"],
             where: {id: userId}
@@ -74,7 +75,7 @@ exports.createPublication = (req, res, next) => {
       include:[{ //identifier le post
           model:models.User, attributes: ["firstName", "lastName"]
       }],  
-      order:[["createdAt", "DESC"]]
+      order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
     })
     .then((posts) => {
         if(posts.length > null){
@@ -89,7 +90,7 @@ exports.createPublication = (req, res, next) => {
    exports.deletePublication = (req, res, next) => {
     //  const token = req.headers.authorization.split(' ')[1];
     //  const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-     const userId = 1;
+     const userId = req.body.currentUser;
         models.User.findOne({
              attributes: ["id"],
              where: {id: userId}
@@ -123,37 +124,38 @@ exports.createPublication = (req, res, next) => {
    exports.updatePublication = (req, res, next) => {
     //const token = req.headers.authorization.split(' ')[1];
     //const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    const userId = 1;
+    const postId = req.body.postId;
+    currentUser = req.body.currentUser;
         models.User.findOne({
             attributes: ["id"],
-            where: {id: userId}
+            where: {id: currentUser}
         })
         .then(user => {
-           
-            // On vérifie le retour de la requête sql
             if (null == user) {
-                return res.status(400).json({
-                    'error': 'Commentaire non trouvé.',
-                    'userId': userId
-                })
+                return res.status(400).json("UTILISATEUR INCONNU")
             }
-            else{      
-                models.Post.updateOne({
-                    id:1
+            else{   
+                models.Post.findOne({
+                    attributes: ["UserId"],
+                    where: {id: postId}
                 })
-                .then((newPost) => {
-                    return res.status(200).json({
-                        'user': user,
-                        'newPost': newPost
-                    })
-                })
-                .catch((error) => {
-                    return res.status(400).json({
-                        'error': error,
-                        'user': user
-                    })
-                });
-            }
+                .then(post=>{
+                    console.log(post.UserId, currentUser)
+                    if(post.UserId == currentUser){ // on verifie que bien l auteur
+                        models.Post.update({
+                            title: req.body.title,
+                            content: req.body.content
+                        },
+                        {where: {id: postId}}
+                        )
+                        .then(()=>res.end())
+                        .catch(error=>res.status(500).json("Modification Impossible"))
+                    }
+                    else{
+                        return res.status(500).json("L'utilisateur n a pas les droits")
+                    }
+                })   
+             }
         })
         .catch(error => {
             return res.status(500).json({

@@ -9,6 +9,7 @@ const auth = require("../middleware/auth");
 router.post('/createPost', postCtrl.createPublication);
 router.get('/:id', postCtrl.getOnePublication);
 // router.get('/', postCtrl.getAllPublications);
-// router.update('/updatePost', postCtrl.updatePublication);
- router.post('/deletePost', postCtrl.deletePublication);//rajouter auth apres test '/createPost, auth, postCtrl.createPublication'
+router.put('/updatePost', postCtrl.updatePublication);
+router.post('/deletePost', postCtrl.deletePublication);//a la place de delete(verb), car il y a des verifications.
+ //rajouter auth apres test '/createPost, auth, postCtrl.createPublication'
 module.exports = router;
