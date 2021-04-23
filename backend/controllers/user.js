@@ -36,8 +36,7 @@ exports.signup = (req, res) => {
                             email: email,
                             firstName: firstName,
                             lastName: lastName,
-                            password: hash,
-                            role: 2
+                            password: hash
                         })
                             .then(userNew => { res.status(201).json({ 'Utilisateur créé ! Id': userNew.idUser }) })
                             .catch(err => {
@@ -85,50 +84,52 @@ exports.login = (req, res) => {
         .catch(err => { res.status(500).json({ err }) })
 };
 
-exports.createPublication = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    const userId = decodedToken.userId;
-    // Recherche de l'utilisateur courant
-    return userManager
-        .findOne({
-            'id': userId
-        })
-        .then(user => {
-            // On vérifie le retour de la requête sql
-            if (null == user) {
-                return res.status(400).json({
-                    'error': 'Utilisateur non trouvé.',
-                    'userId': userId
-                })
-            }
-            let data = {
-                'UserId': userId,
-                'title': req.body.title,
-                'content': req.body.content
-            };
-            // Création d'une publication
-            return publicationManager
-                .create(data)
-                .then((newPost) => {
-                    return res.status(200).json({
-                        'user': user,
-                        'newPost': newPost
-                    })
-                })
-                .catch((error) => {
-                    return res.status(400).json({
-                        'error': error,
-                        'user': user,
-                        'data': data
-                    })
-                });
-        })
-        .catch(error => {
-            return res.status(500).json({
-                'error': error,
-                'userId': userId
-            })
-        });
-  };
+// exports.createPublication = (req, res, next) => {
+//     const token = req.headers.authorization.split(' ')[1];
+//     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+//     const userId = decodedToken.userId;
+//     // Recherche de l'utilisateur courant
+//     return userManager
+//         .findOne({
+//             'id': userId
+//         })
+//         .then(user => {
+//             // On vérifie le retour de la requête sql
+//             if (null == user) {
+//                 return res.status(400).json({
+//                     'error': 'Utilisateur non trouvé.',
+//                     'userId': userId
+//                 })
+//             }
+//             let data = {
+//                 'UserId': userId,
+//                 'title': req.body.title,
+//                 'content': req.body.content
+//             };
+//             // Création d'une publication
+//             return publicationManager
+//                 .create(data)
+//                 .then((newPost) => {
+//                     return res.status(200).json({
+//                         'user': user,
+//                         'newPost': newPost
+//                     })
+//                 })
+//                 .catch((error) => {
+//                     return res.status(400).json({
+//                         'error': error,
+//                         'user': user,
+//                         'data': data
+//                     })
+//                 });
+//         })
+//         .catch(error => {
+//             return res.status(500).json({
+//                 'error': error,
+//                 'userId': userId
+//             })
+//         });
+//   };
+
+
   

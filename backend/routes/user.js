@@ -9,6 +9,5 @@ const auth = require("../middleware/auth");
 //Routage
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
-router.post('/createPublication', userCtrl.createPublication);
 /*router.post('/profile', auth, userCtrl.userProfil);//rajout AUTH possible*/
 module.exports = router;

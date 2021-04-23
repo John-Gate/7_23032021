@@ -7,11 +7,12 @@ let currentUser ;
 
 exports.createPublication = (req, res, next) => {
     //const token = req.headers.authorization.split(' ')[1];
-    //const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    const userId = req.body.currentUser; 
+    const userId = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(userId, process.env.KEY_TOKEN);
+    console.log(decodedToken)
         models.User.findOne({
             attributes: ["id"],
-            where: {id: userId}
+            where: {id: decodedToken.userId}
         })
         .then(user => {
             // On vérifie le retour de la requête sql
@@ -25,7 +26,7 @@ exports.createPublication = (req, res, next) => {
             else{  
                 console.log("step3")         
                 models.Post.create({
-                    UserId: userId,
+                    UserId: decodedToken.userId,
                     title: req.body.title,
                     content: req.body.content
                 })
@@ -54,7 +55,6 @@ exports.createPublication = (req, res, next) => {
   };
   
   exports.getOnePublication = (req, res, next) => {
-      console.log("step1" + " " + req.params)
       const idPost = req.params.id 
       models.Post.findOne ({
         attributes: ["id", "content", "title", "updatedAt", "createdAt"],
@@ -62,11 +62,30 @@ exports.createPublication = (req, res, next) => {
       })
       .then((post) => {
           if(post == null){
-            return res.status(400).json("article inconnu")
+            return res.status(400).json("Article inconnu")
           }
-          else{
-        return res.status(200).json(post)
+          else{//affiche commentaire lie a l article
+            models.Comment.findAll({
+                attributes: ["id", "content", "createdAt"],
+                order:[["createdAt", "DESC"]],//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+                where: {PostId: idPost}
+              })
+              .then((comments) => {
+                  console.log(comments.length)
+                  if(comments.length !== null){
+                    const objectToSend = {
+                        "post": post,
+                        "comment": comments
+                    }
+                    return res.status(200).json(objectToSend)
+                  }
+                  else{
+                    console.log("ok2")
+                    return res.status(200).json(post)
+            }})
+            .catch(error=>res.status(501).json(error))
     }})
+    .catch(error=>res.status(500).json(error))
   };
 
  exports.getAllPublications = (req, res, next) => { 
@@ -79,6 +98,7 @@ exports.createPublication = (req, res, next) => {
     })
     .then((posts) => {
         if(posts.length > null){
+            console.log(posts)
           return res.status(200).json(posts)
         }
         else{
@@ -108,7 +128,7 @@ exports.createPublication = (req, res, next) => {
                      models.Post.destroy({
                          where: {id:post.id}
                      })
-                     .then(()=>res.end())
+                     .then(()=>res.status(200).json("Article Supprimé"))
                      .catch(error=>res.status(500).json("Suppression Impossible"))
                      })
                     .catch((error) =>res.status(500).json("Article Introuvable")

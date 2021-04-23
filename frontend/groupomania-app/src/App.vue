@@ -8,7 +8,8 @@
     <router-link to="/Post">Post</router-link>|
     <router-link to="/Profile">Profile</router-link>|
     <router-link to="/Reply">Reply</router-link>|
-    <router-link to="/Inscription">Inscription</router-link>
+    <router-link to="/Inscription">Inscription</router-link>|
+    <router-link to="/PostFocus">PostFocus</router-link>
   </div>
 
   <router-view/>
@@ -50,13 +51,14 @@
 body {
   display: flex;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  flex-direction: column;
+ 
 }
 ul {
   display: flex;
   align-items: start;
   list-style-type: none;
+  flex-wrap: wrap;
 
   li {
     padding: 6px 6px;

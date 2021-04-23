@@ -1,26 +1,29 @@
 <template>
- <div class="main">
-    <div v-if="token!=null">
-      <div v-if="posts.length === 0" >
-              <div class="text">Aucun contenu  </div>
-      </div>
-      <div v-else class="login-box">
-        <div class="articles" id="post" v-for="post in posts" :key="post.postId">
-          <p>{{ post.title }}</p>
+  <div v-if="token!=null">
+    <div v-if="post.length === 0" >
+            <div class="text">Aucun contenu 0000000000000000000 </div>
+    </div>
+    <div v-else>
+     <div>
+       <p>{{ post.title }}</p>
           <p>{{ post.content }}</p>
           <p>{{ post.updatedAt }}</p>
+        <div id="comment" v-for="commentary in comment" :key="commentary.id">
+          <p>{{ commentary.content }}</p>
+          <p>{{ commentary.createdAt }}</p>
         </div>
+     </div>
+     <button @click="deletePublication">SUPPRESSION</button>
+    </div>
+  </div>
+  <div v-else> 
+     <div class="login-box">
+      <h2>Bienvenu Sur Groupomania</h2>
+      <div class="card-date">
+      <p>Nous sommes le {{ dateDuJour }}</p>
       </div>
     </div>
-    <div v-else> 
-       <div class="login-box">
-        <h2>Bienvenu Sur Groupomania</h2>
-        <div class="card-date">
-        <p>Nous sommes le {{ dateDuJour }}</p>
-        </div>
-      </div>
-      </div>
- </div>
+    </div>
 </template>
 
 <script>
@@ -29,12 +32,13 @@ export default {
    data() {
       return {
         token: sessionStorage.getItem('token'),
-        posts: '',
+        post: '',
+        comment:'',
         connexion: false
       };
     },
    mounted(){
-        this.getAllPublications()
+        this.getOnePublication()
    },
   computed: {
       dateDuJour() {
@@ -47,7 +51,8 @@ export default {
 		}
   },
     methods: {
-       getAllPublications(){
+       getOnePublication(){
+         console.log("okkkkkkkkkkkk")
          const token = sessionStorage.getItem('token');
           axios.get("http://localhost:3000/post/", {
                 headers: {
@@ -56,11 +61,50 @@ export default {
                 }
             })
             .then(res => {
+              console.log("OK")
                 const data = res.data;
-                this.posts = data;
+                this.post = data.post;
+                this.comment = data.comment;
+                console.log(data)
             })
             .catch(error => console.log({error}));
-        }
+        },
+        deletePublication(){
+          const token = sessionStorage.getItem('token');
+          const data = {
+            currentUser: 1,
+            postId: 3 //post.id
+          }
+          axios.post("http://localhost:3000/post/deletePost", data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => {
+              console.log(res)
+                window.location.reload()
+            })
+            .catch(error => console.log({error}));
+        },
+          modifyPublication(){
+          const token = sessionStorage.getItem('token');
+          const data = {
+            currentUser: 1,
+            postId: 7
+          }
+          axios.put("http://localhost:3000/updatePost", data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => {
+              console.log(res)
+                window.location.reload()
+            })
+            .catch(error => console.log({error}));
+        },
   }
 }
 </script>
@@ -92,27 +136,13 @@ $base-color: #fff;
 
 html {
   height: 100%;
-
 }
-
 body {
   margin:0;
   padding:0;
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
-  display: flex;
-  flex-direction: column;
 }
-
-.main{
-  order:2;
-}
-.articles{
-  border: 2px solid #fff;
-  color: #fff;
-  margin: 5px;
-}
-
 
 .login-box {
   position: absolute;
@@ -125,7 +155,7 @@ body {
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .login-box h2 {

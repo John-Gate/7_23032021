@@ -4,13 +4,13 @@
   <form v-if="connexion">
     <div class="form-group">
             <label for="title" class="labelTitle">Titre</label>
-            <input type="text" class="form-control " id="title" v-model="title" required>
+            <input type="text" class="form-control " id="title" v-model="post.title" required>
         </div>
           <div class="form-group">
             <label for="content" class="labelTitle">Contenu</label>
-            <textarea class="form-control form-control__contenu" id="content" v-model="content" rows=8  required placeholder="Ecrivez votre contenu ici"></textarea>
+            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici"></textarea>
         </div>
-    <a  @submit.prevent="createPost">Partager</a>
+    <button type="submit" @click.prevent="createPost">Partager</button>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>
   </form>
 </div>
@@ -18,47 +18,43 @@
 
 <script>
 import axios from "axios";
-import jwt from 'jsonwebtoken'
+//import jwt from 'jsonwebtoken'
 export default {
     name: 'CreatePostForm',
     data () {
         return {
-            id_users: '',
-            title: '',
-            content: '',
+            post:{
+              title: '',
+              content: '',
+              currentUser: ''
+            },
             connexion:false
         }
     },
-     mounted(){
-       // Verifie si user bien connecte
-    if(this.connexion === true) {
-      const token = JSON.parse(localStorage.groupomaniaUser).token                           
-      let decodedToken = jwt.verify(token, process.env.VUE_APP_JWT_AUTH_SECRET_TOKEN);       
-      this.sessionUserId = decodedToken.userId                                                
-      this.sessionUserAcces = decodedToken.niveau_acces                                       
-    }
-  },
-   created(){             
-    this.connectedUser()
-  },
-
+      mounted(){
+        // Verifie si user bien connecte
+        this.connectedUser()
+   },
     methods:{
        connectedUser(){                                       
-      if(sessionStorage.groupomaniaUser == undefined){
+      if(sessionStorage.token == undefined){
         this.approuvedConnexion = false;
         this.$router.push({ name:'Home' })
       } else {
-        this.approuvedConnexion = true;
+        this.connexion = true;
+        //const token = sessionStorage.token         
+        // let decodedToken = jwt.verify(token, process.env.VUE_APP_JWT_AUTH_SECRET_TOKEN);
+        // console.log(decodedToken)       
+        this.post.currentUser = 1
       }
     },
-    createPost(e) {
-			axios.post("http://localhost:3000/api/posts", this.post)
+    createPost() {      
+			axios.post("http://localhost:3000/post/createPost", this.post, {headers:{Authorization: "Bearer " + sessionStorage.token}})
 			.then((result) => {
 				console.log(result)
 				alert('Post successfully created!');
 			})
-			.then(() => this.$router.push("/"))
-			e.preventDefault();
+			.then(() => this.$router.push("/"));
 		}
     }
 }

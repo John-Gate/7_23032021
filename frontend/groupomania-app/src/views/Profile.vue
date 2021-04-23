@@ -41,7 +41,7 @@ export default {
                         localStorage.removeItem('Id');
                         localStorage.removeItem('token');
                         localStorage.removeItem('isAdmin');
-                        window.location.href = "http://localhost:8080/signup#/signup"
+                        window.location.href = "http://localhost:8080/Inscription"
                     } else {
                         console.error('Retour du serveur : ', response.status);
                     }

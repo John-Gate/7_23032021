@@ -1,6 +1,5 @@
 <template>
 <div class="d-flex flex-column align-items-center card">
-    
     <CreatePostForm/>
 </div>
 </template>
@@ -8,7 +7,7 @@
 <script>
 import CreatePostForm from '../components/CreatePostForm'
 export default {
-    name: 'Inscription',
+    name: 'Post',
     components: {
     CreatePostForm
     }
