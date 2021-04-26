@@ -6,7 +6,7 @@ const router = express.Router();
 const postCtrl = require("../controllers/post");
 const auth = require("../middleware/auth");
 //Routage
-router.post('/createPost', auth, postCtrl.createPublication);
+router.post('/createPost', postCtrl.createPublication);
 router.get('/:id',  postCtrl.getOnePublication);
 router.get('/', postCtrl.getAllPublications);
 router.put('/updatePost', postCtrl.updatePublication);

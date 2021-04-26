@@ -6,9 +6,9 @@
       <input type="email" name="" required="" v-model="dataLogin.email">
       <label>Email</label>
     </div>
-    <div class="user-box">
+    <div class="user-box" @keydown.enter="logIn">
       <input type="password" name="" required="" v-model="dataLogin.password">
-      <label>Mot de passe</label>
+      <label  >Mot de passe</label>
     </div>
     <a @click="logIn">Se Connecter</a>
       <a href="/Inscription" class="linkInscription">Pas encore inscrit?</a>
@@ -52,10 +52,10 @@ export default {
           .post("http://localhost:3000/api/auth/login", this.dataLogin)
           .then(response => {
             sessionStorage.setItem('token',response.data.token)
-            console.log(response.data.token)
-            location.replace("/Home")
+            location.replace("/")
           })
           .catch(error => { 
+            alert("Email ou Mot de Passe incorrect")
             console.log(error)
             this.revele = !this.revele
             })
@@ -117,17 +117,14 @@ body {
     transition: 0.5s linear; 
     }
 .login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
+  
   padding: 40px;
-  transform: translate(-50%, -50%);
   background-image: linear-gradient(#fc2700, #000000);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
   opacity: 0.8;
+  order:2;
 }
 
 .login-box h2 {

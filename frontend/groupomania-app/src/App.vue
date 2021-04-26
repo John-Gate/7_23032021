@@ -16,13 +16,36 @@
     <ul>
     <li><a href="/">Accueil</a></li>
 <!-- METTRE VIF SI CONNECTER SINON "Se Deconnecter"-->
-    <li><a href="/Login">S'IDENTIFIER</a></li>
-    <li><a href="/Inscription">S'Inscrire</a></li>
-    <li><a href="/Admin">admin</a></li>
+<div v-if="token!=null">
+  <li><a @click="deconnexion">Se déconnecter</a></li>
+    
+</div>
+<div v-else class="notConnected">
+  <li><a href="/Login">S'IDENTIFIER</a></li>
+  <li><a href="/Inscription">S'Inscrire</a></li>
+</div>
   </ul>
 
 </body>
 </template>
+
+<script>
+
+export default {
+  data() {
+      return {
+        token: sessionStorage.getItem('token')
+      };
+    },
+    methods:{
+      deconnexion(){
+        sessionStorage.removeItem('token');
+        location.replace("/")
+      }
+    }
+}
+</script>
+
 
 <style lang="scss">
 #app {
@@ -53,6 +76,9 @@ body {
   justify-content: center;
   flex-direction: column;
  
+}
+.notConnected{
+  display: flex;
 }
 ul {
   display: flex;

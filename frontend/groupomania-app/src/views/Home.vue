@@ -5,10 +5,14 @@
               <div class="text">Aucun contenu  </div>
       </div>
       <div v-else class="login-box">
+        <p>dsdsd</p>
         <div class="articles" id="post" v-for="post in posts" :key="post.postId">
           <p>{{ post.title }}</p>
           <p>{{ post.content }}</p>
-          <p>{{ post.updatedAt }}</p>
+          <div class="diplayAttribute">
+            <p class="dateStamp">Créer le: {{ post.updatedAt }}</p>
+            <button class="showButton">Voir Article</button>
+          </div>
         </div>
       </div>
     </div>
@@ -111,16 +115,12 @@ body {
   border: 2px solid #fff;
   color: #fff;
   margin: 5px;
+  padding: 20px;
 }
 
 
 .login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
   padding: 40px;
-  transform: translate(-50%, -50%);
   background-image: linear-gradient(#fc2700, #000000);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
@@ -205,6 +205,20 @@ body {
   height: 2px;
   background: linear-gradient(90deg, transparent, $base-color);
   animation: btn-anim1 1s linear infinite;
+}
+
+.dateStamp{
+  font-style: italic;
+}
+
+.showButton{
+  height: fit-content;
+}
+
+.diplayAttribute{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2rem;
 }
 
 @keyframes btn-anim1 {

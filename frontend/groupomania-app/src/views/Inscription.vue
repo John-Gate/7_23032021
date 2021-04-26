@@ -1,8 +1,8 @@
 <template>
 <div class="login-box">
   <h2 class="cardTitle">Inscription à Groupomania</h2>
-  <form>
-    <div class="user-box">
+  <form @keydown.enter="sendSignup">
+    <div class="user-box" >
       <input type="lastName" name="" required="" v-model="dataSignup.lastName">
       <label>Nom</label>
     </div>
@@ -103,17 +103,14 @@ body {
 }
 
 .login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
+
   padding: 40px;
-  transform: translate(-50%, -50%);
   background-image: linear-gradient(#fc2700, #000000);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
   opacity: 0.8;
+  order:2;
 }
 
 .login-box h2 {
