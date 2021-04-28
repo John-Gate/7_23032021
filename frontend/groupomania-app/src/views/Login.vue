@@ -52,6 +52,8 @@ export default {
           .post("http://localhost:3000/api/auth/login", this.dataLogin)
           .then(response => {
             sessionStorage.setItem('token',response.data.token)
+            sessionStorage.setItem('name', response.data.name)
+            sessionStorage.setItem('id', response.data.userId)
             location.replace("/")
           })
           .catch(error => { 

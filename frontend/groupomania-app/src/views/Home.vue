@@ -5,14 +5,15 @@
               <div class="text">Aucun contenu  </div>
       </div>
       <div v-else class="login-box">
-        <p>dsdsd</p>
+        <h2 class="bienvenu">Bienvenu {{ name }}, voici les derniers articles parus</h2>
         <div class="articles" id="post" v-for="post in posts" :key="post.postId">
-          <p>{{ post.title }}</p>
+          <h3>{{ post.title }}</h3>
           <p>{{ post.content }}</p>
           <div class="diplayAttribute">
             <p class="dateStamp">Créer le: {{ post.updatedAt }}</p>
-            <button class="showButton">Voir Article</button>
+            <button class="showButton" @click="showButton(post.id)">Voir Article</button>
           </div>
+          <p class="autheur">par : {{ post.UserId }}</p>
         </div>
       </div>
     </div>
@@ -34,7 +35,8 @@ export default {
       return {
         token: sessionStorage.getItem('token'),
         posts: '',
-        connexion: false
+        connexion: false,
+        name : sessionStorage.getItem("name")
       };
     },
    mounted(){
@@ -64,6 +66,9 @@ export default {
                 this.posts = data;
             })
             .catch(error => console.log({error}));
+        },
+        showButton(id){
+          window.location.href='/PostFocus/?post='+id
         }
   }
 }
@@ -209,6 +214,7 @@ body {
 
 .dateStamp{
   font-style: italic;
+  font-size: .8rem;
 }
 
 .showButton{
@@ -221,6 +227,20 @@ body {
   padding-top: 2rem;
 }
 
+.autheur{
+  position: flex;
+}
+.bienvenu{
+    --fill-color: #FFF;
+    position: relative;
+    display: block;
+    padding: 4px 0;
+    font: 700 3rem Raleway, sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: linear-gradient(var(--fill-color) 0 100%) left/0 no-repeat;
+    color: transparent;
+}
 @keyframes btn-anim1 {
   0% {
     left: -100%;

@@ -71,7 +71,8 @@ exports.login = (req, res) => {
                     if (resComparePassword) {
                          res.status(200).json({
                              userId: user.id,
-                             token: utilsjwtoken.generateToken(user)
+                             token: utilsjwtoken.generateToken(user),
+                             name: user.firstName
                          })
                     } else {
                         res.status(403).json({ error: 'invalid password' });

@@ -8,7 +8,7 @@
         </div>
           <div class="form-group">
             <label for="content" class="labelTitle">Contenu</label>
-            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici"></textarea>
+            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)"></textarea>
         </div>
     <button type="submit" @click.prevent="createPost">Partager</button>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>

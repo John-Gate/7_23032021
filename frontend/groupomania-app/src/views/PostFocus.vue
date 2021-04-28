@@ -1,29 +1,29 @@
 <template>
-  <div v-if="token!=null">
-    <div v-if="post.length === 0" >
+  <div class="main" v-if="token!=null">
+    <!-- <div v-if="post.length === 0" >
             <div class="text">Aucun contenu 0000000000000000000 </div>
-    </div>
-    <div v-else>
-     <div>
-       <p>{{ post.title }}</p>
+    </div>-->
+    <!--<div v-else> -->
+     <div class="login-box">
+       <h2>{{ post.title }}</h2>
           <p>{{ post.content }}</p>
-          <p>{{ post.updatedAt }}</p>
+          <p> cree le: {{ post.updatedAt }}</p>
+            <button type="submit" @click.prevent="modifyPublication">Modifier</button>
+            <div class="form-group">
+            <label for="content" class="labelTitle">Laissez un commentaire:</label>
+            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)"></textarea>
+            <button type="submit" @click.prevent="createPost">Partager</button>
+            
+        </div>
         <div id="comment" v-for="commentary in comment" :key="commentary.id">
           <p>{{ commentary.content }}</p>
-          <p>{{ commentary.createdAt }}</p>
+          <p>{{ commentary.updatedAt }}</p>
         </div>
+     <button v-if="author==true" @click="deletePublication">SUPPRESSION</button>
      </div>
-     <button @click="deletePublication">SUPPRESSION</button>
-    </div>
+    <!-- </div> -->
   </div>
-  <div v-else> 
-     <div class="login-box">
-      <h2>Bienvenu Sur Groupomania</h2>
-      <div class="card-date">
-      <p>Nous sommes le {{ dateDuJour }}</p>
-      </div>
-    </div>
-    </div>
+
 </template>
 
 <script>
@@ -33,8 +33,11 @@ export default {
       return {
         token: sessionStorage.getItem('token'),
         post: '',
+        user_id:sessionStorage.getItem("id"),
         comment:'',
-        connexion: false
+        connexion: false,
+        post_id:'',
+        author: false
       };
     },
    mounted(){
@@ -52,28 +55,34 @@ export default {
   },
     methods: {
        getOnePublication(){
-         console.log("okkkkkkkkkkkk")
          const token = sessionStorage.getItem('token');
-          axios.get("http://localhost:3000/post/", {
+         let url = window.location.href.split("?");
+         let id = url[1].split("=");
+         this.post_id = id[1];//pour delete publication later
+         console.log(id[1])
+          axios.get("http://localhost:3000/post/"+id[1], {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             })
             .then(res => {
-              console.log("OK")
                 const data = res.data;
                 this.post = data.post;
+                console.log(this.post.UserId)
+                if(this.post.UserId == this.user_id){
+                  this.author = true;
+                }
                 this.comment = data.comment;
-                console.log(data)
             })
             .catch(error => console.log({error}));
         },
+        
         deletePublication(){
           const token = sessionStorage.getItem('token');
           const data = {
-            currentUser: 1,
-            postId: 3 //post.id
+            currentUser: this.user_id,
+            postId: this.post_id
           }
           axios.post("http://localhost:3000/post/deletePost", data, {
                 headers: {
@@ -83,15 +92,15 @@ export default {
             })
             .then(res => {
               console.log(res)
-                window.location.reload()
+                window.location.replace("/")
             })
             .catch(error => console.log({error}));
         },
           modifyPublication(){
           const token = sessionStorage.getItem('token');
           const data = {
-            currentUser: 1,
-            postId: 7
+            currentUser: this.user_id,
+            postId: this.post_id
           }
           axios.put("http://localhost:3000/updatePost", data, {
                 headers: {
@@ -156,6 +165,8 @@ body {
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
   opacity: 0.8;
+  color:#FFF
+  
 }
 
 .login-box h2 {
@@ -235,6 +246,14 @@ body {
   height: 2px;
   background: linear-gradient(90deg, transparent, $base-color);
   animation: btn-anim1 1s linear infinite;
+}
+
+.main{
+  order:2;
+}
+
+.form-control{
+  width: 100%;
 }
 
 @keyframes btn-anim1 {
