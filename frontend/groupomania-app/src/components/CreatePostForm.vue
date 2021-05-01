@@ -4,11 +4,11 @@
   <form v-if="connexion">
     <div class="form-group">
             <label for="title" class="labelTitle">Titre</label>
-            <input type="text" class="form-control " id="title" v-model="post.title" required>
+            <input type="text" class="form-control " id="title" v-model="post.title" required placeholder="Ecrivez votre titre">
         </div>
           <div class="form-group">
             <label for="content" class="labelTitle">Contenu</label>
-            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)"></textarea>
+            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createPost"></textarea>
         </div>
     <button type="submit" @click.prevent="createPost">Partager</button>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>
@@ -50,9 +50,8 @@ export default {
     },
     createPost() {      
 			axios.post("http://localhost:3000/post/createPost", this.post, {headers:{Authorization: "Bearer " + sessionStorage.token}})
-			.then((result) => {
-				console.log(result)
-				alert('Post successfully created!');
+			.then(() => {
+				alert('Votre article a bien été créé. Il va etre validé prochainement.');
 			})
 			.then(() => this.$router.push("/"));
 		}

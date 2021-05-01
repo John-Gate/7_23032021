@@ -1,23 +1,31 @@
 <template>
-  <div class="main" v-if="token!=null">
-    <!-- <div v-if="post.length === 0" >
-            <div class="text">Aucun contenu 0000000000000000000 </div>
-    </div>-->
-    <!--<div v-else> -->
-     <div class="login-box">
-        <div class="form-group">
-            <label for="title" class="labelTitle">Titre</label>
-            <input type="text" class="form-control " id="title" v-model="post.title" required placeholder="Ecrivez votre titre">
+ <div class="main">
+    <div v-if="token!=null">
+      <div v-if="posts.length === 0" >
+              <div class="text">Aucun contenu  </div>
+      </div>
+      <div v-else class="login-box">
+        <h2 class="bienvenu">Bienvenu {{ name }}, voici les derniers articles parus</h2>
+        <div class="articles" id="post" v-for="post in posts" :key="post.postId">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.content }}</p>
+          <div class="diplayAttribute">
+            <p class="dateStamp">Créer le: {{ post.updatedAt }}</p>
+            <button class="showButton" @click="showButton(post.id)">Voir Article</button>
+          </div>
+          <p class="autheur">par : {{ post.UserId }}</p>
         </div>
-          <div class="form-group">
-            <label for="content" class="labelTitle">Contenu</label>
-            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="modifyPublication"></textarea>
+      </div>
+    </div>
+    <div v-else> 
+       <div class="login-box">
+        <h2>Bienvenu Sur Groupomania</h2>
+        <div class="card-date">
+        <p>Nous sommes le {{ dateDuJour }}</p>
         </div>
-          <button type="submit" @click.prevent="modifyPublication">Modifier</button>
-     </div>
-    <!-- </div> -->
-  </div>
-
+      </div>
+      </div>
+ </div>
 </template>
 
 <script>
@@ -26,27 +34,19 @@ export default {
    data() {
       return {
         token: sessionStorage.getItem('token'),
-         post:{
-              title: '',
-              content: ''
-            },
-        user_id:sessionStorage.getItem("id"),
-        comment:'',
+        stats:'',
         connexion: false,
-        post_id:'',
-        author: false
+        name : sessionStorage.getItem("name")
       };
     },
    mounted(){
-        this.getOnePublication()
+        this.getStatistics()
    },
+
     methods: {
-       getOnePublication(){
+       getStatistics(){
          const token = sessionStorage.getItem('token');
-         let url = window.location.href.split("?");
-         let id = url[1].split("=");
-         this.post_id = id[1];//pour delete publication later
-          axios.get("http://localhost:3000/post/"+id[1], {
+          axios.get("http://localhost:3000/admin/statistics", {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -54,35 +54,13 @@ export default {
             })
             .then(res => {
                 const data = res.data;
-                this.post = data.post;
-                if(this.post.UserId == this.user_id){
-                  this.author = true;
-                }
-                this.comment = data.comment;
+                this.stats = data;
             })
             .catch(error => console.log({error}));
         },
-          modifyPublication(){
-          const token = sessionStorage.getItem('token');
-          const data = {
-            currentUser: this.user_id,
-            postId: this.post_id,
-            title: this.post.title,
-            content: this.post.content
-          }
-          console.log(this.post)
-          axios.put("http://localhost:3000/post/updatePost", data, {
-            headers: {
-              'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(res => {
-              console.log(res)
-                window.location.replace("/")//voir si on met retour au post precedent plutot que "/"
-            })
-            .catch(error => console.log({error}));
-        },
+        showButton(id){
+          window.location.href='/PostFocus/?post='+id
+        }
   }
 }
 </script>
@@ -114,28 +92,36 @@ $base-color: #fff;
 
 html {
   height: 100%;
+
 }
+
 body {
   margin:0;
   padding:0;
   font-family: sans-serif;
   background: linear-gradient(#141e30, #243b55);
+  display: flex;
+  flex-direction: column;
 }
 
+.main{
+  order:2;
+}
+.articles{
+  border: 2px solid #fff;
+  color: #fff;
+  margin: 5px;
+  padding: 20px;
+}
+
+
 .login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
   padding: 40px;
-  transform: translate(-50%, -50%);
   background-image: linear-gradient(#fc2700, #000000);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
-  opacity: 0.8;
-  color:#FFF
-  
+  opacity: 0.9;
 }
 
 .login-box h2 {
@@ -217,14 +203,35 @@ body {
   animation: btn-anim1 1s linear infinite;
 }
 
-.main{
-  order:2;
+.dateStamp{
+  font-style: italic;
+  font-size: .8rem;
 }
 
-.form-control{
-  width: 100%;
+.showButton{
+  height: fit-content;
 }
 
+.diplayAttribute{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2rem;
+}
+
+.autheur{
+  position: flex;
+}
+.bienvenu{
+    --fill-color: #FFF;
+    position: relative;
+    display: block;
+    padding: 4px 0;
+    font: 700 3rem Raleway, sans-serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: linear-gradient(var(--fill-color) 0 100%) left/0 no-repeat;
+    color: transparent;
+}
 @keyframes btn-anim1 {
   0% {
     left: -100%;

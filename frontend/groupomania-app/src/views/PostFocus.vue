@@ -6,20 +6,21 @@
     <!--<div v-else> -->
      <div class="login-box">
        <h2>{{ post.title }}</h2>
-          <p>{{ post.content }}</p>
-          <p> cree le: {{ post.updatedAt }}</p>
-            <button type="submit" @click.prevent="modifyPublication">Modifier</button>
-            <div class="form-group">
-            <label for="content" class="labelTitle">Laissez un commentaire:</label>
-            <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)"></textarea>
-            <button type="submit" @click.prevent="createPost">Partager</button>
-            
-        </div>
+       <p>{{ post.content }}</p>
+       <p> cree le: {{ post.updatedAt }}</p>
+       <button v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</button>
+       <button v-if="author==true" @click="deletePublication">SUPPRESSION</button>
+       <div class="form-group">
+          <label for="content" class="labelTitle">Laissez un commentaire:</label>
+          <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)"></textarea>
+          <button type="submit" @click.prevent="createCommentary">Partager</button>
+       </div>
         <div id="comment" v-for="commentary in comment" :key="commentary.id">
+          <p>Commentaire precedent:</p>
           <p>{{ commentary.content }}</p>
-          <p>{{ commentary.updatedAt }}</p>
+          <p> poste le: {{ commentary.createdAt }}</p>
+          <p>par: {{ commentary.UserId }}</p>
         </div>
-     <button v-if="author==true" @click="deletePublication">SUPPRESSION</button>
      </div>
     <!-- </div> -->
   </div>
@@ -35,6 +36,7 @@ export default {
         post: '',
         user_id:sessionStorage.getItem("id"),
         comment:'',
+        reply:'',
         connexion: false,
         post_id:'',
         author: false
@@ -54,66 +56,86 @@ export default {
 		}
   },
     methods: {
-       getOnePublication(){
-         const token = sessionStorage.getItem('token');
-         let url = window.location.href.split("?");
-         let id = url[1].split("=");
-         this.post_id = id[1];//pour delete publication later
-         console.log(id[1])
-          axios.get("http://localhost:3000/post/"+id[1], {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
+      getOnePublication(){
+        const token = sessionStorage.getItem('token');
+        let url = window.location.href.split("?");
+        console.log(url)
+        let id = url[1].split("=");
+        this.post_id = id[1];//pour delete publication later
+        axios.get("http://localhost:3000/post/"+id[1], {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }
+          })
+          .then(res => {
+              const data = res.data;
+              console.log(data)
+              this.post = data.post;
+              console.log(this.post)
+              if(this.post.UserId == this.user_id){
+                this.author = true;
+              }
+              this.comment = data.comment;
+          })
+          .catch(error => console.log({error}));
+      },
+      
+      deletePublication(){
+        const token = sessionStorage.getItem('token');
+        const data = {
+          currentUser: this.user_id,
+          postId: this.post_id
+        }
+        axios.post("http://localhost:3000/post/deletePost", data, {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }
+          })
+          .then(res => {
+            console.log(res)
+              window.location.replace("/")
+          })
+          .catch(error => console.log({error}));
+      },
+
+      modifyPublication(){
+      const token = sessionStorage.getItem('token');
+      const data = {
+        currentUser: this.user_id,
+        postId: this.post_id
+      }
+      axios.put("http://localhost:3000/updatePost", data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => {
+          console.log(res)
+            window.location.reload()
+        })
+        .catch(error => console.log({error}));
+      },
+
+        createCommentary(){
+          console.log(this.reply)
+            const data = {
+        currentUser: this.user_id,
+        postId: this.post_id,
+        comment:this.reply
+      }
+            axios.post("http://localhost:3000/comment/reply", data, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+            .then(() => {
+              alert('Post successfully created!');
             })
-            .then(res => {
-                const data = res.data;
-                this.post = data.post;
-                console.log(this.post.UserId)
-                if(this.post.UserId == this.user_id){
-                  this.author = true;
-                }
-                this.comment = data.comment;
-            })
-            .catch(error => console.log({error}));
-        },
-        
-        deletePublication(){
-          const token = sessionStorage.getItem('token');
-          const data = {
-            currentUser: this.user_id,
-            postId: this.post_id
-          }
-          axios.post("http://localhost:3000/post/deletePost", data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(res => {
-              console.log(res)
-                window.location.replace("/")
-            })
-            .catch(error => console.log({error}));
-        },
-          modifyPublication(){
-          const token = sessionStorage.getItem('token');
-          const data = {
-            currentUser: this.user_id,
-            postId: this.post_id
-          }
-          axios.put("http://localhost:3000/updatePost", data, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(res => {
-              console.log(res)
-                window.location.reload()
-            })
-            .catch(error => console.log({error}));
-        },
+            .then(() => this.$router.push("/"));
+      },
+
+        showButton(id){
+          window.location.href='/modifypost/?post='+id
+      }
   }
 }
 </script>

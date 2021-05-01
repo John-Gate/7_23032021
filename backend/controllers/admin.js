@@ -119,3 +119,107 @@ exports.commentModeration = (req, res, next) => {
           })
       });
 };
+
+exports.getAllPublications = (req, res, next) => { 
+  console.log("step2")
+  models.Post.findAll({
+    include:[{ //identifier le post
+        model:models.User, attributes: ["firstName", "lastName"]
+    }],
+    where:{status:0},  
+    order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+  })
+  .then((posts) => {
+      if(posts.length > null){
+          console.log(posts)
+        return res.status(200).json(posts)
+      }
+      else{
+    return res.status(400).json("Aucun article")
+}})
+.catch(error=>res.status(500).json(error))
+};
+
+exports.getAllUsers = (req, res, next) => { 
+    console.log("step2")
+    models.User.findAll({
+      where:{role:0},  
+      order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+    })
+    .then((users) => {
+        if(users.length > null){
+            console.log(users)
+          return res.status(200).json(users)
+        }
+        else{
+      return res.status(400).json("Aucun Nouvel Utilisateur")
+  }})
+  .catch(error=>res.status(500).json(error))
+  };
+
+
+  exports.getAllComments = (req, res, next) => { 
+    console.log("step2")
+    models.Comment.findAll({
+      include:[{ //identifier le post
+          model:models.User, attributes: ["firstName", "lastName"],
+          model:models.Post, attributes: ["title", "content"]
+      }],
+      where:{status:0},  
+      order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+    })
+    .then((comments) => {
+        if(comments.length > null){
+            console.log(comments)
+          return res.status(200).json(comments)
+        }
+        else{
+      return res.status(400).json("Aucun Nouveau Commentaire")
+  }})
+  .catch(error=>res.status(500).json(error))
+  };
+
+
+  exports.statistics = (req, res, next) => {
+      //combien d user, comments, et posts  
+    models.User.findAll({
+        order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+      })
+      .then((users) => {
+          if(users.length > null){
+            models.Post.findAll({
+                order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+              })
+              .then((posts) => {
+                  if(posts.length > null){
+                    models.Comment.findAll({
+                        order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+                      })
+                      .then((comments) => {
+                          if(comments.length > null){
+                            const combine = {
+                                "post": posts,
+                                "comment": comments,
+                                "user":users
+                            }
+                          console.log(combine)
+                            return res.status(200).json(combine)
+                          }
+                          else{
+                        return res.status(400).json("Aucun Nouveau Commentaire")
+                    }})
+                    .catch(error=>res.status(500).json(error))
+                  }
+                  else{
+                return res.status(400).json("Aucun Post")
+            }})
+            .catch(error=>res.status(500).json(error))
+          }
+          else{
+        return res.status(400).json("Aucun Utilisateur")
+    }})
+    .catch(error=>res.status(500).json(error))
+      //date des dernieres modif COMMENT USER POST
+
+      //date des dernieres creations
+  };

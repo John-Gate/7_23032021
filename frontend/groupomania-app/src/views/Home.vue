@@ -1,11 +1,14 @@
 <template>
  <div class="main">
+      <!-- Si Connecté -->
     <div v-if="token!=null">
+      <!-- Si pas d'articles' -->
       <div v-if="posts.length === 0" >
               <div class="text">Aucun contenu  </div>
       </div>
+      <!-- Si il y a des articles -->
       <div v-else class="login-box">
-        <h2 class="bienvenu">Bienvenu {{ name }}, voici les derniers articles parus</h2>
+        <h2 class="bienvenu">Bienvenu {{ name }},<br> voici les derniers articles parus</h2>
         <div class="articles" id="post" v-for="post in posts" :key="post.postId">
           <h3>{{ post.title }}</h3>
           <p>{{ post.content }}</p>
@@ -13,10 +16,11 @@
             <p class="dateStamp">Créer le: {{ post.updatedAt }}</p>
             <button class="showButton" @click="showButton(post.id)">Voir Article</button>
           </div>
-          <p class="autheur">par : {{ post.UserId }}</p>
+          <p class="autheur">par : {{ post.User.firstName }}</p>
         </div>
       </div>
     </div>
+    <!-- Si pas Connecté -->
     <div v-else> 
        <div class="login-box">
         <h2>Bienvenu Sur Groupomania</h2>

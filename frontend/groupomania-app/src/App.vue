@@ -16,9 +16,9 @@
     <ul>
     <li><a href="/">Accueil</a></li>
 <!-- METTRE VIF SI CONNECTER SINON "Se Deconnecter"-->
-<div v-if="token!=null">
+<div v-if="token!=null" class="connected">
+  <li><a href="/Profile?user='+id">Mon Profil</a></li>
   <li><a @click="deconnexion">Se déconnecter</a></li>
-    
 </div>
 <div v-else class="notConnected">
   <li><a href="/Login">S'IDENTIFIER</a></li>
@@ -78,6 +78,9 @@ body {
   justify-content: center;
   flex-direction: column;
  
+}
+.connected{
+  display: flex;
 }
 .notConnected{
   display: flex;

@@ -57,8 +57,8 @@ exports.createPublication = (req, res, next) => {
   exports.getOnePublication = (req, res, next) => {
       const idPost = req.params.id 
       models.Post.findOne ({
-        attributes: ["id", "content", "title", "updatedAt", "createdAt"],
-        where: {id: idPost}
+        attributes: ["id", "content", "title", "updatedAt", "createdAt", "UserId"],
+        where: {id: idPost, status:1}
       })
       .then((post) => {
           if(post == null){
@@ -68,7 +68,7 @@ exports.createPublication = (req, res, next) => {
             models.Comment.findAll({
                 attributes: ["id", "content", "createdAt"],
                 order:[["createdAt", "DESC"]],//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
-                where: {PostId: idPost}
+                where: {PostId: idPost, status: 1}
               })
               .then((comments) => {
                   console.log(comments.length)
@@ -93,7 +93,8 @@ exports.createPublication = (req, res, next) => {
     models.Post.findAll({
       include:[{ //identifier le post
           model:models.User, attributes: ["firstName", "lastName"]
-      }],  
+      }],
+      where:{status:1},  
       order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
     })
     .then((posts) => {

@@ -1,11 +1,13 @@
 <template>
 <div class="login-box">
   <h2 class="cardTitle">Mon Profil</h2>
-
   <form>
-<a href="/Post">Créer Un Nouvel Article</a>
+    <p>Prénom: {{ user.firstName }}</p>
+    <p>Nom: {{ }}</p>
+    <p>Date d'inscription:{{ }}</p>
+    <a href="/Post">Créer Un Nouvel Article</a>
     <a @click="logIn">Supprimer Le Profil</a>
-      <a href="/Inscription" class="linkInscription">Retour a l'accueil</a>
+    <a href="/Inscription" class="linkInscription">Retour a l'accueil</a>
   </form>
 </div>
 
@@ -14,69 +16,101 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
     name: 'ProfilForm',
     data () {
         return {
-            username: '',
-        }
+           token: sessionStorage.getItem('token'),
+           user_id:sessionStorage.getItem("id"),
+           user: '',
+           email:'',
+           firstName:'',
+           lastName:'',
+           role:''
+        };
     },
+     mounted(){
+       this.profileUser()    
+   },
     methods:{
-    deleteUser() {
-        let idUser = parseInt(localStorage.getItem("Id"));
-        const dataForm = JSON.stringify({id: idUser});
-        async function postForm(dataForm) {
-            try {
-                let response = await fetch("http://localhost:3000/api/user/:id", {
-                    method: 'DELETE',
-                    headers: {
-                        'content-type': 'application/json',
-                        'authorization': 'bearer ' + localStorage.getItem('token')
-                    },
-                    body: dataForm
-                });
-                    if (response.ok) {
-                        let responseId = await response.json();
-                        console.log(responseId);
-                        localStorage.removeItem('Id');
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('isAdmin');
-                        window.location.href = "http://localhost:8080/Inscription"
-                    } else {
-                        console.error('Retour du serveur : ', response.status);
-                    }
-            } catch (e) {
-            console.log(e);
-            }
-        }
-        postForm(dataForm);
-    },
-    updateUser() {
-        let idUser = parseInt(localStorage.getItem("Id"));
-        let dataForm = JSON.stringify({id: idUser, username: this.username});
-        async function postForm(dataForm) {
-            try {
-                let response = await fetch("http://localhost:3000/api/user/:id", {
-                    method: 'PUT',
-                    headers: {
-                        'content-type': 'application/json',
-                        'authorization': 'bearer ' + localStorage.getItem('token')
-                    },
-                    body: dataForm,
-                });
-                    if (response.ok) {
-                        let responseId = await response.json();
-                        console.log(responseId);
-                        //Répondre ok modifcation
-                    } else {
-                        console.error('Retour du serveur : ', response.status);
-                    }
-            } catch (e) {
-            console.log(e);
-            }   
-        }
-postForm(dataForm);
-    }
+      profileUser(){
+        const token = sessionStorage.getItem('token');
+        let url = window.location.href.split("?");
+        let id = url[1].split("=");
+        this.user_id = id[1];//pour delete publication later
+        axios.get("http://localhost:3000/api/auth/infouser/"+id[1], {
+          headers: {
+            'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }
+          })
+          .then(res => {
+            const data = res.data;
+            console.log(data)
+              this.user = data.firstName;
+            console.log(this.user)
+              if(this.user.UserId == this.user_id){
+                this.author = true;
+              }
+          })
+          .catch(error => console.log({error}));
+      },
+    // deleteUser() {
+    //     let idUser = parseInt(localStorage.getItem("Id"));
+    //     const dataForm = JSON.stringify({id: idUser});
+    //     async function postForm(dataForm) {
+    //         try {
+    //             let response = await fetch("http://localhost:3000/api/user/:id", {
+    //                 method: 'DELETE',
+    //                 headers: {
+    //                     'content-type': 'application/json',
+    //                     'authorization': 'bearer ' + localStorage.getItem('token')
+    //                 },
+    //                 body: dataForm
+    //             });
+    //                 if (response.ok) {
+    //                     let responseId = await response.json();
+    //                     console.log(responseId);
+    //                     localStorage.removeItem('Id');
+    //                     localStorage.removeItem('token');
+    //                     localStorage.removeItem('isAdmin');
+    //                     window.location.href = "http://localhost:8080/Inscription"
+    //                 } else {
+    //                     console.error('Retour du serveur : ', response.status);
+    //                 }
+    //         } catch (e) {
+    //         console.log(e);
+    //         }
+    //     }
+    //     postForm(dataForm);
+    // },
+//     updateUser() {
+//         let idUser = parseInt(localStorage.getItem("Id"));
+//         let dataForm = JSON.stringify({id: idUser, username: this.username});
+//         async function postForm(dataForm) {
+//             try {
+//                 let response = await fetch("http://localhost:3000/api/user/:id", {
+//                     method: 'PUT',
+//                     headers: {
+//                         'content-type': 'application/json',
+//                         'authorization': 'bearer ' + localStorage.getItem('token')
+//                     },
+//                     body: dataForm,
+//                 });
+//                     if (response.ok) {
+//                         let responseId = await response.json();
+//                         console.log(responseId);
+//                         //Répondre ok modifcation
+//                     } else {
+//                         console.error('Retour du serveur : ', response.status);
+//                     }
+//             } catch (e) {
+//             console.log(e);
+//             }   
+//         }
+// postForm(dataForm);
+//     }
     }
 }
 </script>
