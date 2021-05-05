@@ -19,7 +19,6 @@ exports.signup = (req, res) => {
     let passwordOK = checkinput.validPassword(password);
     let lastNameOK = checkinput.validUsername(lastName);
     let firstNameOK = checkinput.validUsername(firstName);
-    console.log(emailOK, passwordOK, lastNameOK, firstNameOK)
     if (emailOK == true && passwordOK == true && lastNameOK == true && firstNameOK == true) {
         //vérification si user n'existe pas déjà
         models.User.findOne({
@@ -27,9 +26,7 @@ exports.signup = (req, res) => {
             where: { email: email }
         })
             .then(user => {
-                console.log("ok1");
                 if (!user) {
-                  console.log("ok2");
                     bcrypt.hash(password, 10, function (error, hash) {
                         //création user
                         const newUser = models.User.create({
@@ -50,7 +47,7 @@ exports.signup = (req, res) => {
             })
             .catch(error => { res.status(501).json({ error }) })
     } else {
-        console.log('Erreur')
+        console.log('Erreu1r')
     }
 };
 
@@ -115,14 +112,20 @@ exports.deleteUser = (req, res, next) => {
          .then(user => {
               //On vérifie le retour de la requête sql
             if (null == user) {
+                
                  return res.status(400).json("Suppression de l'utilisateur non-authorisée")
              }
              else{  
-                     models.User.destroy({
-                         where: {id:userId}
-                     })
-                     .then(()=>res.status(200).json("Utilisteur Supprimé"))
-                     .catch(error=>res.status(500).json("Suppression Impossible"))
+                models.Post.destroy({
+                    where: { userId: user.id }
+                })
+                .then(() => {
+                    models.User.destroy({
+                        where: {id:userId}
+                    })
+                    .then(()=>res.status(200).json("Utilisteur Supprimé"))
+                    .catch(error=>res.status(500).json("Suppression Impossible"))
+                })
              }
          })
          .catch(error => {

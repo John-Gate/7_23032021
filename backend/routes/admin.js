@@ -6,13 +6,13 @@ const adminCtrl = require("../controllers/admin");
 const auth = require("../middleware/auth");
 //Routage
 router.get('/', adminCtrl.adminCheck);
-router.get('/showPost', adminCtrl.getAllPublications);
-router.get('/showUser', adminCtrl.getAllUsers);
-router.get('/showComment', adminCtrl.getAllComments);
-router.put('/postModeration/:id', adminCtrl.postModeration);
-router.put('/commentModeration/:id', adminCtrl.commentModeration);
-router.put('/userModeration/:id', adminCtrl.userModeration);
-router.get('/statistics', adminCtrl.statistics);
+router.get('/showPost', auth, adminCtrl.getAllPublications);
+router.get('/showUser', auth, adminCtrl.getAllUsers);
+router.get('/showComment', auth, adminCtrl.getAllComments);
+router.put('/postModeration/:id', auth, adminCtrl.postModeration);
+router.put('/commentModeration/:id', auth, adminCtrl.commentModeration);
+router.put('/userModeration/:id', auth, adminCtrl.userModeration);
+router.get('/statistics', auth, adminCtrl.statistics);
 
 
 module.exports = router;
