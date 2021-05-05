@@ -15,7 +15,6 @@ exports.createComment = (req, res, next) => {
         where: {id: userId}
     })
     .then(user => {
-            console.log("okk") 
             // On vérifie le retour de la requête sql
             if (null == user) {
                 return res.status(400).json({
@@ -23,8 +22,7 @@ exports.createComment = (req, res, next) => {
                     'userId': userId
                 })
             }
-            else{  
-                console.log(req.body)
+            else{ 
                 models.Post.findOne({
                     attributes: ["id"],
                     where: {id: postId}

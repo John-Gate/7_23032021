@@ -9,9 +9,9 @@ router.get('/', adminCtrl.adminCheck);
 router.get('/showPost', adminCtrl.getAllPublications);
 router.get('/showUser', adminCtrl.getAllUsers);
 router.get('/showComment', adminCtrl.getAllComments);
-router.put('/postModeration', adminCtrl.postModeration);
-router.put('/commentModeration', adminCtrl.commentModeration);
-router.put('/userModeration', adminCtrl.userModeration);
+router.put('/postModeration/:id', adminCtrl.postModeration);
+router.put('/commentModeration/:id', adminCtrl.commentModeration);
+router.put('/userModeration/:id', adminCtrl.userModeration);
 router.get('/statistics', adminCtrl.statistics);
 
 

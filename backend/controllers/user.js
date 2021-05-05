@@ -89,7 +89,7 @@ exports.login = (req, res) => {
 exports.getUser = (req, res, next) => {
     const idUser = req.params.id 
     models.User.findOne ({
-        attributes: ["email", "firstName", "lastName", "Role", "id"],
+        attributes: ["email", "firstName", "lastName", "Role", "createdAt", "id"],
         where: {id: idUser}
     })
     .then((user) => {
@@ -103,3 +103,29 @@ exports.getUser = (req, res, next) => {
       
   .catch(error=>res.status(500).json(error))
 };
+
+exports.deleteUser = (req, res, next) => {
+    //  const token = req.headers.authorization.split(' ')[1];
+    //  const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+     const userId = req.body.currentUser;
+        models.User.findOne({
+             attributes: ["id"],
+             where: {id: userId}
+         })
+         .then(user => {
+              //On vérifie le retour de la requête sql
+            if (null == user) {
+                 return res.status(400).json("Suppression de l'utilisateur non-authorisée")
+             }
+             else{  
+                     models.User.destroy({
+                         where: {id:userId}
+                     })
+                     .then(()=>res.status(200).json("Utilisteur Supprimé"))
+                     .catch(error=>res.status(500).json("Suppression Impossible"))
+             }
+         })
+         .catch(error => {
+             return res.status(500).json("Utilisateur Introuvable")
+         });
+   };

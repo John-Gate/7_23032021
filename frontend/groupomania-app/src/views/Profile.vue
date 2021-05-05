@@ -1,13 +1,89 @@
 <template>
 <div class="login-box">
-  <h2 class="cardTitle">Mon Profil</h2>
+  <h2 class="cardTitle">Mon Profil<div v-if=" role == 2 ">administrateur</div></h2>
   <form>
-    <p>Prénom: {{ user.firstName }}</p>
-    <p>Nom: {{ }}</p>
-    <p>Date d'inscription:{{ }}</p>
+<div class="infoUser">
+<table>
+  <tr>
+    <th>Prénom :</th>
+    <td>{{ firstName }}</td>
+  </tr>
+  <tr>
+    <th>Nom :</th>
+    <td>{{ lastName }}</td>
+  </tr>
+  <tr>
+    <th>Date d'inscription :</th>
+    <td>{{ createdAt.split("-")[2] }}/{{ createdAt.split("-")[1] }}/{{ createdAt.split("-")[0] }}</td>
+  </tr>
+</table>
+  <div v-if=" role == 2 ">
+    <p>VOUS ETES UN ADMIN</p>
+    <h2>Nouveaux Utilisateurs</h2>
+    <!-- Voir pour Changer la classe -->
+    <div class="articles" id="user" v-for="user in users" :key="user.userId">
+      <table>
+        <tr>
+    <th>Prénom :</th>
+    <td>{{ user.firstName }}</td>
+  </tr>
+  <tr>
+    <th>Nom :</th>
+    <td>{{ user.lastName }}</td>
+  </tr>
+  <tr>
+    <th>Email :</th>
+    <td>{{ user.email }}</td>
+  </tr>
+  <tr>
+    <th>Créer le:</th>
+    <td>{{ user.createdAt.split("-")[2] }}/{{ user.createdAt.split("-")[1] }}/{{ user.createdAt.split("-")[0] }}</td>
+  </tr>
+      </table>
+            <button class="showButton" type="submit" @click.prevent="validateUser(user.id)">Authoriser l'utilisateur</button>
+        </div>
+    <h2>Nouveaux Articles</h2>
+    <div class="articles" id="post" v-for="post in posts" :key="post">
+      <h3>{{ post.title }}</h3>
+      <p>{{ post.content }}</p>
+      <div class="diplayAttribute">
+        <p class="dateStamp">Créé le: {{ post.createdAt.split("-")[2].split("T")[0] }}/{{ post.createdAt.split("-")[1] }}/{{ post.createdAt.split("-")[0] }}</p>
+      </div>
+      <p class="auteur">par : {{ post.User.firstName }} {{ post.User.lastName }}</p>
+        <button class="showButton" type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</button>
+    </div>
+    <h2>Nouveaux Commentaires</h2>
+    <!-- Voir pour Changer la classe -->
+    <div class="articles" id="comment" v-for="comment in comments" :key="comment">
+      <p>{{ comment.content }}</p>
+      <!-- <p>par : {{ comment.User.firstName }} {{ comment.User.lastName }}</p> -->
+      <div class="diplayAttribute">
+        <p class="dateStamp">Créer le: {{ comment.createdAt }}</p>
+        <button class="showButton" type="submit" @click.prevent="validateComment(comment.id)">Authoriser le commentaire</button>
+      </div>
+      <!-- <p class="autheur">par : {{ comment.User.firstName }}</p> -->
+    </div>
+    <h2>Statistiques</h2>
+    <table>
+  <tr>
+    <th>Nombre d'articles Totales:</th>
+    <td>{{ postNumber }}</td>
+  </tr>
+  <tr>
+    <th>Nombre de commentaire Totales:</th>
+    <td>{{ commentNumber }}</td>
+  </tr>
+  <tr>
+    <th>Nombre d'utilisateur Totales:</th>
+    <td>{{ userNumber }}</td>
+  </tr>
+</table>
+   
+  </div>
+</div>
     <a href="/Post">Créer Un Nouvel Article</a>
-    <a @click="logIn">Supprimer Le Profil</a>
-    <a href="/Inscription" class="linkInscription">Retour a l'accueil</a>
+    <a @click="deleteUser">Supprimer Le Profil</a>
+    <a href="/" >Retour a l'accueil</a>
   </form>
 </div>
 
@@ -20,97 +96,193 @@ import axios from "axios";
 export default {
     name: 'ProfilForm',
     data () {
-        return {
-           token: sessionStorage.getItem('token'),
+      return {
+          token: sessionStorage.getItem('token'),
            user_id:sessionStorage.getItem("id"),
+           posts: '',
+           post_id:'',
+           users: '',
            user: '',
+           comments:'',
            email:'',
            firstName:'',
            lastName:'',
-           role:''
+           createdAt:'',
+           role:'',
+           userNumber:'',
+           postNumber:'',
+           commentNumber:''
         };
     },
      mounted(){
-       this.profileUser()    
+       this.profileUser(),
+       this.moderatePost(),
+       this.moderateUser(),
+       this.moderateComment(),
+       this.getStats()  
    },
+    //   computed:{
+    //     convertDate(date){
+    //       var p = date.split(/\D/g)
+    //       return [p[2],p[1],p[0] ].join("-")
+    //   }
+
+    // },
     methods:{
       profileUser(){
         const token = sessionStorage.getItem('token');
-        let url = window.location.href.split("?");
-        let id = url[1].split("=");
-        this.user_id = id[1];//pour delete publication later
-        axios.get("http://localhost:3000/api/auth/infouser/"+id[1], {
+        const user_id = sessionStorage.getItem("id");
+        console.log(user_id)
+        axios.get("http://localhost:3000/api/auth/infouser/"+user_id, {
           headers: {
-            'Content-Type': 'application/json',
+                  'Content-Type': 'application/json',
                   'Authorization': `Bearer ${token}`
               }
           })
           .then(res => {
             const data = res.data;
-            console.log(data)
-              this.user = data.firstName;
-            console.log(this.user)
+              this.firstName = data.firstName;
+              this.lastName = data.lastName;
+              this.createdAt = data.createdAt;
+              console.log(this.createdAt)
+              this.role = data.Role;
               if(this.user.UserId == this.user_id){
                 this.author = true;
               }
           })
           .catch(error => console.log({error}));
       },
-    // deleteUser() {
-    //     let idUser = parseInt(localStorage.getItem("Id"));
-    //     const dataForm = JSON.stringify({id: idUser});
-    //     async function postForm(dataForm) {
-    //         try {
-    //             let response = await fetch("http://localhost:3000/api/user/:id", {
-    //                 method: 'DELETE',
-    //                 headers: {
-    //                     'content-type': 'application/json',
-    //                     'authorization': 'bearer ' + localStorage.getItem('token')
-    //                 },
-    //                 body: dataForm
-    //             });
-    //                 if (response.ok) {
-    //                     let responseId = await response.json();
-    //                     console.log(responseId);
-    //                     localStorage.removeItem('Id');
-    //                     localStorage.removeItem('token');
-    //                     localStorage.removeItem('isAdmin');
-    //                     window.location.href = "http://localhost:8080/Inscription"
-    //                 } else {
-    //                     console.error('Retour du serveur : ', response.status);
-    //                 }
-    //         } catch (e) {
-    //         console.log(e);
-    //         }
-    //     }
-    //     postForm(dataForm);
-    // },
-//     updateUser() {
-//         let idUser = parseInt(localStorage.getItem("Id"));
-//         let dataForm = JSON.stringify({id: idUser, username: this.username});
-//         async function postForm(dataForm) {
-//             try {
-//                 let response = await fetch("http://localhost:3000/api/user/:id", {
-//                     method: 'PUT',
-//                     headers: {
-//                         'content-type': 'application/json',
-//                         'authorization': 'bearer ' + localStorage.getItem('token')
-//                     },
-//                     body: dataForm,
-//                 });
-//                     if (response.ok) {
-//                         let responseId = await response.json();
-//                         console.log(responseId);
-//                         //Répondre ok modifcation
-//                     } else {
-//                         console.error('Retour du serveur : ', response.status);
-//                     }
-//             } catch (e) {
-//             console.log(e);
-//             }   
-//         }
-// postForm(dataForm);
-//     }
+      moderatePost(){
+        const token = sessionStorage.getItem('token');
+          axios.get("http://localhost:3000/admin/showPost", {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                const data = res.data;
+                this.posts = data;
+                console.log(this.posts[0].title)
+            })
+            .catch(error => console.log({error}));
+      },
+
+      //A REVOIR POUR RENTRER DANS L ID DU POST CORRESPONDANTb ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+      validatePost(id){
+         axios.put("http://localhost:3000/admin/postModeration/"+ id,null
+          , {
+           headers: {
+                       'Content-Type': 'application/json',
+                       'Authorization': 'Bearer ' + this.token
+                   }
+         } )
+                    .then((response) => {
+                        console.log(response);
+                        location.replace(location.origin);
+                    })
+                    .catch((error) => console.log(error));
+      },
+
+      moderateUser(){
+          const token = sessionStorage.getItem('token');
+            axios.get("http://localhost:3000/admin/showUser", {
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                  }
+              })
+              .then(res => {
+                  const data = res.data;
+                  this.users = data;
+              })
+              .catch(error => console.log({error}));
+      },
+
+      validateUser(id){
+         axios.put("http://localhost:3000/admin/userModeration/"+ id,null
+          , {
+           headers: {
+                       'Content-Type': 'application/json',
+                       'Authorization': 'Bearer ' + this.token
+                   }
+         } )
+                    .then((response) => {
+                        console.log(response);
+                        location.replace(location.origin);
+                    })
+                    .catch((error) => console.log(error));
+      },
+
+      moderateComment(){
+      const token = sessionStorage.getItem('token');
+        axios.get("http://localhost:3000/admin/showComment", {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }
+          })
+          .then(res => {
+              const data = res.data;
+              this.comments = data;
+              console.log(data)
+          })
+          .catch(error => console.log({error}));
+      },
+      validateComment(id){
+        axios.put("http://localhost:3000/admin/commentModeration/"+ id,null
+          , {
+           headers: {
+                       'Content-Type': 'application/json',
+                       'Authorization': 'Bearer ' + this.token
+                   }
+         } )
+                    .then((response) => {
+                        console.log(response);
+                        location.replace(location.origin);
+                    })
+                    .catch((error) => console.log(error));
+      },
+      getStats(){
+ const token = sessionStorage.getItem('token');
+          axios.get("http://localhost:3000/admin/statistics", {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                const data = res.data;
+                let userStats = data.user.length;
+                this.userNumber = userStats;
+                console.log(this.userNumber)
+                let postStats = data.post.length;
+                this.postNumber = postStats;
+                let commentStats = data.comment.length;
+                this.commentNumber = commentStats;
+            })
+            .catch(error => console.log({error}));
+      },
+      deleteUser(){
+        const data = {
+          currentUser: this.user_id
+        }
+        axios.put("http://localhost:3000/api/auth/deleteUser", data, {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${this.token}`
+              }
+          })
+          .then(res => {
+            console.log(res)
+              sessionStorage.removeItem('token');
+              sessionStorage.removeItem('name');
+              sessionStorage.removeItem('id');
+              window.location.replace("/")
+          })
+          .catch(error => console.log({error}));
+      }
+       
     }
 }
 </script>
@@ -151,18 +323,31 @@ body {
   background: linear-gradient(#141e30, #243b55);
 }
 
+.infoUser{
+  color:#FFF;
+  text-align: left;
+    &__alignement{
+      display: flex;
+    }
+     &__data{
+      padding-left: 1rem;
+    }
+    table{
+     border-spacing: 5px 15px; 
+    }
+    td{
+      padding-left: 2rem;
+    }
+}
+
 .login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
   padding: 40px;
-  transform: translate(-50%, -50%);
   background-image: linear-gradient(#fc2700, #000000);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
   opacity: 0.8;
+  order:2;
 }
 
 .login-box h2 {
@@ -230,6 +415,9 @@ body {
               0 0 100px $base-color;
 }
 
+a{
+  cursor: pointer;
+}
 
 .cardTitle {
     --fill-color: #fc2700;

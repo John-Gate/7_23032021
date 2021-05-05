@@ -17,7 +17,7 @@
     <li><a href="/">Accueil</a></li>
 <!-- METTRE VIF SI CONNECTER SINON "Se Deconnecter"-->
 <div v-if="token!=null" class="connected">
-  <li><a href="/Profile?user='+id">Mon Profil</a></li>
+  <li><a href="/Profile">Mon Profil</a></li>
   <li><a @click="deconnexion">Se déconnecter</a></li>
 </div>
 <div v-else class="notConnected">
@@ -107,9 +107,11 @@ ul {
     color: transparent;
     background-clip: text;
     transition: 0.5s linear; 
+    
     }
   a:hover {
     background-size: 100%;
+    
     }
 }
 

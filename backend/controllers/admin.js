@@ -22,24 +22,23 @@ exports.adminCheck = (req, res) => {
       .catch(err => { res.status(500).json({ err }) })
 };
 
-
  exports.postModeration = (req, res, next) => {
-  //const token = req.headers.authorization.split(' ')[1];
-  //const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-  const postId = req.body.postId;
-  currentUser = req.body.currentUser;
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+  const postId = req.params.id;
+  currentUser = decodedToken.userId;
+  
       models.User.findOne({
           attributes: ["role"],
           where: {id: currentUser}
-      })
+        })
       .then(user => {
-          if (user.role == 1) {
+          if (user.role == 2) {
              models.Post.update({
               status: 1 // authorise l article a etre visible 
           },
           {where: {id: postId}}
           )
-          
           .then(()=>res.status(200).json("Article valide par administrateur"))
           .catch(error=>res.status(500).json("Modification Impossible"))   
         }
@@ -49,26 +48,24 @@ exports.adminCheck = (req, res) => {
       })
       .catch(error => {
           return res.status(500).json({
-              'error': error,
-              'userId': userId
+              'error': error
           })
       });
 };
 
-
 exports.userModeration = (req, res, next) => {
-  //const token = req.headers.authorization.split(' ')[1];
-  //const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-  const UserId = req.body.userId;
-  currentUser = req.body.currentUser;
-      models.User.findOne({
-          attributes: ["role"],
-          where: {id: currentUser}
-      })
-      .then(user => {
-          if (user.role == 1) {
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+  const UserId = req.params.id;
+  currentUser = decodedToken.userId;
+  models.User.findOne({
+    attributes: ["role"],
+    where: {id: currentUser}
+  })
+  .then(user => {
+    if (user.role == 2) {
              models.User.update({
-              role: 2 // authorise l user a etre visible 
+              role: 1 // authorise l user a etre visible 
           },
           {where: {id: UserId}}
           )
@@ -88,18 +85,17 @@ exports.userModeration = (req, res, next) => {
       });
 };
 
-
 exports.commentModeration = (req, res, next) => {
-  //const token = req.headers.authorization.split(' ')[1];
-  //const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-  const commentId = req.body.commentId
-  currentUser = req.body.currentUser;
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+  const commentId = req.params.id
+  currentUser = decodedToken.userId;
       models.User.findOne({
           attributes: ["role"],
           where: {id: currentUser}
       })
       .then(user => {
-          if (user.role == 1) {
+          if (user.role == 2) {
              models.Comment.update({
               status: 1 // authorise le commentaire a etre visible 
           },
@@ -121,7 +117,6 @@ exports.commentModeration = (req, res, next) => {
 };
 
 exports.getAllPublications = (req, res, next) => { 
-  console.log("step2")
   models.Post.findAll({
     include:[{ //identifier le post
         model:models.User, attributes: ["firstName", "lastName"]
@@ -131,7 +126,6 @@ exports.getAllPublications = (req, res, next) => {
   })
   .then((posts) => {
       if(posts.length > null){
-          console.log(posts)
         return res.status(200).json(posts)
       }
       else{
@@ -141,14 +135,12 @@ exports.getAllPublications = (req, res, next) => {
 };
 
 exports.getAllUsers = (req, res, next) => { 
-    console.log("step2")
     models.User.findAll({
       where:{role:0},  
       order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
     })
     .then((users) => {
         if(users.length > null){
-            console.log(users)
           return res.status(200).json(users)
         }
         else{
@@ -159,7 +151,6 @@ exports.getAllUsers = (req, res, next) => {
 
 
   exports.getAllComments = (req, res, next) => { 
-    console.log("step2")
     models.Comment.findAll({
       include:[{ //identifier le post
           model:models.User, attributes: ["firstName", "lastName"],
@@ -170,7 +161,6 @@ exports.getAllUsers = (req, res, next) => {
     })
     .then((comments) => {
         if(comments.length > null){
-            console.log(comments)
           return res.status(200).json(comments)
         }
         else{
@@ -202,7 +192,6 @@ exports.getAllUsers = (req, res, next) => {
                                 "comment": comments,
                                 "user":users
                             }
-                          console.log(combine)
                             return res.status(200).json(combine)
                           }
                           else{

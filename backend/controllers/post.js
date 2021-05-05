@@ -9,7 +9,6 @@ exports.createPublication = (req, res, next) => {
     //const token = req.headers.authorization.split(' ')[1];
     const userId = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(userId, process.env.KEY_TOKEN);
-    console.log(decodedToken)
         models.User.findOne({
             attributes: ["id"],
             where: {id: decodedToken.userId}
@@ -17,21 +16,18 @@ exports.createPublication = (req, res, next) => {
         .then(user => {
             // On vérifie le retour de la requête sql
             if (null == user) {
-                console.log("step1")
                 return res.status(400).json({
                     'error': 'Utilisateur non trouvé.',
                     'userId': userId
                 })
             }
-            else{  
-                console.log("step3")         
+            else{          
                 models.Post.create({
                     UserId: decodedToken.userId,
                     title: req.body.title,
                     content: req.body.content
                 })
                 .then((newPost) => {
-                    console.log("step4")
                     return res.status(200).json({
                         'user': user,
                         'newPost': newPost
@@ -46,7 +42,6 @@ exports.createPublication = (req, res, next) => {
             }
         })
         .catch(error => {
-            console.log("step2")
             return res.status(500).json({
                 'error': error,
                 'userId': userId
@@ -71,7 +66,6 @@ exports.createPublication = (req, res, next) => {
                 where: {PostId: idPost, status: 1}
               })
               .then((comments) => {
-                  console.log(comments.length)
                   if(comments.length !== null){
                     const objectToSend = {
                         "post": post,
@@ -80,7 +74,6 @@ exports.createPublication = (req, res, next) => {
                     return res.status(200).json(objectToSend)
                   }
                   else{
-                    console.log("ok2")
                     return res.status(200).json(post)
             }})
             .catch(error=>res.status(501).json(error))
@@ -88,8 +81,7 @@ exports.createPublication = (req, res, next) => {
     .catch(error=>res.status(500).json(error))
   };
 
- exports.getAllPublications = (req, res, next) => { 
-    console.log("step2")
+ exports.getAllPublications = (req, res, next) => {
     models.Post.findAll({
       include:[{ //identifier le post
           model:models.User, attributes: ["firstName", "lastName"]
@@ -99,7 +91,6 @@ exports.createPublication = (req, res, next) => {
     })
     .then((posts) => {
         if(posts.length > null){
-            console.log(posts)
           return res.status(200).json(posts)
         }
         else{
@@ -161,7 +152,6 @@ exports.createPublication = (req, res, next) => {
                     where: {id: postId}
                 })
                 .then(post=>{
-                    console.log(post.UserId, currentUser)
                     if(post.UserId == currentUser){ // on verifie que bien l auteur
                         models.Post.update({
                             title: req.body.title,

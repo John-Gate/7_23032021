@@ -128,7 +128,7 @@ export default {
       }
             axios.post("http://localhost:3000/comment/reply", data, {headers:{Authorization: "Bearer " + sessionStorage.token}})
             .then(() => {
-              alert('Post successfully created!');
+              alert('Votre commentaire a bien été enregistré. Il va être validé prochainement.');
             })
             .then(() => this.$router.push("/"));
       },

@@ -51,7 +51,7 @@ export default {
     createPost() {      
 			axios.post("http://localhost:3000/post/createPost", this.post, {headers:{Authorization: "Bearer " + sessionStorage.token}})
 			.then(() => {
-				alert('Votre article a bien été créé. Il va etre validé prochainement.');
+				alert('Votre article a bien été créé. Il va être validé prochainement.');
 			})
 			.then(() => this.$router.push("/"));
 		}

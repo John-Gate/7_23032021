@@ -13,7 +13,7 @@
           <h3>{{ post.title }}</h3>
           <p>{{ post.content }}</p>
           <div class="diplayAttribute">
-            <p class="dateStamp">Créer le: {{ post.updatedAt }}</p>
+            <p class="dateStamp">Derniere modification: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
             <button class="showButton" @click="showButton(post.id)">Voir Article</button>
           </div>
           <p class="autheur">par : {{ post.User.firstName }}</p>
