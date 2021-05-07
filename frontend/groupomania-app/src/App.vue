@@ -8,7 +8,6 @@
     <router-link to="/Post">Post</router-link>|
     <router-link to="/PostFocus">PostFocus</router-link>|
     <router-link to="/Profile">Profile</router-link>|
-    <router-link to="/Reply">Reply</router-link>|
     <router-link to="/Inscription">Inscription</router-link>|
   </div>
 

@@ -5,9 +5,10 @@ const utilsjwtoken = require('../utils/jwtoken');
 const checkinput = require('../utils/checkinput');
 let currentUser ;
 
+//Fonction de creation d'un commentaire
 exports.createComment = (req, res, next) => {
-    //const token = req.headers.authorization.split(' ')[1];
-    //const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
     const userId = req.body.currentUser; 
     const postId = req.body.postId;
     models.User.findOne({
@@ -23,19 +24,21 @@ exports.createComment = (req, res, next) => {
                 })
             }
             else{ 
-                models.Post.findOne({
-                    attributes: ["id"],
-                    where: {id: postId}
-                })
-                .then(post => {   
-                    models.Comment.create({
-                        UserId: userId,
-                        PostId: postId,
-                        content: req.body.comment
+                if (user.role == 2) {
+                    models.Comment
+                    
+                    
+                    .create({
+                        UserId: decodedToken.userId,
+                        title: req.body.title,
+                        content: req.body.content,
+                        status: 1
                     })
-                    .then((newComment) => {
+                    .then((newPost) => {
                         return res.status(200).json({
-                            'newComment': newComment
+                            'user': user,
+                            'status': 1,
+                            'newPost': newPost
                         })
                     })
                     .catch((error) => {
@@ -43,8 +46,50 @@ exports.createComment = (req, res, next) => {
                             'error': error,
                             'user': user
                         })
-                    });
+                    }); 
+              }
+              else{
+                models.Post.create({
+                    UserId: decodedToken.userId,
+                    title: req.body.title,
+                    content: req.body.content
+                })
+                .then((newPost) => {
+                    return res.status(200).json({
+                        'user': user,
+                        'status': 0,
+                        'newPost': newPost
+                    })
+                })
+                .catch((error) => {
+                    return res.status(400).json({
+                        'error': error,
+                        'user': user
+                    })
                 });
+              }
+                // models.Post.findOne({
+                //     attributes: ["id"],
+                //     where: {id: postId}
+                // })
+                // .then(post => {   
+                //     models.Comment.create({
+                //         UserId: userId,
+                //         PostId: postId,
+                //         content: req.body.comment
+                //     })
+                //     .then((newComment) => {
+                //         return res.status(200).json({
+                //             'newComment': newComment
+                //         })
+                //     })
+                //     .catch((error) => {
+                //         return res.status(400).json({
+                //             'error': error,
+                //             'user': user
+                //         })
+                //     });
+                // });
             }
         })
         .catch(error => {

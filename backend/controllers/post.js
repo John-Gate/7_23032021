@@ -5,12 +5,23 @@ const utilsjwtoken = require('../utils/jwtoken');
 const checkinput = require('../utils/checkinput');
 let currentUser ;
 
+//Fonction de creation d'un article
 exports.createPublication = (req, res, next) => {
-    //const token = req.headers.authorization.split(' ')[1];
+
+    // const sauce = new Sauce({
+    //     ...sauceObject,
+    //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+    //     likes:0,
+    //     dislikes:0,
+    //     usersLiked:[],
+    //     usersDisliked:[]
+    //   });
+    const token = req.headers.authorization.split(' ')[1];
     const userId = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(userId, process.env.KEY_TOKEN);
+    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+    console.log(req.file)
         models.User.findOne({
-            attributes: ["id"],
+            attributes: ["id", "role"],
             where: {id: decodedToken.userId}
         })
         .then(user => {
@@ -21,24 +32,51 @@ exports.createPublication = (req, res, next) => {
                     'userId': userId
                 })
             }
-            else{          
-                models.Post.create({
-                    UserId: decodedToken.userId,
-                    title: req.body.title,
-                    content: req.body.content
-                })
-                .then((newPost) => {
-                    return res.status(200).json({
-                        'user': user,
-                        'newPost': newPost
+            else{   
+                    if (user.role == 2) {
+                        models.Post.create({
+                            UserId: decodedToken.userId,
+                            title: req.body.title,
+                            content: req.body.content,
+                            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                            status: 1
+                        })
+                        .then((newPost) => {
+                            return res.status(200).json({
+                                'user': user,
+                                'status': 1,
+                                'newPost': newPost
+                            })
+                        })
+                        .catch((error) => {
+                            return res.status(400).json({
+                                'error': error,
+                                'user': user
+                            })
+                        }); 
+                  }
+                  else{
+                    models.Post.create({
+                        UserId: decodedToken.userId,
+                        title: req.body.title,
+                        content: req.body.content
                     })
-                })
-                .catch((error) => {
-                    return res.status(400).json({
-                        'error': error,
-                        'user': user
+                    .then((newPost) => {
+                        return res.status(200).json({
+                            'user': user,
+                            'status': 0,
+                            'newPost': newPost
+                        })
                     })
-                });
+                    .catch((error) => {
+                        return res.status(400).json({
+                            'error': error,
+                            'user': user
+                        })
+                    });
+                  }
+                      
+                
             }
         })
         .catch(error => {

@@ -17,6 +17,7 @@
     <div class="user-box">
       <input type="password" name="" required="" v-model="dataSignup.password">
       <label>Mot de passe</label>
+      <p>Votre mot de passe doit contenir au moins /// caractères dont au moins un chiffre, avec un mélange de lettres majuscules et minuscules</p>
     </div>
     <a @click="sendSignup" type="submit">
       S'Inscrire

@@ -8,6 +8,14 @@
        <h2>{{ post.title }}</h2>
        <p>{{ post.content }}</p>
        <p> cree le: {{ post.updatedAt }}</p>
+       <!-- ZONE LIKES/DISLIKES-->
+       <div class="likes">
+        <i ></i>
+       </div>
+       <div class="dislikes">
+        <i></i>
+       </div>
+      <!-- ZONE LIKES/DISLIKES-->
        <button v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</button>
        <button v-if="author==true" @click="deletePublication">SUPPRESSION</button>
        <div class="form-group">
@@ -119,17 +127,22 @@ export default {
         .catch(error => console.log({error}));
       },
 
-        createCommentary(){
-          console.log(this.reply)
+      createCommentary(){
             const data = {
-        currentUser: this.user_id,
-        postId: this.post_id,
-        comment:this.reply
+              currentUser: this.user_id,
+              postId: this.post_id,
+              comment:this.reply
       }
             axios.post("http://localhost:3000/comment/reply", data, {headers:{Authorization: "Bearer " + sessionStorage.token}})
-            .then(() => {
-              alert('Votre commentaire a bien été enregistré. Il va être validé prochainement.');
-            })
+			.then((res) => {
+        //Condition: si admin, pas besoin de validé l'article
+        if(res.data.status == 1){
+        alert('Commentaire publié.');
+        }
+        else{
+				alert('Votre commentaire a bien été créé. Il va être validé prochainement.');
+        }
+			})
             .then(() => this.$router.push("/"));
       },
 

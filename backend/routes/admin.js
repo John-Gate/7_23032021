@@ -5,7 +5,6 @@ const router = express.Router();
 const adminCtrl = require("../controllers/admin");
 const auth = require("../middleware/auth");
 //Routage
-router.get('/', adminCtrl.adminCheck);
 router.get('/showPost', auth, adminCtrl.getAllPublications);
 router.get('/showUser', auth, adminCtrl.getAllUsers);
 router.get('/showComment', auth, adminCtrl.getAllComments);

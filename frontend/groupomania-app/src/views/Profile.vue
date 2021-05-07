@@ -132,7 +132,6 @@ export default {
       profileUser(){
         const token = sessionStorage.getItem('token');
         const user_id = sessionStorage.getItem("id");
-        console.log(user_id)
         axios.get("http://localhost:3000/api/auth/infouser/"+user_id, {
           headers: {
                   'Content-Type': 'application/json',
@@ -144,7 +143,6 @@ export default {
               this.firstName = data.firstName;
               this.lastName = data.lastName;
               this.createdAt = data.createdAt;
-              console.log(this.createdAt)
               this.role = data.Role;
               if(this.user.UserId == this.user_id){
                 this.author = true;
@@ -162,8 +160,9 @@ export default {
             })
             .then(res => {
                 const data = res.data;
-                this.posts = data;
-                console.log(this.posts[0].title)
+                 if(typeof data == 'object'){
+                  this.posts = data;
+                }
             })
             .catch(error => console.log({error}));
       },
@@ -177,26 +176,28 @@ export default {
                        'Authorization': 'Bearer ' + this.token
                    }
          } )
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         location.replace(location.origin);
                     })
                     .catch((error) => console.log(error));
       },
 
       moderateUser(){
-          const token = sessionStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
             axios.get("http://localhost:3000/admin/showUser", {
-                  headers: {
-                      'Content-Type': 'application/json',
+              headers: {
+                'Content-Type': 'application/json',
                       'Authorization': `Bearer ${token}`
                   }
               })
               .then(res => {
-                  const data = res.data;
+                const data = res.data;
+                console.log(typeof data)
+                if(typeof data == 'object'){
                   this.users = data;
+                }
               })
-              .catch(error => console.log({error}));
+              .catch(() => alert("Ceci est un message a modifie")); // changer pour l alerte correspondante ()
       },
 
       validateUser(id){
@@ -207,8 +208,7 @@ export default {
                        'Authorization': 'Bearer ' + this.token
                    }
          } )
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         location.replace(location.origin);
                     })
                     .catch((error) => console.log(error));
@@ -224,8 +224,9 @@ export default {
           })
           .then(res => {
               const data = res.data;
-              this.comments = data;
-              console.log(data)
+               if(typeof data == 'object'){
+                  this.comments = data;
+                }
           })
           .catch(error => console.log({error}));
       },
@@ -237,8 +238,7 @@ export default {
                        'Authorization': 'Bearer ' + this.token
                    }
          } )
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         location.replace(location.origin);
                     })
                     .catch((error) => console.log(error));
@@ -255,7 +255,6 @@ export default {
                 const data = res.data;
                 let userStats = data.user.length;
                 this.userNumber = userStats;
-                console.log(this.userNumber)
                 let postStats = data.post.length;
                 this.postNumber = postStats;
                 let commentStats = data.comment.length;

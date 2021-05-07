@@ -59,6 +59,7 @@ export default {
     methods: {
        getAllPublications(){
          const token = sessionStorage.getItem('token');
+         if (token !== null){
           axios.get("http://localhost:3000/post/", {
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +71,9 @@ export default {
                 this.posts = data;
             })
             .catch(error => console.log({error}));
+         }
         },
+
         showButton(id){
           window.location.href='/PostFocus/?post='+id
         }

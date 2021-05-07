@@ -5,23 +5,6 @@ const utilsjwtoken = require('../utils/jwtoken');
 const checkinput = require('../utils/checkinput');
 let currentUser ;
 
-exports.adminCheck = (req, res) => {
-  //user existe-t-il?
-  currentUser = req.body.currentUser
-  models.User.findOne({
-    attributes: ["role"],
-    where: { id: currentUser }
-  })
-      .then(user => {
-          if (user.role == 1) {
-            res.status(200).json("Connexion authorisee");
-          } else {
-              res.status(404).json({ 'erreur': 'Cet utilisateur n\'est pas un administrateur' })//pour la vue admin
-          }
-      })
-      .catch(err => { res.status(500).json({ err }) })
-};
-
  exports.postModeration = (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
@@ -128,7 +111,11 @@ exports.getAllPublications = (req, res, next) => {
       if(posts.length > null){
         return res.status(200).json(posts)
       }
+      else if(posts.length == 0){
+        return res.status(200).json("Aucun article")
+      }
       else{
+        
     return res.status(400).json("Aucun article")
 }})
 .catch(error=>res.status(500).json(error))
@@ -142,6 +129,9 @@ exports.getAllUsers = (req, res, next) => {
     .then((users) => {
         if(users.length > null){
           return res.status(200).json(users)
+        }
+        else if(users.length == 0){
+          return res.status(200).json("Aucun Utilisateur nouveaux")
         }
         else{
       return res.status(400).json("Aucun Nouvel Utilisateur")
@@ -162,6 +152,9 @@ exports.getAllUsers = (req, res, next) => {
     .then((comments) => {
         if(comments.length > null){
           return res.status(200).json(comments)
+        }
+        else if(comments.length == 0){
+          return res.status(200).json("Aucun Commentaire nouveaux")
         }
         else{
       return res.status(400).json("Aucun Nouveau Commentaire")
