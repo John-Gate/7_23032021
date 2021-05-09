@@ -10,8 +10,7 @@
     <router-link to="/Profile">Profile</router-link>|
     <router-link to="/Inscription">Inscription</router-link>|
   </div>
-
-  <router-view/>
+<router-view/>
     <ul>
     <li><a href="/">Accueil</a></li>
 <!-- METTRE VIF SI CONNECTER SINON "Se Deconnecter"-->
@@ -20,7 +19,9 @@
   <li><a @click="deconnexion">Se déconnecter</a></li>
 </div>
 <div v-else class="notConnected">
-  <li><a href="/Login">S'IDENTIFIER</a></li>
+  <transition mode="out-in" enter-active-class="animate__animated animate__backInDown" leave-active-class="animate__animated animate__backInDown">
+  <li><a href="/Login" >S'IDENTIFIER</a></li>
+  </transition>
   <li><a href="/Inscription">S'Inscrire</a></li>
 </div>
   </ul>
@@ -49,6 +50,8 @@ export default {
 
 
 <style lang="scss">
+@import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

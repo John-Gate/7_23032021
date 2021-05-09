@@ -1,36 +1,31 @@
 <template>
   <div class="main" v-if="token!=null">
-    <!-- <div v-if="post.length === 0" >
-            <div class="text">Aucun contenu 0000000000000000000 </div>
-    </div>-->
-    <!--<div v-else> -->
      <div class="login-box">
-       <h2>{{ post.title }}</h2>
+       <h2  class="animate__animated animate__bounce">{{ post.title }}</h2>
        <p>{{ post.content }}</p>
-       <p> cree le: {{ post.updatedAt }}</p>
-       <!-- ZONE LIKES/DISLIKES-->
-       <div class="likes">
-        <i ></i>
-       </div>
-       <div class="dislikes">
-        <i></i>
-       </div>
-      <!-- ZONE LIKES/DISLIKES-->
+       <!-- <p> cree le: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p> -->
+  <!-- ZONE LIKES/DISLIKES-->
+  <div class="likes">
+  <i ></i>
+  </div>
+  <div class="dislikes">
+  <i></i>
+  </div>
+<!-- FIN ZONE LIKES/DISLIKES-->
        <button v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</button>
        <button v-if="author==true" @click="deletePublication">SUPPRESSION</button>
        <div class="form-group">
           <label for="content" class="labelTitle">Laissez un commentaire:</label>
-          <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)"></textarea>
-          <button type="submit" @click.prevent="createCommentary">Partager</button>
+          <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createCommentary"></textarea>
+          <button type="submit" @click.prevent="createCommentary" class="buttonShake">Partager</button>
        </div>
+          <p v-if="comment.length >= 1">Cet article a été commenté:</p>
         <div id="comment" v-for="commentary in comment" :key="commentary.id">
-          <p>Commentaire precedent:</p>
           <p>{{ commentary.content }}</p>
-          <p> poste le: {{ commentary.createdAt }}</p>
-          <p>par: {{ commentary.UserId }}</p>
+          <p class="dateStamp">poste le: {{ commentary.createdAt.split("-")[2].split("T")[0] }}/{{ commentary.createdAt.split("-")[1] }}/{{ commentary.createdAt.split("-")[0] }}</p>
+          <p>par: {{ commentary.User.firstName }}</p>
         </div>
      </div>
-    <!-- </div> -->
   </div>
 
 </template>
@@ -67,7 +62,6 @@ export default {
       getOnePublication(){
         const token = sessionStorage.getItem('token');
         let url = window.location.href.split("?");
-        console.log(url)
         let id = url[1].split("=");
         this.post_id = id[1];//pour delete publication later
         axios.get("http://localhost:3000/post/"+id[1], {
@@ -78,9 +72,8 @@ export default {
           })
           .then(res => {
               const data = res.data;
-              console.log(data)
               this.post = data.post;
-              console.log(this.post)
+              console.log(data)
               if(this.post.UserId == this.user_id){
                 this.author = true;
               }
@@ -133,6 +126,7 @@ export default {
               postId: this.post_id,
               comment:this.reply
       }
+      console.log(data)
             axios.post("http://localhost:3000/comment/reply", data, {headers:{Authorization: "Bearer " + sessionStorage.token}})
 			.then((res) => {
         //Condition: si admin, pas besoin de validé l'article
@@ -355,6 +349,16 @@ body {
   50%,100% {
     bottom: 100%;
   }
+}
+
+.buttonShake{
+  display: inline-block;
+  margin: 0 0.5rem;
+
+  animation: rubberBand; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 1s; /* don't forget to set a duration! */
+  animation-delay: 2s;
+  animation-iteration-count: 5 2s;
 }
 
 </style>

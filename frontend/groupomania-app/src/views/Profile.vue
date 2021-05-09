@@ -18,8 +18,22 @@
   </tr>
 </table>
   <div v-if=" role == 2 ">
-    <p>VOUS ETES UN ADMIN</p>
+      <table>
+  <tr>
+    <th>Nombre d'articles Totales:</th>
+    <td>{{ postNumber }}</td>
+  </tr>
+  <tr>
+    <th>Nombre de commentaires Totales:</th>
+    <td>{{ commentNumber }}</td>
+  </tr>
+  <tr>
+    <th>Nombre d'utilisateurs Totales:</th>
+    <td>{{ userNumber }}</td>
+  </tr>
+</table>
     <h2>Nouveaux Utilisateurs</h2>
+    <p v-if="users.length == 0">Aucun Nouvel Utilisateur</p>
     <!-- Voir pour Changer la classe -->
     <div class="articles" id="user" v-for="user in users" :key="user.userId">
       <table>
@@ -43,6 +57,7 @@
             <button class="showButton" type="submit" @click.prevent="validateUser(user.id)">Authoriser l'utilisateur</button>
         </div>
     <h2>Nouveaux Articles</h2>
+    <p v-if="posts.length == 0">Aucun Nouvel Article</p>
     <div class="articles" id="post" v-for="post in posts" :key="post">
       <h3>{{ post.title }}</h3>
       <p>{{ post.content }}</p>
@@ -53,6 +68,7 @@
         <button class="showButton" type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</button>
     </div>
     <h2>Nouveaux Commentaires</h2>
+    <p v-if="comments.length == 0">Aucun Nouveau Commentaire</p>
     <!-- Voir pour Changer la classe -->
     <div class="articles" id="comment" v-for="comment in comments" :key="comment">
       <p>{{ comment.content }}</p>
@@ -63,21 +79,7 @@
       </div>
       <!-- <p class="autheur">par : {{ comment.User.firstName }}</p> -->
     </div>
-    <h2>Statistiques</h2>
-    <table>
-  <tr>
-    <th>Nombre d'articles Totales:</th>
-    <td>{{ postNumber }}</td>
-  </tr>
-  <tr>
-    <th>Nombre de commentaire Totales:</th>
-    <td>{{ commentNumber }}</td>
-  </tr>
-  <tr>
-    <th>Nombre d'utilisateur Totales:</th>
-    <td>{{ userNumber }}</td>
-  </tr>
-</table>
+  
    
   </div>
 </div>
@@ -121,13 +123,6 @@ export default {
        this.moderateComment(),
        this.getStats()  
    },
-    //   computed:{
-    //     convertDate(date){
-    //       var p = date.split(/\D/g)
-    //       return [p[2],p[1],p[0] ].join("-")
-    //   }
-
-    // },
     methods:{
       profileUser(){
         const token = sessionStorage.getItem('token');
@@ -150,6 +145,7 @@ export default {
           })
           .catch(error => console.log({error}));
       },
+
       moderatePost(){
         const token = sessionStorage.getItem('token');
           axios.get("http://localhost:3000/admin/showPost", {
@@ -167,7 +163,6 @@ export default {
             .catch(error => console.log({error}));
       },
 
-      //A REVOIR POUR RENTRER DANS L ID DU POST CORRESPONDANTb ICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
       validatePost(id){
          axios.put("http://localhost:3000/admin/postModeration/"+ id,null
           , {

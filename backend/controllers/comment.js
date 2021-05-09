@@ -12,7 +12,7 @@ exports.createComment = (req, res, next) => {
     const userId = req.body.currentUser; 
     const postId = req.body.postId;
     models.User.findOne({
-        attributes: ["id"],
+        attributes: ["id", "role"],
         where: {id: userId}
     })
     .then(user => {
@@ -24,21 +24,24 @@ exports.createComment = (req, res, next) => {
                 })
             }
             else{ 
+                models.Post.findOne({
+                    attributes: ["id"],
+                    where: {id: postId}
+                })
+                .then(() => {
                 if (user.role == 2) {
                     models.Comment
-                    
-                    
                     .create({
                         UserId: decodedToken.userId,
-                        title: req.body.title,
-                        content: req.body.content,
+                        content: req.body.comment,
+                        PostId: postId,
                         status: 1
                     })
-                    .then((newPost) => {
+                    .then((newComment) => {
                         return res.status(200).json({
                             'user': user,
                             'status': 1,
-                            'newPost': newPost
+                            'newComment': newComment
                         })
                     })
                     .catch((error) => {
@@ -49,16 +52,16 @@ exports.createComment = (req, res, next) => {
                     }); 
               }
               else{
-                models.Post.create({
+                models.Comment.create({
                     UserId: decodedToken.userId,
-                    title: req.body.title,
-                    content: req.body.content
+                    PostId: postId,
+                    content: req.body.comment
                 })
-                .then((newPost) => {
+                .then((newComment) => {
                     return res.status(200).json({
                         'user': user,
                         'status': 0,
-                        'newPost': newPost
+                        'newComment': newComment
                     })
                 })
                 .catch((error) => {
@@ -67,29 +70,7 @@ exports.createComment = (req, res, next) => {
                         'user': user
                     })
                 });
-              }
-                // models.Post.findOne({
-                //     attributes: ["id"],
-                //     where: {id: postId}
-                // })
-                // .then(post => {   
-                //     models.Comment.create({
-                //         UserId: userId,
-                //         PostId: postId,
-                //         content: req.body.comment
-                //     })
-                //     .then((newComment) => {
-                //         return res.status(200).json({
-                //             'newComment': newComment
-                //         })
-                //     })
-                //     .catch((error) => {
-                //         return res.status(400).json({
-                //             'error': error,
-                //             'user': user
-                //         })
-                //     });
-                // });
+              }});
             }
         })
         .catch(error => {

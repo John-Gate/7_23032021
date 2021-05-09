@@ -99,7 +99,10 @@ exports.createPublication = (req, res, next) => {
           }
           else{//affiche commentaire lie a l article
             models.Comment.findAll({
-                attributes: ["id", "content", "createdAt"],
+                include:[{ //identifier le post
+                    model:models.User, attributes: ["firstName"]
+                }],
+                attributes: ["id", "content", "createdAt","UserId"],
                 order:[["createdAt", "DESC"]],//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
                 where: {PostId: idPost, status: 1}
               })

@@ -11,12 +11,12 @@
         <h2 class="bienvenu">Bienvenu {{ name }},<br> voici les derniers articles parus</h2>
         <div class="articles" id="post" v-for="post in posts" :key="post.postId">
           <h3>{{ post.title }}</h3>
-          <p>{{ post.content }}</p>
+          <p>{{ post.content.split(" ", 5).join(" ") }}... </p>
           <div class="diplayAttribute">
             <p class="dateStamp">Derniere modification: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
             <button class="showButton" @click="showButton(post.id)">Voir Article</button>
           </div>
-          <p class="autheur">par : {{ post.User.firstName }}</p>
+          <p class="auteur">par : {{ post.User.firstName }}</p>
         </div>
       </div>
     </div>
@@ -27,6 +27,7 @@
         <div class="card-date">
         <p>Nous sommes le {{ dateDuJour }}</p>
         </div>
+        <p>Voici votre lieu de reflexion dedie a notre structure, votre  réseau social interne propre. Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? Simplement apres vous etre inscrit, vous pourrez vous connectez afin de voir les derniers articles parrus, et meme les commenter! Securise vous pourrez vous connecter a l'aide de votre email et d'un mot de passe.  </p>
       </div>
       </div>
  </div>
@@ -234,7 +235,7 @@ body {
   padding-top: 2rem;
 }
 
-.autheur{
+.auteur{
   position: flex;
 }
 .bienvenu{

@@ -54,8 +54,7 @@ export default {
                         "http://localhost:3000/api/auth/signup",
                         this.dataSignup
                     )
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         location.replace(location.origin);
                     })
                     .catch((error) => console.log(error));
