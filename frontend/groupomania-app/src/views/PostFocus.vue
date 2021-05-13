@@ -1,29 +1,30 @@
 <template>
   <div class="main" v-if="token!=null">
      <div class="login-box">
-       <h2  class="animate__animated animate__bounce">{{ post.title }}</h2>
-       <p>{{ post.content }}</p>
+       <h2  class="cardTitle animate__animated animate__bounce">{{ post.title }}</h2>
+       <p class="postContent">{{ post.content }}</p>
        <!-- <p> cree le: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p> -->
   <!-- ZONE LIKES/DISLIKES-->
+    <a type="submit" @click.prevent="likePost" ><i class="far fa-thumbs-up"></i></a>
+    <p>Numers Of Likes {{ post.like }}</p> 
   <div class="likes">
-  <i ></i>
-  </div>
-  <div class="dislikes">
-  <i></i>
+    
   </div>
 <!-- FIN ZONE LIKES/DISLIKES-->
        <button v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</button>
        <button v-if="author==true" @click="deletePublication">SUPPRESSION</button>
-       <div class="form-group">
-          <label for="content" class="labelTitle">Laissez un commentaire:</label>
+       <div>
+          <p class="toDoForm">Laissez un commentaire:</p>
           <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createCommentary"></textarea>
           <button type="submit" @click.prevent="createCommentary" class="buttonShake">Partager</button>
        </div>
-          <p v-if="comment.length >= 1">Cet article a été commenté:</p>
+          <p class="infoComment" v-if="comment.length >= 1">Cet article a été commenté:</p>
         <div id="comment" v-for="commentary in comment" :key="commentary.id">
           <p>{{ commentary.content }}</p>
-          <p class="dateStamp">poste le: {{ commentary.createdAt.split("-")[2].split("T")[0] }}/{{ commentary.createdAt.split("-")[1] }}/{{ commentary.createdAt.split("-")[0] }}</p>
-          <p>par: {{ commentary.User.firstName }}</p>
+         <div class="infoComment__attribute">
+            <p class="infoComment__attribute--dateStamp">poste le: {{ commentary.createdAt.split("-")[2].split("T")[0] }}/{{ commentary.createdAt.split("-")[1] }}/{{ commentary.createdAt.split("-")[0] }}</p>
+            <p class="infoComment__attribute--name">par: {{ commentary.User.firstName }}</p>
+         </div>
         </div>
      </div>
   </div>
@@ -42,6 +43,7 @@ export default {
         reply:'',
         connexion: false,
         post_id:'',
+        like:'',
         author: false
       };
     },
@@ -73,7 +75,6 @@ export default {
           .then(res => {
               const data = res.data;
               this.post = data.post;
-              console.log(data)
               if(this.post.UserId == this.user_id){
                 this.author = true;
               }
@@ -94,8 +95,7 @@ export default {
                   'Authorization': `Bearer ${token}`
               }
           })
-          .then(res => {
-            console.log(res)
+          .then(() => {
               window.location.replace("/")
           })
           .catch(error => console.log({error}));
@@ -113,8 +113,7 @@ export default {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(res => {
-          console.log(res)
+        .then(() => {
             window.location.reload()
         })
         .catch(error => console.log({error}));
@@ -126,7 +125,6 @@ export default {
               postId: this.post_id,
               comment:this.reply
       }
-      console.log(data)
             axios.post("http://localhost:3000/comment/reply", data, {headers:{Authorization: "Bearer " + sessionStorage.token}})
 			.then((res) => {
         //Condition: si admin, pas besoin de validé l'article
@@ -142,223 +140,73 @@ export default {
 
         showButton(id){
           window.location.href='/modifypost/?post='+id
+      },
+
+      likePost(){
+            axios.post("http://localhost:3000/api/auth/likePost", { postId: this.post_id}, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+			.then((res) => {
+        //Condition: si admin, pas besoin de validé l'article
+  if(res.status == 200){
+    alert("LIKER!");
+  }
+			})
+            .then(() => this.$router.push("/"));
       }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
 $base-color: #fff;
-//PLaceholder en italique
-::-webkit-input-placeholder { /* WebKit browsers */
-   font-style:italic
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    font-style:italic
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-    font-style:italic
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-    font-style:italic
-}
-/////////////////////////
 
-.card-date{
-  color: white;
+#comment{
+color: $base-color;
+border: 1px solid $base-color;
+text-align: left;
+margin-bottom: 1rem;
+padding: 1rem 0 1rem 1rem;
+transition: transform .5s;
+overflow:hidden;
+  &:hover{
+    -webkit-transform:scale(1.01); /* Safari et Chrome */
+-moz-transform:scale(1.01); /* Firefox */
+-ms-transform:scale(1.01); /* Internet Explorer 9 */
+-o-transform:scale(1.01); /* Opera */
+transform:scale(1.01);
+box-shadow: 0 0 1px $base-color,
+              0 0 2px $base-color,
+              0 0 5px $base-color,
+              0 0 1px $base-color;
+  }
 }
-
-.linkInscription{
-  font-size: 11px;
-}
-
-html {
-  height: 100%;
-}
-body {
-  margin:0;
-  padding:0;
-  font-family: sans-serif;
-  background: linear-gradient(#141e30, #243b55);
-}
-
-.login-box {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  padding: 40px;
-  transform: translate(-50%, -50%);
-  background-image: linear-gradient(#fc2700, #000000);
-  box-sizing: border-box;
-  box-shadow: 0 15px 25px rgba(0,0,0,.6);
-  border-radius: 10px;
-  opacity: 0.8;
-  color:#FFF
-  
-}
-
-.login-box h2 {
-  margin: 0 0 30px;
-  padding: 0;
-  color: #fff;
-  text-align: center;
-}
-
-.login-box .user-box {
-  position: relative;
-}
-
-.login-box .user-box input {
-  width: 100%;
-  padding: 10px 0;
-  font-size: 16px;
-  color: #fff;
-  margin-bottom: 30px;
-  border: none;
-  border-bottom: 1px solid #fff;
-  outline: none;
-  background: transparent;
-}
-.login-box .user-box label {
-  position: absolute;
-  top:0;
-  left: 0;
-  padding: 10px 0;
-  font-size: 16px;
-  color: #fff;
-  pointer-events: none;
-  transition: .5s;
-}
-
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
-  top: -20px;
-  left: 0;
+.infoComment{
+  font-style:italic;
+  text-align: left;
   color: $base-color;
-  font-size: 12px;
+  &__attribute{
+    text-align: right;
+    padding-right:1rem ;
+    &--dateStamp{
+        font-style: italic;
+        font-size: .8rem;
+        margin: 0;
+    }
+    &--name{
+        margin-bottom: 0;
+    }
+  }
 }
-
-.login-box form a {
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
+.toDoForm{
   color: $base-color;
-  font-size: 16px;
-  text-decoration: none;
-  text-transform: uppercase;
-  overflow: hidden;
-  transition: .5s;
-  margin-top: 40px;
-  letter-spacing: 4px
+  text-align: left;
 }
-
-.login-box a:hover {
-  background: $base-color;
-  color: black;
-  border-radius: 5px;
-  box-shadow: 0 0 5px $base-color,
-              0 0 25px $base-color,
-              0 0 50px $base-color,
-              0 0 100px $base-color;
-}
-
-.login-box a span {
-  position: absolute;
-  display: block;
-}
-
-.login-box a span:nth-child(1) {
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, $base-color);
-  animation: btn-anim1 1s linear infinite;
-}
-
-.main{
-  order:2;
-}
-
-.form-control{
-  width: 100%;
-}
-
-@keyframes btn-anim1 {
-  0% {
-    left: -100%;
-  }
-  50%,100% {
-    left: 100%;
-  }
-}
-
-.login-box a span:nth-child(2) {
-  top: -100%;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, $base-color);
-  animation: btn-anim2 1s linear infinite;
-  animation-delay: .25s
-}
-
-@keyframes btn-anim2 {
-  0% {
-    top: -100%;
-  }
-  50%,100% {
-    top: 100%;
-  }
-}
-
-.login-box a span:nth-child(3) {
-  bottom: 0;
-  right: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(270deg, transparent, $base-color);
-  animation: btn-anim3 1s linear infinite;
-  animation-delay: .5s
-}
-
-@keyframes btn-anim3 {
-  0% {
-    right: -100%;
-  }
-  50%,100% {
-    right: 100%;
-  }
-}
-
-.login-box a span:nth-child(4) {
-  bottom: -100%;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, $base-color);
-  animation: btn-anim4 1s linear infinite;
-  animation-delay: .75s
-}
-
-@keyframes btn-anim4 {
-  0% {
-    bottom: -100%;
-  }
-  50%,100% {
-    bottom: 100%;
-  }
-}
-
 .buttonShake{
   display: inline-block;
   margin: 0 0.5rem;
-
   animation: rubberBand; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
   animation-delay: 2s;
   animation-iteration-count: 5 2s;
 }
-
 </style>

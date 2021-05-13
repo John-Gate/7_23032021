@@ -7,19 +7,9 @@ let currentUser ;
 
 //Fonction de creation d'un article
 exports.createPublication = (req, res, next) => {
-
-    // const sauce = new Sauce({
-    //     ...sauceObject,
-    //     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    //     likes:0,
-    //     dislikes:0,
-    //     usersLiked:[],
-    //     usersDisliked:[]
-    //   });
     const token = req.headers.authorization.split(' ')[1];
     const userId = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    console.log(req.file)
         models.User.findOne({
             attributes: ["id", "role"],
             where: {id: decodedToken.userId}

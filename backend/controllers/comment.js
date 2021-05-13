@@ -9,7 +9,7 @@ let currentUser ;
 exports.createComment = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    const userId = req.body.currentUser; 
+    const userId = decodedToken.userId;
     const postId = req.body.postId;
     models.User.findOne({
         attributes: ["id", "role"],

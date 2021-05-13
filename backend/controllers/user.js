@@ -47,7 +47,7 @@ exports.signup = (req, res) => {
             })
             .catch(error => { res.status(501).json({ error }) })
     } else {
-        console.log('Erreu1r')
+        console.log('Erreur')
     }
 };
 
@@ -134,29 +134,69 @@ exports.deleteUser = (req, res, next) => {
    };
 
 
-   exports.likeSauce = (req, res, next) =>{
-    if(req.body.like ==1){//si user a like
-      Sauce.updateOne({_id: req.params.id}, {$inc:{likes:1}, $push:{usersLiked:req.body.userId },_id:req.params.id } )//c est l id qu on va modifie
-      .then(sauces=> res.status(200).json(sauces))
-      .catch(error => res.status(400).json({error}));
-    }else if(req.body.like ==-1){//si user a dislike
-      Sauce.updateOne({_id: req.params.id}, {$inc:{dislikes:1}, $push:{usersDisliked:req.body.userId },_id:req.params.id } )
-      .then(sauces=> res.status(200).json(sauces))
-      .catch(error => res.status(400).json({error}));
-    }else if(req.body.like ==0){
-      Sauce.findOne({_id: req.params.id})
-      .then(sauces=> {
-        if(sauces.usersLiked.find(user=> user===req.body.userId)){//si il avait like
-          Sauce.updateOne({_id: req.params.id}, {$inc:{likes:-1}, $pull:{usersLiked:req.body.userId },_id:req.params.id } )
-          .then(sauces=> res.status(200).json(sauces))
-          .catch(error => res.status(400).json({error}));
-        }
-        if(sauces.usersDisliked.find(user=> user===req.body.userId)){//si il avait dislike
-          Sauce.updateOne({_id: req.params.id}, {$inc:{dislikes:-1}, $pull:{usersDisliked:req.body.userId },_id:req.params.id } )
-          .then(sauces=> res.status(200).json(sauces))
-          .catch(error => res.status(400).json({error}));
-        }
-      })
-      .catch(error=>console.log(error));
-    }
-  }
+   exports.likePost = (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+    const userId = decodedToken.userId;
+    const postId = req.body.postId;
+    models.User.findOne({
+        attributes: ["id", "role"],
+        where: {id: userId}
+    })
+    .then(user => {
+            // On vérifie le retour de la requête sql
+            if (null == user) {
+                return res.status(400).json({
+                    'error': 'Utilisateur non trouvé.',
+                    'userId': userId
+                })
+            }
+            else{ 
+                models.Post.findOne({
+                    attributes: ["id"],
+                    where: {id: postId}
+                })
+                .then(() => {
+                    models.Like.findOne({
+                        attributes: ["id"],
+                        where: {UserId: userId, PostId: postId}
+                    })
+                    .then((user) =>{
+                        models.Like.destroy({
+                            where: {id: user.id}
+                        })
+                        .then(()=>res.status(200).json("Like Enlevé"))
+                        .catch(()=>res.status(500).json("Suppression Impossible"))
+                    })
+                    .catch(()=>{
+                if (user.role > 0) {
+                    models.Like
+                    .create({
+                        UserId: userId,
+                        PostId: postId
+                    })
+                    .then((newLike) => {
+                        return res.status(200).json({
+                            'newLike': newLike
+                        })
+                    })
+                    .catch((error) => {
+                        return res.status(401).json({
+                            'error': error
+                        })
+                    }); 
+                }
+               })
+              });
+            }
+        })
+        .catch(error => {
+            return res.status(500).json({
+                'error': error,
+                'userId': userId
+            })
+        });
+  };
+
+
+//   rajouter dans BDD

@@ -1,5 +1,6 @@
 <template>
  <div class="main">
+   
       <!-- Si Connecté -->
     <div v-if="token!=null">
       <!-- Si pas d'articles' -->
@@ -8,26 +9,29 @@
       </div>
       <!-- Si il y a des articles -->
       <div v-else class="login-box">
-        <h2 class="bienvenu">Bienvenu {{ name }},<br> voici les derniers articles parus</h2>
-        <div class="articles" id="post" v-for="post in posts" :key="post.postId">
-          <h3>{{ post.title }}</h3>
-          <p>{{ post.content.split(" ", 5).join(" ") }}... </p>
-          <div class="diplayAttribute">
-            <p class="dateStamp">Derniere modification: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
-            <button class="showButton" @click="showButton(post.id)">Voir Article</button>
+        <h2 class="cartTitle">Bienvenu {{ name }}</h2>
+        <p class="infoBienvenu">voici les derniers articles parus: </p>
+          <div  @click="showButton(post.id)" class="articles" v-for="post in posts" :key="post.postId">
+          <div id="titleArticle">
+              <h2 id="postTitle">{{ post.title }}</h2>
+              <p class="auteur">par: {{ post.User.firstName }}</p>
           </div>
-          <p class="auteur">par : {{ post.User.firstName }}</p>
-        </div>
+          <p class="postContent">{{ post.content.split(" ", 10).join(" ") }}... </p>
+            <div class="diplayAttribute">
+              <p class="dateStamp">Derniere modification: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
+              <a class="showButton" @click="showButton(post.id)">Voir Article</a>
+            </div>
+          </div>
       </div>
     </div>
     <!-- Si pas Connecté -->
     <div v-else> 
-       <div class="login-box">
-        <h2>Bienvenu Sur Groupomania</h2>
+       <div class="login-box alignHome">
+        <h2 class="cardTitle">Bienvenu Sur Groupomania</h2>
         <div class="card-date">
         <p>Nous sommes le {{ dateDuJour }}</p>
         </div>
-        <p>Voici votre lieu de reflexion dedie a notre structure, votre  réseau social interne propre. Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? Simplement apres vous etre inscrit, vous pourrez vous connectez afin de voir les derniers articles parrus, et meme les commenter! Securise vous pourrez vous connecter a l'aide de votre email et d'un mot de passe.  </p>
+        <p class="textDescriptionUser">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connectez, a l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et meme les commenter! </p>
       </div>
       </div>
  </div>
@@ -36,6 +40,7 @@
 <script>
 import axios from "axios";
 export default {
+  
    data() {
       return {
         token: sessionStorage.getItem('token'),
@@ -82,237 +87,86 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
 $base-color: #fff;
-//PLaceholder en italique
-::-webkit-input-placeholder { /* WebKit browsers */
-   font-style:italic
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    font-style:italic
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-    font-style:italic
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-    font-style:italic
-}
-/////////////////////////
 
-.card-date{
-  color: white;
+#titleArticle{
+  text-align: left;
 }
-
-.linkInscription{
-  font-size: 11px;
+#postTitle{
+  text-align: left;
+  margin-bottom: 0%;
 }
-
-html {
-  height: 100%;
-
+.auteur{
+  margin-top: 1rem;
 }
-
-body {
-  margin:0;
-  padding:0;
-  font-family: sans-serif;
-  background: linear-gradient(#141e30, #243b55);
-  display: flex;
-  flex-direction: column;
-}
-
-.main{
-  order:2;
+.postContent{
+  font-size: 1.5rem;
+  transition: transform .5s;
+  color: $base-color;
 }
 .articles{
-  border: 2px solid #fff;
-  color: #fff;
+  border: 2px solid $base-color;
+  border-radius: 5px;
+  color: $base-color;
   margin: 5px;
   padding: 20px;
+  transition: transform .5s;
+  overflow:hidden;
+  cursor: pointer;
 }
-
-
-.login-box {
-  padding: 40px;
-  background-image: linear-gradient(#fc2700, #000000);
-  box-sizing: border-box;
-  box-shadow: 0 15px 25px rgba(0,0,0,.6);
-  border-radius: 10px;
-  opacity: 0.9;
+.articles:hover {
+-webkit-transform:scale(1.05); /* Safari et Chrome */
+-moz-transform:scale(1.05); /* Firefox */
+-ms-transform:scale(1.05); /* Internet Explorer 9 */
+-o-transform:scale(1.05); /* Opera */
+transform:scale(1.05);
+box-shadow: 0 0 1px $base-color,
+              0 0 2px $base-color,
+              0 0 5px $base-color,
+              0 0 1px $base-color;
 }
-
-.login-box h2 {
-  margin: 0 0 30px;
-  padding: 0;
-  color: #fff;
-  text-align: center;
-}
-
-.login-box .user-box {
-  position: relative;
-}
-
-.login-box .user-box input {
-  width: 100%;
-  padding: 10px 0;
-  font-size: 16px;
-  color: #fff;
-  margin-bottom: 30px;
-  border: none;
-  border-bottom: 1px solid #fff;
-  outline: none;
-  background: transparent;
-}
-.login-box .user-box label {
-  position: absolute;
-  top:0;
-  left: 0;
-  padding: 10px 0;
-  font-size: 16px;
-  color: #fff;
-  pointer-events: none;
-  transition: .5s;
-}
-
-.login-box .user-box input:focus ~ label,
-.login-box .user-box input:valid ~ label {
-  top: -20px;
-  left: 0;
-  color: $base-color;
-  font-size: 12px;
-}
-
-.login-box form a {
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
-  color: $base-color;
-  font-size: 16px;
-  text-decoration: none;
-  text-transform: uppercase;
-  overflow: hidden;
-  transition: .5s;
-  margin-top: 40px;
-  letter-spacing: 4px
-}
-
-.login-box a:hover {
-  background: $base-color;
-  color: black;
-  border-radius: 5px;
-  box-shadow: 0 0 5px $base-color,
-              0 0 25px $base-color,
-              0 0 50px $base-color,
-              0 0 100px $base-color;
-}
-
-.login-box a span {
-  position: absolute;
-  display: block;
-}
-
-.login-box a span:nth-child(1) {
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, $base-color);
-  animation: btn-anim1 1s linear infinite;
+.articles:hover > .postContent{
+-webkit-transform:scale(1.08); /* Safari et Chrome */
+-moz-transform:scale(1.08); /* Firefox */
+-ms-transform:scale(1.08); /* Internet Explorer 9 */
+-o-transform:scale(1.08); /* Opera */
+transform:scale(1.08);
 }
 
 .dateStamp{
   font-style: italic;
   font-size: .8rem;
 }
-
-.showButton{
-  height: fit-content;
-}
-
 .diplayAttribute{
   display: flex;
   justify-content: space-between;
   padding-top: 2rem;
 }
-
-.auteur{
-  position: flex;
+.infoBienvenu{
+  text-align: left;
+  padding:  0 1rem;
+  color: $base-color;
+  text-transform: uppercase;
+  font:  1.5rem Raleway, sans-serif;
 }
-.bienvenu{
-    --fill-color: #FFF;
-    position: relative;
-    display: block;
-    padding: 4px 0;
-    font: 700 3rem Raleway, sans-serif;
-    text-decoration: none;
-    text-transform: uppercase;
-    background: linear-gradient(var(--fill-color) 0 100%) left/0 no-repeat;
-    color: transparent;
+.textDescriptionUser{
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
+  color: $base-color;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
 }
-@keyframes btn-anim1 {
-  0% {
-    left: -100%;
-  }
-  50%,100% {
-    left: 100%;
-  }
+.alignHome{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
 }
-
-.login-box a span:nth-child(2) {
-  top: -100%;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, $base-color);
-  animation: btn-anim2 1s linear infinite;
-  animation-delay: .25s
+.spreadArticle{
+  color: $base-color;
+  border: 1px solid $base-color;
 }
-
-@keyframes btn-anim2 {
-  0% {
-    top: -100%;
-  }
-  50%,100% {
-    top: 100%;
-  }
-}
-
-.login-box a span:nth-child(3) {
-  bottom: 0;
-  right: -100%;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(270deg, transparent, $base-color);
-  animation: btn-anim3 1s linear infinite;
-  animation-delay: .5s
-}
-
-@keyframes btn-anim3 {
-  0% {
-    right: -100%;
-  }
-  50%,100% {
-    right: 100%;
-  }
-}
-
-.login-box a span:nth-child(4) {
-  bottom: -100%;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, $base-color);
-  animation: btn-anim4 1s linear infinite;
-  animation-delay: .75s
-}
-
-@keyframes btn-anim4 {
-  0% {
-    bottom: -100%;
-  }
-  50%,100% {
-    bottom: 100%;
-  }
-}
-
 </style>

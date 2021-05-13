@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.STRING,
     image: DataTypes.STRING,
     title: DataTypes.STRING,
-    status: DataTypes.INTEGER
+    status: DataTypes.INTEGER,
+    
   },
     {});
   Post.associate = function (models) {
@@ -16,3 +17,5 @@ module.exports = (sequelize, DataTypes) => {
   };
   return Post;
 };
+
+

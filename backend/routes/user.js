@@ -11,5 +11,6 @@ router.get('/infouser/:id', auth, userCtrl.getUser);
 router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
 router.put('/deleteUser', auth, userCtrl.deleteUser);
+router.post('/likePost', auth, userCtrl.likePost);
 
 module.exports = router;
