@@ -5,7 +5,7 @@
               <div class="text">Aucun contenu  </div>
       </div>
       <div v-else class="login-box">
-        <h2 class="bienvenu">Bienvenu {{ name }}, voici les derniers articles parus</h2>
+        <h2 class="bienvenu textShadow">Bienvenu {{ name }}, voici les derniers articles parus</h2>
         <div class="articles" id="post" v-for="post in posts" :key="post.postId">
           <h3>{{ post.title }}</h3>
           <p>{{ post.content }}</p>

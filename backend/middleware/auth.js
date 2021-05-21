@@ -1,3 +1,4 @@
+////Authentification sur les routes
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {

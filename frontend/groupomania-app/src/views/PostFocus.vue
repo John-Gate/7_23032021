@@ -1,22 +1,33 @@
 <template>
   <div class="main" v-if="token!=null">
      <div class="login-box">
-       <h2  class="cardTitle animate__animated animate__bounce">{{ post.title }}</h2>
-       <p class="postContent">{{ post.content }}</p>
-       <!-- <p> cree le: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p> -->
-  <!-- ZONE LIKES/DISLIKES-->
-    <a type="submit" @click.prevent="likePost" ><i class="far fa-thumbs-up"></i></a>
-    <p>Numers Of Likes {{ post.like }}</p> 
+       <h2  class="cardTitle animate__animated animate__bounce textShadow ">{{ post.title }}</h2>
+      <div class="imageRow">
+         <div  id="imagePreview">
+           <a id="imageTotal" href="">
+           <img id="imagePostFocus" src="" alt="">
+           </a>
+         </div>
+         <p class="postContent textShadow">{{ post.content }}</p>
+      </div>
+ <div class="rowLike">
+        <a class="rowLike__icone" type="submit" @click.prevent="likePost">
+        <i class="fas fa-thumbs-up" v-if="asLiked == true"></i>
+        <i class="far fa-thumbs-up" v-if="asLiked == false"></i>
+        </a>
+      <p class="rowLike__numbers">  {{ numbersLikes }} </p> 
+ </div>
   <div class="likes">
-    
   </div>
 <!-- FIN ZONE LIKES/DISLIKES-->
-       <button v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</button>
-       <button v-if="author==true" @click="deletePublication">SUPPRESSION</button>
+       <a class="showButton"  v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</a>
+       <a  class="showButton" v-if="author==true" @click="deletePublication">SUPPRESSION</a>
        <div>
           <p class="toDoForm">Laissez un commentaire:</p>
-          <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createCommentary"></textarea>
-          <button type="submit" @click.prevent="createCommentary" class="buttonShake">Partager</button>
+         <div class="formButtonAlignement">
+            <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createCommentary"></textarea>
+            <a type="submit" @click.prevent="createCommentary" class="buttonShake showButton">Partager</a>
+         </div>
        </div>
           <p class="infoComment" v-if="comment.length >= 1">Cet article a été commenté:</p>
         <div id="comment" v-for="commentary in comment" :key="commentary.id">
@@ -41,9 +52,12 @@ export default {
         user_id:sessionStorage.getItem("id"),
         comment:'',
         reply:'',
+        image:'',
         connexion: false,
         post_id:'',
         like:'',
+        numbersLikes:'',
+        asLiked: false,
         author: false
       };
     },
@@ -73,12 +87,28 @@ export default {
               }
           })
           .then(res => {
+            
               const data = res.data;
               this.post = data.post;
               if(this.post.UserId == this.user_id){
                 this.author = true;
               }
               this.comment = data.comment;
+              this.like = data.like;
+              this.numbersLikes = this.like.length
+              for(let likeUser in this.like ){
+                if(this.like[likeUser].UserId == sessionStorage.getItem("id")){
+                  this.asLiked = true
+                  //cible elemtn du a changer la class toggleclass // atclass remove class
+              }
+              }
+              if(this.post.image){
+                let image = document.getElementById('imagePostFocus');
+                image.src = this.post.image
+                image.alt = "Apercu de l image" 
+                let link = document.getElementById('imageTotal');
+                link.href = this.post.image;
+              }
           })
           .catch(error => console.log({error}));
       },
@@ -146,11 +176,16 @@ export default {
             axios.post("http://localhost:3000/api/auth/likePost", { postId: this.post_id}, {headers:{Authorization: "Bearer " + sessionStorage.token}})
 			.then((res) => {
         //Condition: si admin, pas besoin de validé l'article
-  if(res.status == 200){
-    alert("LIKER!");
-  }
+        console.log(res.data.newLike)
+          if(res.data.newLike !== null){
+            alert("LIKER!");
+            location.reload();
+          }
+          else{
+            alert("DISLIKER!");
+            location.reload();
+          }
 			})
-            .then(() => this.$router.push("/"));
       }
   }
 }
@@ -158,7 +193,18 @@ export default {
 
 <style lang="scss" scoped>
 
+
 $base-color: #fff;
+
+.imageRow{
+  display: flex;
+}
+
+#imagePostFocus{
+  border: 1px solid black;
+  width: 28rem;
+  margin: 1rem;
+}
 
 #comment{
 color: $base-color;
@@ -193,20 +239,57 @@ box-shadow: 0 0 1px $base-color,
         margin: 0;
     }
     &--name{
+      font-family: "Oleo+Scrip";
         margin-bottom: 0;
     }
   }
 }
+.postContent{
+  font-family: "Playball", sans-serif;
+      word-spacing: .2rem;
+    letter-spacing: .1rem;
+}
 .toDoForm{
   color: $base-color;
   text-align: left;
+}
+.animate__bounce{
+  animation-delay: .5s;
 }
 .buttonShake{
   display: inline-block;
   margin: 0 0.5rem;
   animation: rubberBand; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
-  animation-delay: 2s;
-  animation-iteration-count: 5 2s;
+  animation-delay: 3s;
+}
+.form-control{
+  width: 55%;
+}
+.formButtonAlignement{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rowLike{
+  display: flex;
+  justify-content: flex-end ;
+  align-items: center;
+    &__icone{
+      color: $base-color;
+      padding: 1rem;
+        &:hover{
+          background: none;
+          border-radius: 1px ;
+          box-shadow: none;
+          color: $base-color;
+          transform:scale(1.5);
+    }
+  }
+    &__numbers{
+      color: $base-color;
+  }
 }
 </style>

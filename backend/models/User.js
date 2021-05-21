@@ -1,5 +1,5 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => { //appel sequelize
+module.exports = (sequelize, DataTypes) => { //Appel sequelize
   const User = sequelize.define('User', {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
@@ -8,8 +8,9 @@ module.exports = (sequelize, DataTypes) => { //appel sequelize
     role: DataTypes.INTEGER
   },
   {});
+  //Association de l'utilisateur a son/ses articles
    User.associate = function(models) {
-     models.User.hasMany(models.Post) //association des users et des posts
+     models.User.hasMany(models.Post) 
    };
   return User;
 };

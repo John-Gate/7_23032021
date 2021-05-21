@@ -1,4 +1,5 @@
 'use strict';
+////Configuration pour l export de donnees des articles avec Sequelize
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('posts', {

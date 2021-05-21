@@ -1,10 +1,10 @@
 <template>
   <div class="login-box">
-    <h2 class="cardTitle">Mon Profil<div v-if=" role == 2 ">administrateur</div></h2>
+    <h2 class="cardTitle textShadow">Mon Profil<div v-if=" role == 2 ">administrateur</div></h2>
     <form>
   <div class="infoUser">
    <div class="profileInfo">
-      <table>
+      <table class="textShadow">
         <tr>
           <th>Prénom :</th>
           <td>{{ firstName }}</td>
@@ -19,7 +19,7 @@
         </tr>
       </table>
         <div v-if=" role == 2 ">
-            <table>
+            <table class="textShadow">
         <tr>
           <th>Nombre d'articles Totales:</th>
           <td>{{ postNumber }}</td>
@@ -36,7 +36,7 @@
    </div>
   </div>
   <div v-if=" role == 2 ">
-          <h2 class="titleDisplay">Nouveaux Utilisateurs</h2>
+          <h2 id="titleDisplay" class="textShadow">Nouveaux Utilisateurs</h2>
           <div class="infoUsersDisplay">
             <p v-if="users.length == 0">Aucun Nouvel Utilisateur</p>
             <!-- Voir pour Changer la classe -->
@@ -64,22 +64,23 @@
                 <a class="showButton borderBtn" type="submit" @click.prevent="validateUser(user.id)">Authoriser l'utilisateur</a>
             </div>
           </div>
-          <h2  class="titleDisplay">Nouveaux Articles</h2>
+          <h2 id="titleDisplay" class="textShadow">Nouveaux Articles</h2>
           <div class="infoUsersDisplay">
             <p v-if="posts.length == 0">Aucun Nouvel Article</p>
             <div class="articles" id="post" v-for="post in posts" :key="post">
-<div class="infoHeight--post">
+              <div class="infoHeight--post">
                 <h3>{{ post.title }}</h3>
                 <p>{{ post.content }}</p>
+                <div  id="imagePreview"> </div>
                 <div class="diplayAttribute">
                   <p class="dateStamp articles--italique" >Créé le: {{ post.createdAt.split("-")[2].split("T")[0] }}/{{ post.createdAt.split("-")[1] }}/{{ post.createdAt.split("-")[0] }}</p>
                 </div>
                 <p class="auteur" >par : {{ post.User.firstName }} {{ post.User.lastName }}</p>
-</div>
+              </div>
                 <a class="showButton borderBtn" type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</a>
             </div>
           </div>
-          <h2  class="titleDisplay">Nouveaux Commentaires</h2>
+          <h2  id="titleDisplay" class=" textShadow">Nouveaux Commentaires</h2>
           <div class="infoUsersDisplay">
             <p v-if="comments.length == 0">Aucun Nouveau Commentaire</p>
             <!-- Voir pour Changer la classe -->
@@ -98,12 +99,17 @@
       <a href="/" >Retour a l'accueil</a>
     </form>
   </div>
+  <FooterBar></FooterBar>
 </template>
 
 <script>
+
+import FooterBar from '../components/FooterBar';
 import axios from "axios";
 export default {
+  
     name: 'ProfilForm',
+    components:{FooterBar},
     data () {
       return {
           token: sessionStorage.getItem('token'),
@@ -113,6 +119,7 @@ export default {
            users: '',
            user: '',
            comments:'',
+           image:'',
            email:'',
            firstName:'',
            lastName:'',
@@ -163,9 +170,19 @@ export default {
             })
             .then(res => {
                 const data = res.data;
-                 if(typeof data == 'object'){
+                this.post = data;
+                if(typeof data == 'object'){
                   this.posts = data;
                 }
+                if(this.image != null){
+                let previewImg = document.getElementById('imagePreview');
+                let image = document.createElement('img');
+                previewImg.appendChild(image);
+                image.id = "imagePostFocus"
+                image.src = this.image
+                image.alt = "Apercu de l image" 
+                image.width = 100
+              }
             })
             .catch(error => console.log({error}));
       },
@@ -308,7 +325,7 @@ font-size: 1.5rem;
       font-style: italic;
     }
 }
-.titleDisplay{
+#titleDisplay{
   padding-top:6rem;
   font-size: 2rem;
 }

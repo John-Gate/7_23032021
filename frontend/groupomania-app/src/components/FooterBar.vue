@@ -10,3 +10,9 @@
   justify-content: space-around;
 }
 </style>
+
+<script>
+export default ({
+   name:"FooterBar"
+})
+</script>

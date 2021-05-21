@@ -9,14 +9,14 @@
       </div>
       <!-- Si il y a des articles -->
       <div v-else class="login-box">
-        <h2 class="cartTitle">Bienvenu {{ name }}</h2>
-        <p class="infoBienvenu">voici les derniers articles parus: </p>
+        <h2 class="cardTitle textShadow">Bienvenu {{ name }}</h2>
+        <p class="infoBienvenu textShadow">voici les derniers articles parus: </p>
           <div  @click="showButton(post.id)" class="articles" v-for="post in posts" :key="post.postId">
           <div id="titleArticle">
               <h2 id="postTitle">{{ post.title }}</h2>
               <p class="auteur">par: {{ post.User.firstName }}</p>
           </div>
-          <p class="postContent">{{ post.content.split(" ", 10).join(" ") }}... </p>
+          <p class="postContent ">{{ post.content.split(" ", 10).join(" ") }}... </p>
             <div class="diplayAttribute">
               <p class="dateStamp">Derniere modification: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
               <a class="showButton" @click="showButton(post.id)">Voir Article</a>
@@ -27,11 +27,11 @@
     <!-- Si pas Connecté -->
     <div v-else> 
        <div class="login-box alignHome">
-        <h2 class="cardTitle">Bienvenu Sur Groupomania</h2>
+        <h2 class="cardTitle textShadow">Bienvenu Sur Groupomania</h2>
         <div class="card-date">
         <p>Nous sommes le {{ dateDuJour }}</p>
         </div>
-        <p class="textDescriptionUser">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connectez, a l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et meme les commenter! </p>
+        <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connecter, à l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et même les commenter! </p>
       </div>
       </div>
  </div>
@@ -95,13 +95,16 @@ $base-color: #fff;
   text-align: left;
 }
 #postTitle{
+  font-family: "raleway";
   text-align: left;
   margin-bottom: 0%;
 }
 .auteur{
+  font-family: "Oleo+Scrip";
   margin-top: 1rem;
 }
 .postContent{
+  font-family: "Playball";
   font-size: 1.5rem;
   transition: transform .5s;
   color: $base-color;
@@ -128,11 +131,11 @@ box-shadow: 0 0 1px $base-color,
               0 0 1px $base-color;
 }
 .articles:hover > .postContent{
--webkit-transform:scale(1.08); /* Safari et Chrome */
--moz-transform:scale(1.08); /* Firefox */
--ms-transform:scale(1.08); /* Internet Explorer 9 */
--o-transform:scale(1.08); /* Opera */
-transform:scale(1.08);
+-webkit-transform:scale(1.2); /* Safari et Chrome */
+-moz-transform:scale(1.2); /* Firefox */
+-ms-transform:scale(1.2); /* Internet Explorer 9 */
+-o-transform:scale(1.2); /* Opera */
+transform:scale(1.2);
 }
 
 .dateStamp{
@@ -150,14 +153,6 @@ transform:scale(1.08);
   color: $base-color;
   text-transform: uppercase;
   font:  1.5rem Raleway, sans-serif;
-}
-.textDescriptionUser{
-  display: flex;
-  justify-content: center;
-  text-transform: uppercase;
-  color: $base-color;
-  flex-wrap: wrap;
-  font-size: 1.5rem;
 }
 .alignHome{
   display: flex;

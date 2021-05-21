@@ -1,22 +1,23 @@
 <template>
 <div class="login-box">
-  <h2 class="cardTitle">Creer Un Nouvel Article</h2>
+  <h2 class="cardTitle textShadow">Creer Un Nouvel Article</h2>
   <form v-if="connexion" enctype="multipart/form-data"> <!-- Va gere le file (supervariable) en plus du texte-->
     <div>
-            <label for="title" class="labelTitle">Titre</label>
+            <label for="title" class="labelTitle textShadow">Titre</label>
             <input type="text" class="form-control " id="title" v-model="post.title" required placeholder="Ecrivez votre titre">
     </div>
     <div>
-      <label for="content" class="labelTitle">Contenu</label>
+      <label for="content" class="labelTitle textShadow">Contenu</label>
       <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createPost"></textarea>
     </div>
     <!-- ZONE IMAGE-->
     <div>
+    <label for="title" class="labelTitle textShadow">Photo</label>
       <input id="imageAccess" type="file" placeholder="Ajouter une image" @change="getImage">
       <div  id="imagePreview"></div>
     </div>
     <!-- ZONE IMAGE-->
-    <button type="submit" @click.prevent="createPost">Partager</button>
+    <a type="submit showButton" @click.prevent="createPost">Partager</a>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>
   </form>
 </div>
@@ -54,10 +55,16 @@ export default {
       }
     },
 
-    createPost() {   
-			axios.post("http://localhost:3000/post/createPost", this.post, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+    createPost() { 
+      let formData = new FormData();
+        formData.append('content', this.post.content);
+        formData.append('title', this.post.title);
+        formData.append('image', this.post.image);
+           
+			axios.post("http://localhost:3000/post/createPost", formData, {headers:{Authorization: "Bearer " + sessionStorage.token}})
 			.then((res) => {
-        //Condition: si admin, pas besoin de validé l'article
+        console.log(res)
+        //Si admin, pas besoin de validé l'article
         if(res.data.status == 1){
         alert('Article publié.');
         }
@@ -74,9 +81,9 @@ export default {
         let file = document.getElementById('imageAccess').files;
         let image = document.createElement('img');
         image.file = file[0];
-          previewImg.appendChild(image);
-          var reader = new FileReader();
-          reader.onload = (function(img){
+        previewImg.appendChild(image);
+        var reader = new FileReader();
+        reader.onload = (function(img){
             return function(e){
               img.src = e.target.result
               img.alt = "Apercu de l image"
@@ -86,9 +93,7 @@ export default {
           reader.readAsDataURL(file[0]);
           this.post.image = file[0];
     },
-    imageInput(){
 
-    }
     }
 }
 </script>
@@ -105,22 +110,20 @@ input:active
     border: none;
 }
 .labelTitle{
-    --fill-color: $base-color;
-    position: relative;
     display: block;
     padding: 4px 0;
     font: 700 1.5rem Raleway, sans-serif;
-    text-decoration: none;
     text-transform: uppercase;
     -webkit-text-stroke: 2px var(--fill-color);
-    background: linear-gradient(var(--fill-color) 0 100%) left / 0 no-repeat;
-    color: transparent;
-    background-clip: text;
-    transition: 0.5s linear; 
+    color: $base-color;
 }
 //On ecrase le form-control de app.vue:
 .form-control{
   width: 350px;
+}
+
+#imagePreview{
+    padding: 1rem;
 }
 </style>
 

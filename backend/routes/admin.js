@@ -1,9 +1,11 @@
 //Imporation
 const express = require("express");
 const router = express.Router();
-// //Raccourci
+
+//Raccourci
 const adminCtrl = require("../controllers/admin");
 const auth = require("../middleware/auth");
+
 //Routage
 router.get('/showPost', auth, adminCtrl.getAllPublications);
 router.get('/showUser', auth, adminCtrl.getAllUsers);

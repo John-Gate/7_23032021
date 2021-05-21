@@ -14,6 +14,11 @@
             <label for="content" class="labelTitle">Contenu</label>
             <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="modifyPublication"></textarea>
         </div>
+            <div>
+    <label for="title" class="labelTitle textShadow">Photo</label>
+      <input id="imageAccess" type="file" placeholder="Ajouter une image" @change="getImage">
+      <div  id="imagePreview"></div>
+    </div>
           <button type="submit" @click.prevent="modifyPublication">Modifier</button>
      </div>
     <!-- </div> -->
@@ -71,6 +76,7 @@ export default {
             title: this.post.title,
             content: this.post.content
           }
+          console.log(data)
           axios.put("http://localhost:3000/post/updatePost", data, {
             headers: {
               'Content-Type': 'application/json',
@@ -82,6 +88,24 @@ export default {
             })
             .catch(error => console.log({error}));
         },
+            getImage(){
+        let previewImg = document.getElementById('imagePreview');
+        previewImg.innerHTML = '';
+        let file = document.getElementById('imageAccess').files;
+        let image = document.createElement('img');
+        image.file = file[0];
+        previewImg.appendChild(image);
+        var reader = new FileReader();
+        reader.onload = (function(img){
+            return function(e){
+              img.src = e.target.result
+              img.alt = "Apercu de l image"
+              image.width = 100    //a mettre dans le css
+            }
+          })(image);
+          reader.readAsDataURL(file[0]);
+          this.post.image = file[0];
+    }
   }
 }
 </script>

@@ -1,4 +1,4 @@
-//import et utilisation token function 
+//Import et utilisation  des token 
 let jwt = require("jsonwebtoken");
 
 module.exports = {

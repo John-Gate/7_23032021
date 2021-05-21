@@ -5,7 +5,7 @@ const utilsjwtoken = require('../utils/jwtoken');
 const checkinput = require('../utils/checkinput');
 
 
-//CREATION COMPTE fct signup qui va crypter password, va cree un nouveau user avec ce password et l email, et l'enregistre
+////Creation d un compte en cryptant password, creer un nouvel utilisateur et enregistre données.
 exports.signup = (req, res) => {
     let email = req.body.email;
     let lastName = req.body.lastName;
@@ -14,22 +14,22 @@ exports.signup = (req, res) => {
     if (email == null || lastName == null || firstName == null || password == null) {
         res.status(400).json({ error: 'Tous les champs sont obligatoires' })
     }
-    //vérification inputs user
+    //Vérification inputs user par path => utils/checkinputs.js
     let emailOK = checkinput.validEmail(email);
     let passwordOK = checkinput.validPassword(password);
     let lastNameOK = checkinput.validUsername(lastName);
     let firstNameOK = checkinput.validUsername(firstName);
-    if (emailOK == true && passwordOK == true && lastNameOK == true && firstNameOK == true) {
-        //vérification si user n'existe pas déjà
-        models.User.findOne({
-            attributes: ['email'],
-            where: { email: email }
-        })
+        if (emailOK == true && passwordOK == true && lastNameOK == true && firstNameOK == true) {
+            //Vérification si utilisateur n'existe pas déjà
+            models.User.findOne({
+                attributes: ['email'],
+                where: { email: email }
+            })
             .then(user => {
                 if (!user) {
                     bcrypt.hash(password, 10, function (error, hash) {
-                        //création user
-                        const newUser = models.User.create({
+                        //Création user
+                        models.User.create({
                             email: email,
                             firstName: firstName,
                             lastName: lastName,
@@ -40,28 +40,28 @@ exports.signup = (req, res) => {
                                 res.status(500).json({ error })
                             })
                     })
-                }
-                else {
+                } else {
                     res.status(400).json({ error: 'Cet utilisateur existe déjà' })
                 }
             })
             .catch(error => { res.status(501).json({ error }) })
-    } else {
-        console.log('Erreur')
-    }
+        } else {
+            console.log('Erreur')
+        }
 };
 
+////Connexion à son Compte par l'utilisateur
 exports.login = (req, res) => {
-    //récupération et validation des paramètres
+    //Récupération et validation des paramètres
     let email = req.body.email;
     let password = req.body.password;
-    if (email == null || password == null) {
-        res.status(400).json({ error: 'Il manque une information' })
-    }
-    //user existe-t-il?
-    models.User.findOne({
-        where: { email: email }
-    })
+        if (email == null || password == null) {
+            res.status(400).json({ error: 'Il manque une information' })
+        }
+        //Utilisteur existe-t-il?
+        models.User.findOne({
+            where: { email: email }
+        })
         .then(user => {
             if (user) {
                 bcrypt.compare(password, user.password, (errComparePassword, resComparePassword) => {
@@ -82,7 +82,7 @@ exports.login = (req, res) => {
         .catch(err => { res.status(500).json({ err }) })
 };
 
-
+////Acquisition du profil de l'utilisateur 
 exports.getUser = (req, res, next) => {
     const idUser = req.params.id 
     models.User.findOne ({
@@ -92,8 +92,7 @@ exports.getUser = (req, res, next) => {
     .then((user) => {
         if(user == null){
           return res.status(400).json("Utilisateur non trouvé")
-        }
-        else{
+        } else{
             return res.status(200).json(user)
     }
       })
@@ -101,10 +100,11 @@ exports.getUser = (req, res, next) => {
   .catch(error=>res.status(500).json(error))
 };
 
+////Suppression du profil de l'utilisateur
 exports.deleteUser = (req, res, next) => {
-    //  const token = req.headers.authorization.split(' ')[1];
-    //  const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-     const userId = req.body.currentUser;
+     const token = req.headers.authorization.split(' ')[1];
+     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+     const userId = decodedToken.userId;
         models.User.findOne({
              attributes: ["id"],
              where: {id: userId}
@@ -133,12 +133,12 @@ exports.deleteUser = (req, res, next) => {
          });
    };
 
-
-   exports.likePost = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
-    const userId = decodedToken.userId;
-    const postId = req.body.postId;
+////Aimer un article
+exports.likePost = (req, res, next) => {
+const token = req.headers.authorization.split(' ')[1];
+const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+const userId = decodedToken.userId;
+const postId = req.body.postId;
     models.User.findOne({
         attributes: ["id", "role"],
         where: {id: userId}
@@ -165,7 +165,9 @@ exports.deleteUser = (req, res, next) => {
                         models.Like.destroy({
                             where: {id: user.id}
                         })
-                        .then(()=>res.status(200).json("Like Enlevé"))
+                        .then(()=>res.status(200).json({
+                            'newLike': null
+                        }))
                         .catch(()=>res.status(500).json("Suppression Impossible"))
                     })
                     .catch(()=>{
@@ -186,8 +188,8 @@ exports.deleteUser = (req, res, next) => {
                         })
                     }); 
                 }
-               })
-              });
+                })
+                });
             }
         })
         .catch(error => {
@@ -196,7 +198,4 @@ exports.deleteUser = (req, res, next) => {
                 'userId': userId
             })
         });
-  };
-
-
-//   rajouter dans BDD
+};

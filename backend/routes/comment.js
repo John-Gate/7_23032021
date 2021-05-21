@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
-// //Raccourci
+//Raccourci
 const commentCtrl = require("../controllers/comment");
 const auth = require("../middleware/auth");
 

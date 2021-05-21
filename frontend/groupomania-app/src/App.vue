@@ -1,5 +1,4 @@
 <template>
-<body>
 <router-view/>
 <div class="alignLogo">
   <a href="/"><img  class="logoGroupo" src="../src/assets/logos/icon-above-font-resize.png" alt="logo Groupomania"></a>
@@ -18,8 +17,6 @@
       </div>
     </ul>
 </div>
-</body>
-
 </template>
 
 <script>
@@ -42,7 +39,7 @@ export default {
 
 <style  lang="scss">
 @import url("assets/css/all.css");
-@import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script&family=Playball&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
 @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
 $base-color: #fff;
 
@@ -61,6 +58,10 @@ $base-color: #fff;
 }
 /////////////////////////
 
+//#app se trouve dans le HTML (path => frontend\groupomania-app\public\index.html)
+#app{
+  display:contents;
+}
 .card-date{
   color: white;
 }
@@ -173,13 +174,10 @@ body {
 
 .showButton{
 margin-top: 0;
-
 }
-
 .borderBtn{
 border: 1px solid $base-color;
 }
-
 .login-box a:hover {
   background: $base-color;
   color: black;
@@ -196,9 +194,16 @@ border: 1px solid $base-color;
   text-align: center;
 }
 .cardTitle {
-    font: 700 2rem Raleway, sans-serif;
-    text-decoration: none;
+    font: 700 3rem Raleway, sans-serif;
     text-transform: uppercase;
+
+    }
+    .textShadow{
+    text-shadow:
+#000000 1px 1px,
+#000000 -1px 1px,
+#000000 -1px -1px,
+#000000 1px -1px;
     }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -257,6 +262,17 @@ ul {
   width: 100%;
   font-size:1.2rem;
 }
-
-
+   .textDescription{
+  &__User{
+    text-align: left;
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
+  color: $base-color;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
+  word-spacing: .5rem;
+  padding: 1rem;
+ }
+}
 </style>

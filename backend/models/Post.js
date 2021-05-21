@@ -1,5 +1,5 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {//Appel sequelize
   const Post = sequelize.define('Post', {
     content: DataTypes.STRING,
     image: DataTypes.STRING,
@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     
   },
     {});
+    //Association de l'article a son utilisateur
   Post.associate = function (models) {
      models.Post.belongsTo(models.User, {
        foreignKey: { //application clé étrangère posée sur la table

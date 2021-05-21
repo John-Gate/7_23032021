@@ -1,6 +1,6 @@
 <template>
 <div class="login-box">
-  <h2 class="cardTitle">Connexion à Groupomania</h2>
+  <h2 class="cardTitle textShadow">Connexion à Groupomania</h2>
   <form>
     <div class="user-box">
       <input type="email" name="" required="" v-model="dataLogin.email">
@@ -58,7 +58,7 @@ export default {
           })
           .catch(error => { 
             alert("Email ou Mot de Passe incorrect")
-            console.log(error)
+            console.error(error)
             this.revele = !this.revele
             })
       } else {

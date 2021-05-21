@@ -1,4 +1,5 @@
 'use strict';
+////Configuration pour l export de donnees des utilisateurs avec Sequelize
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('user', {
@@ -28,14 +29,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
        }
-      // createdAt: {
-      //   allowNull: false,
-      //   type: Sequelize.DATE
-      // },
-      // updatedAt: {
-      //   allowNull: false,
-      //   type: Sequelize.DATE
-      // }
     });
   },
   down: async (queryInterface, Sequelize) => {
