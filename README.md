@@ -15,7 +15,7 @@ Création d’une api sécurisée avec JS :
 
 ### So Pekocko
 
-![Image text](E:\Bureau\jeanchristianbarrieremainp7\frontend\groupomania-app\src\assets\logos\icon-left-font-monochrome-white.png)
+![Image text](https://github.com/John-Gate/7_23032021/blob/main/frontend/groupomania-app/src/assets/logos/icon-above-font-resize.png)
 >Développer une application d’évaluation des sauces piquantes So Pekocko
 >.
 >.  
