@@ -10,7 +10,7 @@
          </div>
          <p class="postContent textShadow">{{ post.content }}</p>
       </div>
-      <p class="auteurArticle">par: {{ post.User.firstName }}</p>
+      <!-- <p class="auteurArticle">par: {{ post.User.firstName }}</p> -->
  <div class="rowLike">
         <a class="rowLike__icone" type="submit" @click.prevent="likePost">
         <i class="fas fa-thumbs-up" v-if="asLiked == true"></i>
