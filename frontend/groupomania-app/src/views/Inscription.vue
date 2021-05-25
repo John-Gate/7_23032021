@@ -4,7 +4,6 @@
   <form @keydown.enter="sendSignup">
 <div class="fullBlock">
   <div class="fullBlock__form">
-    <div class="fullBlock__form--icone">
       <i class="fas fa-id-card"></i>
           <div class="user-box" >
             <input type="lastName" name="" required="" v-model="dataSignup.lastName">
@@ -23,7 +22,6 @@
             <label>Mot de passe</label>
             <p class="password_textDescription">*Votre mot de passe doit contenir au moins 6 caractères dont au minimum une majuscule, une minuscule et un caractère numérique<br>**Tous les champs sont obligatoires</p>
           </div>
-    </div>
   </div>
      <div class="textDescription">
           <i class="fas fa-users"></i>
@@ -94,22 +92,19 @@ $base-color: #fff;
   
 }
 .fullBlock{
+  position: relative;
   display: flex;
   color: red;
   flex-direction: row;
+  text-align: left;
     &__form{
+      position: relative;
       width: 150%;
       display: flex;
       flex-direction: column;
-      &--icone{
-        position: relative;
-      }
     }
 }
 
-.fullBlock {
-  text-align: left;
-}
 .fa-id-card {
   position: absolute;
   color: $base-color;
@@ -122,5 +117,29 @@ $base-color: #fff;
   color: $base-color;
   right: 5rem;
   font-size: 2.5em;
+}
+
+@media screen and (max-width: 980px){
+  .fa-id-card{
+    position: relative;
+    right: 0;
+  }
+  .fullBlock{
+    flex-direction: column;
+    &__form{
+      display: flex;
+      align-items: center;
+      width: auto;
+    }
+  }
+  .textDescription{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .fa-users {
+    position: relative;
+    right: 0;
+}
 }
 </style>

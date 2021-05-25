@@ -2,23 +2,23 @@
 'use strict';
 const fs = require("fs");
 const path = require("path");
-const Sequelize = require("sequelize");
+const Sequelize = require("sequelize"); //module
 const basename = path.basename(__filename);
 const db = {};
 
-let sequelize;
+let sequelize; //Information pour se connecter
 //Creation d une instance sequelize en passant les parametres de conexion separement
 sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST, //localHost
   dialect: 'mysql' 
 });
 
-//Connexion à la database
+//Etablir la connexion 
 sequelize.authenticate()
   .then(() => console.log('La connexion est établie.'))
   .catch((error) => console.log('La connexion a échoué', error));
 
-fs//FileSystem
+fs//FileSystem comment deocupe le nom des fichiers pour trouvers les differents models
   .readdirSync(__dirname) //Récupère tous les fichiers du répertoire du script en cours d'exécution de manière synchrone
   .filter(file => { //Filtre les fichiers qui commencent avec " . " different de basename et retire le " .js " a la fin.
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');

@@ -31,7 +31,10 @@
         <div class="card-date">
         <p>Nous sommes le {{ dateDuJour }}</p>
         </div>
-        <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connecter, à l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et même les commenter! </p>
+<div class="blockLogoText">
+          <img  class="blockLogoText__logo" src="../assets/logos/icon-left-font-monochrome-white.svg" alt="logo Groupomania">
+          <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connecter, à l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et même les commenter! </p>
+</div>
       </div>
       </div>
  </div>
@@ -74,6 +77,7 @@ export default {
             })
             .then(res => {
                 const data = res.data;
+                console.log(data)
                 this.posts = data;
             })
             .catch(error => console.log({error}));
@@ -90,7 +94,14 @@ export default {
 <style lang="scss">
 
 $base-color: #fff;
-
+.blockLogoText{
+   display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    &__logo{
+      padding: 1rem;
+    }
+}
 #titleArticle{
   text-align: left;
 }
@@ -164,4 +175,28 @@ transform:scale(1.2);
   color: $base-color;
   border: 1px solid $base-color;
 }
+
+
+@media screen and (max-width: 1024px){
+.articles:hover {
+-webkit-transform:scale(1.01); /* Safari et Chrome */
+-moz-transform:scale(1.01); /* Firefox */
+-ms-transform:scale(1.01); /* Internet Explorer 9 */
+-o-transform:scale(1.01); /* Opera */
+transform:scale(1.01);
+box-shadow: 0 0 1px $base-color,
+              0 0 2px $base-color,
+              0 0 5px $base-color,
+              0 0 1px $base-color;
+}
+.articles:hover > .postContent{
+-webkit-transform:scale(1.05); /* Safari et Chrome */
+-moz-transform:scale(1.05); /* Firefox */
+-ms-transform:scale(1.05); /* Internet Explorer 9 */
+-o-transform:scale(1.05); /* Opera */
+transform:scale(1.05);
+}
+}
+
+
 </style>

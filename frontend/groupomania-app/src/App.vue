@@ -1,22 +1,32 @@
 <template>
 <router-view/>
 <div class="alignLogo">
-  <a href="/"><img  class="logoGroupo" src="../src/assets/logos/icon-above-font-resize.png" alt="logo Groupomania"></a>
+  <a href="/">
+  <img  class="logoGroupo" src="../src/assets/logos/icon-above-font-resize.png" alt="logo Groupomania">
+  </a>
     <ul>
       <li><a href="/">Accueil</a></li>
-      <!-- METTRE VIF SI CONNECTER SINON "Se Deconnecter"-->
-      <div v-if="token!=null" class="connected">
-        <li><a href="/Profile">Mon Profil</a></li>
-        <li><a href="/Post">Publier</a></li>
-        <li><a @click="deconnexion">Se déconnecter</a></li>
-      </div>
       
+        <li  v-if="token!=null" class="connected"><a href="/Profile">Mon Profil</a></li> 
+        <li  v-if="token!=null" class="connected"><a href="/Post">Publier</a></li>  
+        <li  v-if="token!=null" class="connected"><a @click="deconnexion">Se déconnecter</a></li>
+     
       <div v-else class="notConnected">
-        <li><a href="/Login" >S'IDENTIFIER</a></li>
-        <li><a href="/Inscription">S'Inscrire</a></li>
+        <li><a href="/Login" >S'IDENTIFIER</a></li> 
+        <li><a href="/Inscription">S'Inscrire</a></li> 
       </div>
     </ul>
 </div>
+ <div class="footerBar">
+		<ul class="footerBar__list" >
+      <li><i class="fas fa-satellite-dish footerBar__list--icone"></i>Contactez-nous</li>
+      <li><i class="fas fa-file footerBar__list--icone"></i>Reglement</li>
+      <li><i class="fas fa-pen-fancy footerBar__list--icone"></i>Modalité</li>
+      <li><i class="fas fa-question footerBar__list--icone"></i>FAQ</li>
+    </ul>
+</div>
+
+
 </template>
 
 <script>
@@ -86,17 +96,19 @@ body {
 }
 .logoGroupo{
  width: 173px;
-    height: 100px;
     &:hover{
       opacity: .8;
     }
 }
-
 .alignLogo{
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  background: $base-color;
+  opacity: 0.9;
 }
-
 .infoUser{
   color:$base-color;
   text-align: left;
@@ -113,10 +125,9 @@ body {
       padding-left: 2rem;
     }
 }
-
 .login-box {
   padding: 40px;
-  background-image: linear-gradient(#fc2700, #000000);
+  background-image: linear-gradient(#fc2700, #881515);
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 1px;
@@ -126,7 +137,6 @@ body {
 .login-box .user-box {
   position: relative;
 }
-
 .login-box .user-box input {
   width: 100%;
   padding: 10px 0;
@@ -148,7 +158,6 @@ body {
   pointer-events: none;
   transition: .5s;
 }
-
 .login-box .user-box input:focus ~ label,
 .login-box .user-box input:valid ~ label {
   top: -20px;
@@ -156,7 +165,6 @@ body {
   color: $base-color;
   font-size: 12px;
 }
-
 .login-box form a, .showButton {
   position: relative;
   display: inline-block;
@@ -171,7 +179,6 @@ body {
   letter-spacing: 4px;
   cursor: pointer;
 }
-
 .showButton{
 margin-top: 0;
 }
@@ -229,6 +236,7 @@ border: 1px solid $base-color;
 }
 .notConnected{
   display: flex;
+  flex-wrap: wrap;
 }
 ul {
   display: flex;
@@ -238,6 +246,7 @@ ul {
 
   li {
     padding: 6px 6px;
+    text-align: left;
   }
   a {
     --fill-color: #fc2700;
@@ -275,4 +284,70 @@ ul {
   padding: 1rem;
  }
 }
+.footerBar{
+  display: flex;
+  justify-content: space-around;
+  order: 3;
+  &__list{
+    display: flex;
+    justify-content: space-around;
+    width:100%;
+    & :hover{
+      opacity: .8;
+      cursor: pointer;
+    }
+    &--icone{
+      padding: 1rem;
+    }
+  }
+}
+
+//MEDIA QUERIES
+@media screen and (max-width: 1024px){
+  .alignLogo{
+    flex-wrap: wrap;
+    position: static;
+  }
+    .connected{
+    flex-wrap: wrap;
+  }
+  .infoUsersDisplay {
+  display: flex;
+  justify-content: center;
+}
+}
+@media screen and (max-width: 980px){
+ 
+  .profileInfo{
+    flex-direction: column;
+    align-items: center;
+    &__table{
+      padding-top: 1rem;
+    }
+}
+}
+@media screen and (max-width: 640px){
+  .logoGroupo{
+    flex-wrap: wrap;
+  }
+  .alignLogo{
+    display: block;
+  }
+  .blockLogoText{
+    flex-direction: column;
+  }
+.textShadow{
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 400px){
+  ul{
+    a{
+      font-size: 2rem;
+    }
+  }
+  
+
+}
+
 </style>

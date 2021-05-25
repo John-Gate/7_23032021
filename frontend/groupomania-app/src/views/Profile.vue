@@ -4,7 +4,7 @@
     <form>
   <div class="infoUser">
    <div class="profileInfo">
-      <table class="textShadow">
+      <table class="textShadow profileInfo__table">
         <tr>
           <th>Prénom :</th>
           <td>{{ firstName }}</td>
@@ -19,7 +19,7 @@
         </tr>
       </table>
         <div v-if=" role == 2 ">
-            <table class="textShadow">
+            <table class="textShadow profileInfo__table">
         <tr>
           <th>Nombre d'articles Totales:</th>
           <td>{{ postNumber }}</td>
@@ -99,17 +99,14 @@
       <a href="/" >Retour a l'accueil</a>
     </form>
   </div>
-  <FooterBar></FooterBar>
+  
 </template>
 
 <script>
 
-import FooterBar from '../components/FooterBar';
+
 import axios from "axios";
 export default {
-  
-    name: 'ProfilForm',
-    components:{FooterBar},
     data () {
       return {
           token: sessionStorage.getItem('token'),

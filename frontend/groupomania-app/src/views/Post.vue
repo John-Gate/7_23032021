@@ -17,7 +17,7 @@
       <div  id="imagePreview"></div>
     </div>
     <!-- ZONE IMAGE-->
-    <a type="submit showButton" @click.prevent="createPost">Partager</a>
+    <a type="submit" @click.prevent="createPost">Partager</a>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>
   </form>
 </div>
@@ -121,7 +121,6 @@ input:active
 .form-control{
   width: 350px;
 }
-
 #imagePreview{
     padding: 1rem;
 }

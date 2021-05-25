@@ -1,17 +1,13 @@
 <template>
   <div class="main" v-if="token!=null">
-    <!-- <div v-if="post.length === 0" >
-            <div class="text">Aucun contenu 0000000000000000000 </div>
-    </div>-->
-    <!--<div v-else> -->
      <div class="login-box">
         <div>
-<h2 class="cardTitle">Modifier Ma publication</h2>
-            <label for="title" class="labelTitle">Titre</label>
+<h2 class="cardTitle textShadow">Modifier Ma publication</h2>
+            <label for="title" class="labelTitle textShadow">Titre</label>
             <input type="text" class="form-control " id="title" v-model="post.title" required placeholder="Ecrivez votre titre">
         </div>
           <div>
-            <label for="content" class="labelTitle">Contenu</label>
+            <label for="content" class="labelTitle textShadow">Contenu</label>
             <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="modifyPublication"></textarea>
         </div>
             <div>
@@ -19,11 +15,9 @@
       <input id="imageAccess" type="file" placeholder="Ajouter une image" @change="getImage">
       <div  id="imagePreview"></div>
     </div>
-          <button type="submit" @click.prevent="modifyPublication">Modifier</button>
+          <a class="showButton modifyButton" type="submit" @click.prevent="modifyPublication">Modifier</a>
      </div>
-    <!-- </div> -->
   </div>
-
 </template>
 
 <script>
@@ -69,19 +63,18 @@ export default {
             .catch(error => console.log({error}));
         },
           modifyPublication(){
+             let formData = new FormData();
+        formData.append('content', this.post.content);
+        formData.append('title', this.post.title);
+        formData.append('image', this.post.image);
+        formData.append('postId', this.post_id);
           const token = sessionStorage.getItem('token');
-          const data = {
-            currentUser: this.user_id,
-            postId: this.post_id,
-            title: this.post.title,
-            content: this.post.content
-          }
-          console.log(data)
-          axios.put("http://localhost:3000/post/updatePost", data, {
+     
+          axios.put("http://localhost:3000/post/updatePost", formData, {
             headers: {
-              'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }
+            }
             })
             .then(() => {
                 window.location.replace("/")//voir si on met retour au post precedent plutot que "/"
@@ -111,4 +104,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$base-color: #fff;
+.labelTitle{
+    display: block;
+    padding: 4px 0;
+    font: 700 1.5rem Raleway, sans-serif;
+    text-transform: uppercase;
+    -webkit-text-stroke: 2px var(--fill-color);
+    color: $base-color;
+}
+.form-control{
+  width: 350px;
+}
+.modifyButton{
+  margin-top: 2rem;
+}
+#imageAccess{
+  margin: 1rem;
+}
+
 </style>

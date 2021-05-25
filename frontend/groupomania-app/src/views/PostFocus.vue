@@ -10,6 +10,7 @@
          </div>
          <p class="postContent textShadow">{{ post.content }}</p>
       </div>
+      <p class="auteurArticle">par: {{ post.User.firstName }}</p>
  <div class="rowLike">
         <a class="rowLike__icone" type="submit" @click.prevent="likePost">
         <i class="fas fa-thumbs-up" v-if="asLiked == true"></i>
@@ -49,6 +50,10 @@ export default {
       return {
         token: sessionStorage.getItem('token'),
         post: '',
+        posts:'',
+        User:{
+          firstName:''
+        },
         user_id:sessionStorage.getItem("id"),
         comment:'',
         reply:'',
@@ -90,6 +95,7 @@ export default {
             
               const data = res.data;
               this.post = data.post;
+              console.log(this.post)
               if(this.post.UserId == this.user_id){
                 this.author = true;
               }
@@ -204,6 +210,7 @@ $base-color: #fff;
   border: 1px solid black;
   width: 28rem;
   margin: 1rem;
+  max-height: 15rem;
 }
 
 #comment{
@@ -244,6 +251,12 @@ box-shadow: 0 0 1px $base-color,
     }
   }
 }
+.auteurArticle{
+  font-family: "Oleo+Scrip";
+  margin-top: 1rem;
+  text-align: right;
+  color: $base-color;
+}
 .postContent{
   font-family: "Playball", sans-serif;
       word-spacing: .2rem;
@@ -272,7 +285,10 @@ box-shadow: 0 0 1px $base-color,
     flex-direction: column;
     align-items: center;
 }
-
+#imageTotal:hover{ // Empecher l'effet apporter par les <a> 
+  background: none;
+  box-shadow: none;
+}
 .rowLike{
   display: flex;
   justify-content: flex-end ;
@@ -291,5 +307,14 @@ box-shadow: 0 0 1px $base-color,
     &__numbers{
       color: $base-color;
   }
+}
+@media screen and (max-width: 980px){
+  .imageRow{
+    flex-direction: column;
+}
+#imagePostFocus{
+  width: 12rem;
+}
+
 }
 </style>

@@ -11,7 +11,7 @@ const auth = require("../middleware/auth");
 router.post('/createPost', auth, multer, postCtrl.createPublication);
 router.get('/:id', auth, postCtrl.getOnePublication);
 router.get('/',auth, postCtrl.getAllPublications);
-router.put('/updatePost',auth, postCtrl.updatePublication);
+router.put('/updatePost',auth, multer, postCtrl.updatePublication);
 router.post('/deletePost', auth, postCtrl.deletePublication);//a la place de delete(verb), car il y a des verifications.
 
 module.exports = router;

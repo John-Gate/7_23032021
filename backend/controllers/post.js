@@ -4,6 +4,7 @@ let currentUser ;
 
 ////Creation d'un article
 exports.createPublication = (req, res, next) => {
+    let imageName
     const token = req.headers.authorization.split(' ')[1];
     const userId = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
@@ -23,11 +24,18 @@ exports.createPublication = (req, res, next) => {
                     this.posts = data;
                 }
                 if (user.role == 2) {
+                    
+                    if(req.file){
+                        imageName =`${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+                    }
+                    else{
+                        imageName = null;
+                    }
                     models.Post.create({
                         UserId: decodedToken.userId,
                         title: req.body.title,
                         content: req.body.content,
-                        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                        image: imageName,
                         status: 1
                     })
                     .then((newPost) => {
@@ -43,13 +51,19 @@ exports.createPublication = (req, res, next) => {
                                 'user': user
                             })
                         }); 
+                        
                   } else{
-                      
+                    if(req.file){
+                        imageName =`${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+                    }
+                    else{
+                        imageName = null;
+                    }
                     models.Post.create({
                         UserId: decodedToken.userId,
                         title: req.body.title,
                         content: req.body.content,
-                        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                        image: imageName
                     })
                     .then((newPost) => {
                         return res.status(200).json({
@@ -79,55 +93,60 @@ exports.createPublication = (req, res, next) => {
 exports.getOnePublication = (req, res, next) => {
     const idPost = req.params.id 
     models.Post.findOne ({
-    attributes: ["id", "content", "title", "updatedAt", "createdAt", "UserId", "image"],
-    where: {id: idPost, status:1}
+        include:[{ //identifier le createur de l'article
+            model:models.User,
+            attributes: ["firstName", "lastName"]
+        }],
+        attributes: ["id", "content", "title", "updatedAt", "createdAt", "UserId", "image","User.firstName"],
+        where: {id: idPost, status:1}
     })
     .then((post) => {
+        console.log(post)
         if(post == null){
             return res.status(400).json("Article inconnu")
         } else{//affiche commentaire lie a l article
-        models.Comment.findAll({
-            include:[{ //identifier le post
-                model:models.User, attributes: ["firstName"]
-            }],
-            attributes: ["id", "content", "createdAt","UserId"],
-            order:[["createdAt", "DESC"]],//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
-            where: {PostId: idPost, status: 1}
-            })
+            models.Comment.findAll({
+                include:[{ //identifier le post
+                    model:models.User,
+                    attributes: ["firstName"]
+                }],
+                attributes: ["id", "content", "createdAt","UserId"],
+                order:[["createdAt", "DESC"]],//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+                where: {PostId: idPost, status: 1}
+                })
             .then((comments) => {
-            models.Like.findAll({
-                attributes: ["UserId"],
-                where: {PostId: idPost}
-                })
-                .then((like) => {
-                    let objectToSend 
-                    if(comments.length !== null && like.length !== null){
-                        objectToSend = {
-                        "post": post,
-                        "comment": comments,
-                        "like" : like
-                        }
-                    } else if(comments.length != null && like.length == null){
-                        objectToSend = {
-                        "post": post,
-                        "comment": comments
-                        }
-                    } else if(comments.length == null && like.length != null){
-                        objectToSend = {
-                        "post": post,
-                        "like" :like
-                        }
-                    } else{
-                        objectToSend = {
-                            "post": post
-                        }
-                    } 
-                    return res.status(200).json(objectToSend)
-                })
+                models.Like.findAll({
+                    attributes: ["UserId"],
+                    where: {PostId: idPost}
+                    })
+                    .then((like) => {
+                        let objectToSend 
+                        if(comments.length !== null && like.length !== null){
+                            objectToSend = {
+                            "post": post,
+                            "comment": comments,
+                            "like" : like
+                            }
+                        } else if(comments.length != null && like.length == null){
+                            objectToSend = {
+                            "post": post,
+                            "comment": comments
+                            }
+                        } else if(comments.length == null && like.length != null){
+                            objectToSend = {
+                            "post": post,
+                            "like" :like
+                            }
+                        } else{
+                            objectToSend = {
+                                "post": post
+                            }
+                        } 
+                        return res.status(200).json(objectToSend)
+                    })
             .catch(error=>res.status(500).json(error))
             })
             .catch(error=>res.status(500).json(error));
-        
         }
     })
     .catch(error=>res.status(500).json(error))
@@ -200,16 +219,28 @@ exports.updatePublication = (req, res, next) => {
                 return res.status(400).json("UTILISATEUR INCONNU")
             } else{   
                 models.Post.findOne({
-                    attributes: ["UserId"],
+                    attributes: ["UserId", "image"],
                     where: {id: postId}
                 })
                 .then(post=>{
                     if(post.UserId == currentUser){ //Verifiaction Utilisateur = Auteur
-                        models.Post.update({
-                            title: req.body.title,
-                            content: req.body.content
-                        },
-                        {where: {id: postId}}
+                        if(req.file){
+                            var data={
+                                title: req.body.title,
+                                content: req.body.content,
+                                image : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                                status: 0
+                            }
+                        } else {
+                            var data={
+                                title: req.body.title,
+                                content: req.body.content,
+                                status: 0
+                            }
+                        }
+                        models.Post.update(
+                           data,                        
+                           {where: {id: postId}}
                         )
                         .then(()=>res.end())
                         .catch(error=>res.status(500).json("Modification Impossible"))
