@@ -13,7 +13,7 @@ Création d’une api sécurisée avec JS :
 * Stocker des données de manière sécurisée. 
 * Mettre en œuvre des opérations CRUD sécurisés.
 
-### So Pekocko
+### Groupomania
 
 ![Image text](https://github.com/John-Gate/7_23032021/blob/main/frontend/groupomania-app/src/assets/logos/icon-above-font-resize.png)
 >Développer une application d’évaluation des sauces piquantes So Pekocko
