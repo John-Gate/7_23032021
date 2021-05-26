@@ -8,21 +8,22 @@
 7. [Contact](#Contact)
 
 ### Information Generale
-Création d’une api sécurisée avec JS :
-* Implémenter une logique de données conformément à la réglementation.
-* Stocker des données de manière sécurisée. 
-* Mettre en œuvre des opérations CRUD sécurisés.
+Création d’un réseau social d’entreprise : 
+* Personnaliser le contenu a envoyer à un client web,
+* Implémenter un stockage de données sécurisées en utilisant SQL, 
+* Gérer un stockage de données l’aide de SQL, 
+* Authentifier un utilisateur et maintenir sa session.
 
 ### Groupomania
 
 ![Image text](https://github.com/John-Gate/7_23032021/blob/main/frontend/groupomania-app/src/assets/logos/icon-above-font-resize.png)
->Développer une application d’évaluation des sauces piquantes So Pekocko
+>Développer un reseau social d'entreprise
 >.
 >.  
 
 ## Installation
   
-git clone https://github.com/a-grasso-dev/projet_6.git  
+Cloner ce [Repository]() depuis Github  
 puis `commande npm i `. 
 
 **Démarrage:**  
@@ -43,20 +44,23 @@ Frontend (_Fournit lors de l'installation_)
 
 ##  Cahier des charges
 _Pour le MVP, la personnalisation du produit ne sera pas fonctionnelle :_  
-* La page contenant un seul article aura un menu déroulant permettant à l'utilisateur de choisir une option de personnalisation,
-*mais celle-ci ne sera ni envoyée au serveur*
-*ni reflétée dans la réponse du serveur.*
-* Le code source devra être indenté et utiliser des commentaires.
-* Il devra également utiliser des fonctions globales.
-* Des promesses devront être utilisées pour éviter les rappels.
-* Les inputs des utilisateurs doivent être validés avant l’envoi à l’API. (*firstName, lastName, address, city et email*)
+* Gérer un stockage de données à l'aide de SQL
+* Personnaliser le contenu envoyé à un client web
+* Implémenter un stockage de données sécurisé en utilisant SQL
+* Authentifier un utilisateur et maintenir sa session
 
 ## Notes
-L'IDE que j'ai utilisé est *Visual Studio Code*.  
-Le site passe le **W3C** pour HTML et CSS.  
+Backend:
+  Framework : Express
+  Serveur : NodeJS
+  Base de données : MySQL
+  ORM : Sequelize
+  
+Frontend:
+  Framwework: Vuejs
 
 ## Évaluation
-:heavy_check_mark: Ce projet a été validé par le jury d'OpenClassrooms le vendredi 8 janvier 2021.
+:heavy_check_mark: Ce projet est en cours de validation.
 
 ## Contact
 * [Email](mailto:barrierejc@live.fr?subject=[GitHub]%20Source%20Han%20Sans)
