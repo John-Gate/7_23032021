@@ -64,13 +64,13 @@ Construire un réseau social interne pour les employés de Groupomania sur le mo
 
 ## Notes
 **Backend:**
-  Framework : Express
-  Serveur : NodeJS
-  Base de données : MySQL
-  ORM : Sequelize
+ * Framework : Express
+ * Serveur : NodeJS
+ * Base de données : MySQL
+ * ORM : Sequelize
   
 **Frontend:**
-  Framwework: Vuejs
+ * Framwework: Vuejs
 
 ## Évaluation
 :heavy_check_mark: Ce projet est en cours de validation.
