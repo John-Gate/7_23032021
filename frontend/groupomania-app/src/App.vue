@@ -4,7 +4,7 @@
   <a href="/">
   <img  class="logoGroupo" src="../src/assets/logos/icon-above-font-resize.png" alt="logo Groupomania">
   </a>
-    <ul>
+    <ul class="navMenu">
       <li><a href="/">Accueil</a></li>
       
         <li  v-if="token!=null" class="connected"><a href="/Profile">Mon Profil</a></li> 
@@ -25,8 +25,6 @@
       <li><i class="fas fa-question footerBar__list--icone"></i>FAQ</li>
     </ul>
 </div>
-
-
 </template>
 
 <script>
@@ -41,6 +39,7 @@ export default {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('name');
         sessionStorage.removeItem('id');
+        alert('Vous avez été déconnecté. Merci de votre visite.');
         location.replace("/")
       }
     }
@@ -267,6 +266,13 @@ ul {
     background-size: 100%;
     }
 }
+.logoProfile{
+  padding: 1rem;
+  width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .form-control{
   width: 100%;
   font-size:1.2rem;
@@ -303,10 +309,18 @@ ul {
 }
 
 //MEDIA QUERIES
+@media screen and (max-width: 1212px){
+  .navMenu{
+    display: block;
+  }
+  .alignLogo{
+    flex-direction: column;
+     position: static;
+  }
+}
 @media screen and (max-width: 1024px){
   .alignLogo{
     flex-wrap: wrap;
-    position: static;
   }
     .connected{
     flex-wrap: wrap;
@@ -338,6 +352,9 @@ ul {
   }
 .textShadow{
     font-size: 2rem;
+  }
+  .footerBar__list{
+    flex-direction: column;
   }
 }
 @media screen and (max-width: 400px){

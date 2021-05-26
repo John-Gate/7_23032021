@@ -28,6 +28,8 @@
          <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connectez, a l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et meme les commenter! </p>
      </div>
 </div>
+ <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
+ 
     <a @click="sendSignup" type="submit">
       S'Inscrire
     </a>

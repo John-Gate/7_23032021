@@ -71,7 +71,7 @@
               <div class="infoHeight--post">
                 <h3>{{ post.title }}</h3>
                 <p>{{ post.content }}</p>
-                <div  id="imagePreview"> </div>
+                  <div  id="imagePostFocus"></div>
                 <div class="diplayAttribute">
                   <p class="dateStamp articles--italique" >Créé le: {{ post.createdAt.split("-")[2].split("T")[0] }}/{{ post.createdAt.split("-")[1] }}/{{ post.createdAt.split("-")[0] }}</p>
                 </div>
@@ -93,6 +93,7 @@
           </div>
           </div>
       </div>
+      <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
   </div>
       <a href="/Post">Créer Un Nouvel Article</a>
       <a @click="deleteUser">Supprimer Le Profil</a>
@@ -112,6 +113,7 @@ export default {
           token: sessionStorage.getItem('token'),
            user_id:sessionStorage.getItem("id"),
            posts: '',
+           post:'',
            post_id:'',
            users: '',
            user: '',
@@ -172,13 +174,12 @@ export default {
                   this.posts = data;
                 }
                 if(this.image != null){
-                let previewImg = document.getElementById('imagePreview');
-                let image = document.createElement('img');
-                previewImg.appendChild(image);
-                image.id = "imagePostFocus"
-                image.src = this.image
-                image.alt = "Apercu de l image" 
-                image.width = 100
+                  let image = document.getElementById('imagePostFocus');
+                  image.src = this.post.image
+                  image.alt = "Apercu de l image" 
+                  let link = document.getElementById('imageTotal');
+                  link.href = this.post.image; 
+                  image.width = 100
               }
             })
             .catch(error => console.log({error}));
@@ -277,6 +278,7 @@ export default {
             })
             .catch(error => console.log({error}));
       },
+ 
       deleteUser(){
         const data = {
           currentUser: this.user_id
@@ -335,5 +337,4 @@ min-height: 150px;
     min-height: 115px;
   }
 }
-
 </style>

@@ -93,7 +93,8 @@ exports.commentModeration = (req, res, next) => {
 exports.getAllPublications = (req, res, next) => { 
   models.Post.findAll({
     include:[{ //identifier le post
-        model:models.User, attributes: ["firstName", "lastName"]
+        model:models.User,
+        attributes: ["firstName", "lastName"]
     }],
     where:{status:0},  
     order:[["createdAt", "DESC"]]//le plus recent d abord

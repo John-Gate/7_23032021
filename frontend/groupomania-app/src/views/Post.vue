@@ -17,6 +17,8 @@
       <div  id="imagePreview"></div>
     </div>
     <!-- ZONE IMAGE-->
+     <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
+ 
     <a type="submit" @click.prevent="createPost">Partager</a>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>
   </form>
@@ -63,7 +65,6 @@ export default {
            
 			axios.post("http://localhost:3000/post/createPost", formData, {headers:{Authorization: "Bearer " + sessionStorage.token}})
 			.then((res) => {
-        console.log(res)
         //Si admin, pas besoin de validé l'article
         if(res.data.status == 1){
         alert('Article publié.');

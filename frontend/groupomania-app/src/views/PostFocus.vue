@@ -92,10 +92,8 @@ export default {
               }
           })
           .then(res => {
-            
               const data = res.data;
               this.post = data.post;
-              console.log(this.post)
               if(this.post.UserId == this.user_id){
                 this.author = true;
               }

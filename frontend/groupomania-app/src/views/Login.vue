@@ -10,6 +10,8 @@
       <input type="password" name="" required="" v-model="dataLogin.password">
       <label  >Mot de passe</label>
     </div>
+     <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
+ 
     <a @click="logIn">Se Connecter</a>
       <a href="/Inscription" class="linkInscription">Pas encore inscrit?</a>
   </form>

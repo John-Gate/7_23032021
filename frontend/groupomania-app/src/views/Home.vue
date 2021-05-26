@@ -22,6 +22,7 @@
               <a class="showButton" @click="showButton(post.id)">Voir Article</a>
             </div>
           </div>
+       <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
       </div>
     </div>
     <!-- Si pas Connecté -->
@@ -32,12 +33,13 @@
         <p>Nous sommes le {{ dateDuJour }}</p>
         </div>
 <div class="blockLogoText">
-          <img  class="blockLogoText__logo" src="../assets/logos/icon-left-font-monochrome-white.svg" alt="logo Groupomania">
-          <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connecter, à l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et même les commenter! </p>
+              <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connecter, à l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et même les commenter! </p>
 </div>
+  <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
       </div>
       </div>
  </div>
+ 
 </template>
 
 <script>
@@ -77,7 +79,6 @@ export default {
             })
             .then(res => {
                 const data = res.data;
-                console.log(data)
                 this.posts = data;
             })
             .catch(error => console.log({error}));

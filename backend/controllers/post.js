@@ -101,7 +101,6 @@ exports.getOnePublication = (req, res, next) => {
         where: {id: idPost, status:1}
     })
     .then((post) => {
-        console.log(post)
         if(post == null){
             return res.status(400).json("Article inconnu")
         } else{//affiche commentaire lie a l article
