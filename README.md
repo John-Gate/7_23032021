@@ -8,11 +8,12 @@
 7. [Contact](#Contact)
 
 ### Information Generale
-Création d’un réseau social d’entreprise : 
-* Personnaliser le contenu a envoyer à un client web,
-* Implémenter un stockage de données sécurisées en utilisant SQL, 
-* Gérer un stockage de données l’aide de SQL, 
+Création d’un réseau social d’entreprise pour améliorer la communication entre collègues : 
+* Développer la première version de l'application.
+* Implémenter un stockage de données sécurisées en utilisant SQL.
+* Gérer un stockage de données l’aide de SQL.
 * Authentifier un utilisateur et maintenir sa session.
+
 
 ### Groupomania
 
@@ -35,19 +36,31 @@ puis se rendre sur:  `http://localhost:4200/`
 commande:`nodemon server`.   
 puis se rendre sur:  `http://localhost:3000/`  
 
-**Uri pour se connecter:**  
- dans app.js puis dans mongoose.connect   
- rajouter : `'mongodb+srv://{username}:{password}@cluster0.opz5w.mongodb.net/hotsauce?retryWrites=true&w=majority'`.
  
 ## Éléments fournis
-Frontend (_Fournit lors de l'installation_)
+*Dossier:
+  Frontend (_Fournit lors de l'installation_)
+  Backend
+*Database SQL
+*
 
 ##  Cahier des charges
-_Pour le MVP, la personnalisation du produit ne sera pas fonctionnelle :_  
-* Gérer un stockage de données à l'aide de SQL
-* Personnaliser le contenu envoyé à un client web
-* Implémenter un stockage de données sécurisé en utilisant SQL
-* Authentifier un utilisateur et maintenir sa session
+Construire un réseau social interne pour les employés de Groupomania sur le model de Reddit:
+* Les employés pourront écrire et partager des articles avec leurs collègues sur des sujets qui les intéressent.
+* Aucune maquette fournis, projet dont la conception est donc personnel: carte blanche sur la forme.
+* Logos fournis pourl'habillage du site.
+* Organisation "AGILE" adaptée.
+* Bade de donnnées relationnelles utilisait par le client.
+* Sécurié données de connexion.
+* Présentation des fonctionnalités doit être simple.
+* La création d’un compte doit être simple et possible depuis un téléphone mobile.
+* Le profil doit contenir très peu d’informations pour que sa complétion soit rapide.
+* l’accès à un forum où les salariés publient des contenus multimédias doit être présent.
+* les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés.
+* la suppression du compte doit être possible.
+* le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre salariés.
+* Projet codé en JAVASCRIPT.
+* Personnaliser le contenu a envoyer à un client web.
 
 ## Notes
 Backend:
