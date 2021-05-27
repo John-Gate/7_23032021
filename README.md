@@ -23,18 +23,19 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
 >.  
 
 ## Installation
-  
-Cloner ce [Repository](https://github.com/John-Gate/7_23032021.git) depuis Github  
-puis `commande npm i `. 
+  lancer la commande: `npm install` pour chacun des dossiers frontend et backend 
+
 
 **Démarrage:**  
 *Pour le frontend:*  
-commande:`ng serve`.   
-puis se rendre sur:  `http://localhost:4200/`  
+  Lancez le frontend avec la commande ``npm run serve``.
 
 *Pour le backend:*  
-commande:`nodemon server`.   
-puis se rendre sur:  `http://localhost:3000/`  
+  Lancez le backend avec la commande ``nodemon server``.
+  
+Les identifiants de l'admin sont :
+- email : admin@theadmin.com
+- mdp : 123456aA! 
 
  
 ## Éléments fournis
