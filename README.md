@@ -35,7 +35,7 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
   
 Les identifiants de l'admin sont :
 - email : admin@theadmin.com
-- mdp : 123456aA! 
+- mdp : 123456aA! (mdp valable pour tous les emails fournits dans la base de données)
 
  
 ## Éléments fournis
