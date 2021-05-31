@@ -22,30 +22,20 @@ import axios from "axios"
 export default {
   name: "Login",
    data() {
-      return {
-     dataLogin: {
-                email: null,
-                password: null
-            }
-            
-    };
+      return {  
+        dataLogin: {
+                    email: null,
+                    password: null
+                }
+      };
    },
-     mounted() {
-    if (sessionStorage.token) {
-      this.token = sessionStorage.token;
-    }
-  },
-  computed: {
-      dateDuJour() {
-        let currentTime = new Date()
-        let month = currentTime.getMonth() 
-        let day = currentTime.getDate()
-        let year = currentTime.getFullYear()
-        let tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
-        return(day + " " + tab_mois[month] + " " + year)
-		}
-  },
-    methods: {
+    mounted() {
+      if (sessionStorage.token) {
+        this.token = sessionStorage.token;
+      }
+    },
+  methods: {
+    //Connexion au site
     logIn() {
       if (
         this.dataLogin.email !== null || this.dataLogin.password !== null 
@@ -70,8 +60,5 @@ export default {
   }
 }
 </script>
-
-
-<style lang="scss" scoped>
-
+<style lang="scss">
 </style>

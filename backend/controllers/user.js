@@ -114,8 +114,7 @@ exports.deleteUser = (req, res, next) => {
             if (null == user) {
                 
                  return res.status(400).json("Suppression de l'utilisateur non-authorisée")
-             }
-             else{  
+             } else{  
                 models.Post.destroy({
                     where: { userId: user.id }
                 })
@@ -150,8 +149,7 @@ const postId = req.body.postId;
                     'error': 'Utilisateur non trouvé.',
                     'userId': userId
                 })
-            }
-            else{ 
+            } else{ 
                 models.Post.findOne({
                     attributes: ["id"],
                     where: {id: postId}

@@ -27,8 +27,7 @@ exports.createPublication = (req, res, next) => {
                     
                     if(req.file){
                         imageName =`${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-                    }
-                    else{
+                    } else{
                         imageName = null;
                     }
                     models.Post.create({
@@ -55,8 +54,7 @@ exports.createPublication = (req, res, next) => {
                   } else{
                     if(req.file){
                         imageName =`${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-                    }
-                    else{
+                    } else{
                         imageName = null;
                     }
                     models.Post.create({

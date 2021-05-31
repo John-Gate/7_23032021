@@ -40,7 +40,8 @@ export default {
    mounted(){
         this.getOnePublication()
    },
-    methods: {
+   methods: {
+      //Affiche l'article que l'on souhaite modifier
        getOnePublication(){
          const token = sessionStorage.getItem('token');
          let url = window.location.href.split("?");
@@ -62,44 +63,45 @@ export default {
             })
             .catch(error => console.log({error}));
         },
-          modifyPublication(){
-             let formData = new FormData();
-        formData.append('content', this.post.content);
-        formData.append('title', this.post.title);
-        formData.append('image', this.post.image);
-        formData.append('postId', this.post_id);
+       //Modification de l'article deja créé
+       modifyPublication(){
+          let formData = new FormData();
+          formData.append('content', this.post.content);
+          formData.append('title', this.post.title);
+          formData.append('image', this.post.image);
+          formData.append('postId', this.post_id);
           const token = sessionStorage.getItem('token');
-     
-          axios.put("http://localhost:3000/post/updatePost", formData, {
-            headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-            }
-            })
-            .then(() => {
-                window.location.replace("/")//voir si on met retour au post precedent plutot que "/"
-            })
-            .catch(error => console.log({error}));
+            axios.put("http://localhost:3000/post/updatePost", formData, {
+              headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+              }
+              })
+              .then(() => {
+                  window.location.replace("/")
+              })
+              .catch(error => console.log({error}));
         },
-            getImage(){
-        let previewImg = document.getElementById('imagePreview');
-        previewImg.innerHTML = '';
-        let file = document.getElementById('imageAccess').files;
-        let image = document.createElement('img');
-        image.file = file[0];
-        previewImg.appendChild(image);
-        var reader = new FileReader();
-        reader.onload = (function(img){
-            return function(e){
-              img.src = e.target.result
-              img.alt = "Apercu de l image"
-              image.width = 100    //a mettre dans le css
-            }
-          })(image);
-          reader.readAsDataURL(file[0]);
-          this.post.image = file[0];
-    }
-  }
+        //Permet de rajouter/changer une image de l'article a modifier
+        getImage(){
+          let previewImg = document.getElementById('imagePreview');
+          previewImg.innerHTML = '';
+          let file = document.getElementById('imageAccess').files;
+          let image = document.createElement('img');
+          image.file = file[0];
+          previewImg.appendChild(image);
+          var reader = new FileReader();
+          reader.onload = (function(img){
+              return function(e){
+                img.src = e.target.result
+                img.alt = "Apercu de l image"
+                image.width = 100    //a mettre dans le css
+              }
+            })(image);
+            reader.readAsDataURL(file[0]);
+            this.post.image = file[0];
+        }
+   }
 }
 </script>
 
@@ -122,5 +124,4 @@ $base-color: #fff;
 #imageAccess{
   margin: 1rem;
 }
-
 </style>

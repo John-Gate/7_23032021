@@ -45,32 +45,33 @@
 <script>
 import axios from "axios";
 export default {
-  
-   data() {
-      return {
-        token: sessionStorage.getItem('token'),
-        posts: '',
-        connexion: false,
-        name : sessionStorage.getItem("name")
-      };
+    data() {
+        return {
+          token: sessionStorage.getItem('token'),
+          posts: '',
+          connexion: false,
+          name : sessionStorage.getItem("name")
+        };
+      },
+    mounted(){
+          this.getAllPublications()
     },
-   mounted(){
-        this.getAllPublications()
-   },
-  computed: {
-      dateDuJour() {
-        let currentTime = new Date()
-        let month = currentTime.getMonth() 
-        let day = currentTime.getDate()
-        let year = currentTime.getFullYear()
-        let tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
-        return(day + " " + tab_mois[month] + " " + year)
-		}
-  },
+    computed: {
+      //Affiche la date du jour 
+        dateDuJour() {
+          let currentTime = new Date()
+          let month = currentTime.getMonth() 
+          let day = currentTime.getDate()
+          let year = currentTime.getFullYear()
+          let tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+          return(day + " " + tab_mois[month] + " " + year)
+      }
+    },
     methods: {
-       getAllPublications(){
-         const token = sessionStorage.getItem('token');
-         if (token !== null){
+      //Affiche toutes les articles
+        getAllPublications(){
+          const token = sessionStorage.getItem('token');
+          if (token !== null){
           axios.get("http://localhost:3000/post/", {
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,9 +83,9 @@ export default {
                 this.posts = data;
             })
             .catch(error => console.log({error}));
-         }
+          }
         },
-
+        //Redirige vers l'article visée
         showButton(id){
           window.location.href='/PostFocus/?post='+id
         }
@@ -93,7 +94,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 $base-color: #fff;
 .blockLogoText{
    display: flex;
@@ -149,7 +149,6 @@ box-shadow: 0 0 1px $base-color,
 -o-transform:scale(1.2); /* Opera */
 transform:scale(1.2);
 }
-
 .dateStamp{
   font-style: italic;
   font-size: .8rem;
@@ -176,8 +175,7 @@ transform:scale(1.2);
   color: $base-color;
   border: 1px solid $base-color;
 }
-
-
+//MEDIA QUERIES
 @media screen and (max-width: 1024px){
 .articles:hover {
 -webkit-transform:scale(1.01); /* Safari et Chrome */

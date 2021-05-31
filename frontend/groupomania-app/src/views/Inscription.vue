@@ -41,47 +41,46 @@
 <script>
 import axios from "axios";
 export default {
-    name: "Signup",
-    data() {
-        return {
-            dataSignup: {
-                lastName: null,
-                firstName: null,
-                email: null,
-                password: null
-            }
-        };
-    },
-    methods: {
-        sendSignup() {
-              if (
-                (this.dataSignup.email !== null ||
-                    this.dataSignup.lastName !== null ||
-                    this.dataSignup.firstName !== null ||
-                    this.dataSignup.password !== null) 
-            ) {
-                axios
-                    .post(
-                        "http://localhost:3000/api/auth/signup",
-                        this.dataSignup
-                    )
-                    .then(() => {
-                        location.replace(location.origin);
-                    })
-                    .catch((error) => console.log(error));
-            } else {
-                alert(
-                    "Le mot de passe doit contenir de 8 à 15 caractères,au moins une lettre minuscule, une lettre majuscule, un chiffre et un de ces caractères spéciaux: $ @ % * + - _ !"
-                );
-            }
-        },
-    },
+  name: "Signup",
+  data() {
+      return {
+          dataSignup: {
+              lastName: null,
+              firstName: null,
+              email: null,
+              password: null
+          }
+      };
+  },
+  methods: {
+      //Envoit une requete d admission a valider par l'admin
+      sendSignup() {
+            if (
+              (this.dataSignup.email !== null ||
+                  this.dataSignup.lastName !== null ||
+                  this.dataSignup.firstName !== null ||
+                  this.dataSignup.password !== null) 
+          ) {
+              axios
+                  .post(
+                      "http://localhost:3000/api/auth/signup",
+                      this.dataSignup
+                  )
+                  .then(() => {
+                      location.replace(location.origin);
+                  })
+                  .catch((error) => console.log(error));
+          } else {
+              alert(
+                  "Le mot de passe doit contenir de 8 à 15 caractères,au moins une lettre minuscule, une lettre majuscule, un chiffre et un de ces caractères spéciaux: $ @ % * + - _ !"
+              );
+          }
+      },
+  },
 };
 </script>
 <style lang="scss" scoped>
-
 $base-color: #fff;
-
 .user-box{
   width:90%
 }
@@ -91,7 +90,6 @@ $base-color: #fff;
   margin-top: 0;
   text-align: left;
   opacity: 0.8;
-  
 }
 .fullBlock{
   position: relative;
@@ -106,7 +104,6 @@ $base-color: #fff;
       flex-direction: column;
     }
 }
-
 .fa-id-card {
   position: absolute;
   color: $base-color;
@@ -120,7 +117,7 @@ $base-color: #fff;
   right: 5rem;
   font-size: 2.5em;
 }
-
+//MEDIA QUERIES
 @media screen and (max-width: 980px){
   .fa-id-card{
     position: relative;

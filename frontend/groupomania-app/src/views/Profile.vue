@@ -39,7 +39,6 @@
           <h2 id="titleDisplay" class="textShadow">Nouveaux Utilisateurs</h2>
           <div class="infoUsersDisplay">
             <p v-if="users.length == 0">Aucun Nouvel Utilisateur</p>
-            <!-- Voir pour Changer la classe -->
             <div class="articles" id="user" v-for="user in users" :key="user.userId">
 <div class="infoHeight">
                   <table>
@@ -61,7 +60,7 @@
                     </tr>
                   </table>
 </div>
-                <a class="showButton borderBtn" type="submit" @click.prevent="validateUser(user.id)">Authoriser l'utilisateur</a>
+                <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validateUser(user.id)">Authoriser l'utilisateur</a>
             </div>
           </div>
           <h2 id="titleDisplay" class="textShadow">Nouveaux Articles</h2>
@@ -70,26 +69,27 @@
             <div class="articles" id="post" v-for="post in posts" :key="post">
               <div class="infoHeight--post">
                 <h3>{{ post.title }}</h3>
-                <p>{{ post.content }}</p>
-                  <div  id="imagePostFocus"></div>
+                <p class="postContent textShadow">{{ post.content }}</p>
+                <div class="imageRow">
+                    <img id="imagePostFocus" :src= post.image alt="" >
+                </div>
                 <div class="diplayAttribute">
                   <p class="dateStamp articles--italique" >Créé le: {{ post.createdAt.split("-")[2].split("T")[0] }}/{{ post.createdAt.split("-")[1] }}/{{ post.createdAt.split("-")[0] }}</p>
                 </div>
                 <p class="auteur" >par : {{ post.User.firstName }} {{ post.User.lastName }}</p>
               </div>
-                <a class="showButton borderBtn" type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</a>
+                <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</a>
             </div>
           </div>
           <h2  id="titleDisplay" class=" textShadow">Nouveaux Commentaires</h2>
           <div class="infoUsersDisplay">
             <p v-if="comments.length == 0">Aucun Nouveau Commentaire</p>
-            <!-- Voir pour Changer la classe -->
             <div class="articles" id="comment" v-for="comment in comments" :key="comment">
-<div class="infoHeight--comment">
+              <div class="infoHeight--comment">
                 <p>{{ comment.content }}</p>
-                  <p class="dateStamp articles--italique">Créé le: {{ comment.createdAt }}</p>
+                <p class="dateStamp articles--italique">Créé le: {{ comment.createdAt }}</p>
               </div>
-                <a class="showButton borderBtn" type="submit" @click.prevent="validateComment(comment.id)">Authoriser le commentaire</a>
+                <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validateComment(comment.id)">Authoriser le commentaire</a>
           </div>
           </div>
       </div>
@@ -137,6 +137,7 @@ export default {
        this.getStats()  
    },
     methods:{
+      //Affiche le profile de l'utilisateur
       profileUser(){
         const token = sessionStorage.getItem('token');
         const user_id = sessionStorage.getItem("id");
@@ -158,7 +159,8 @@ export default {
           })
           .catch(error => console.log({error}));
       },
-
+      //moderate### Permet a l'admin d'afficher les ARTICLES, UTILISATEURS et COMMENTAIRES a moderer
+      //validate### Permet a l'admin d'authoriser la publication des ARTICLES, UTILISATEURS et COMMENTAIRES 
       moderatePost(){
         const token = sessionStorage.getItem('token');
           axios.get("http://localhost:3000/admin/showPost", {
@@ -173,18 +175,9 @@ export default {
                 if(typeof data == 'object'){
                   this.posts = data;
                 }
-                if(this.image != null){
-                  let image = document.getElementById('imagePostFocus');
-                  image.src = this.post.image
-                  image.alt = "Apercu de l image" 
-                  let link = document.getElementById('imageTotal');
-                  link.href = this.post.image; 
-                  image.width = 100
-              }
             })
             .catch(error => console.log({error}));
       },
-
       validatePost(id){
          axios.put("http://localhost:3000/admin/postModeration/"+ id,null
           , {
@@ -198,7 +191,6 @@ export default {
                     })
                     .catch((error) => console.log(error));
       },
-
       moderateUser(){
         const token = sessionStorage.getItem('token');
             axios.get("http://localhost:3000/admin/showUser", {
@@ -215,7 +207,6 @@ export default {
               })
               .catch(() => alert("Ceci est un message a modifie")); // changer pour l alerte correspondante ()
       },
-
       validateUser(id){
          axios.put("http://localhost:3000/admin/userModeration/"+ id,null
           , {
@@ -229,7 +220,6 @@ export default {
                     })
                     .catch((error) => console.log(error));
       },
-
       moderateComment(){
       const token = sessionStorage.getItem('token');
         axios.get("http://localhost:3000/admin/showComment", {
@@ -259,14 +249,15 @@ export default {
                     })
                     .catch((error) => console.log(error));
       },
+      //Affiche les statistiques, soit le nombre des ARTICLES, UTILISATEURS et COMMENTAIRES existant
       getStats(){
- const token = sessionStorage.getItem('token');
-          axios.get("http://localhost:3000/admin/statistics", {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+        const token = sessionStorage.getItem('token');
+            axios.get("http://localhost:3000/admin/statistics", {
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                  }
+              })
             .then(res => {
                 const data = res.data;
                 let userStats = data.user.length;
@@ -278,7 +269,7 @@ export default {
             })
             .catch(error => console.log({error}));
       },
- 
+      //Permet a un utilisateur de supprimer son profile/compte ses articles et ses commentaires de la base de donées
       deleteUser(){
         const data = {
           currentUser: this.user_id
@@ -297,15 +288,12 @@ export default {
           })
           .catch(error => console.log({error}));
       }
-       
     }
 }
 </script>
 
 <style  lang="scss">
-
 $base-color: #fff;
-
 .profileInfo{
 display: flex;
 justify-content: space-evenly;
@@ -316,6 +304,11 @@ font-size: 1.5rem;
   flex-wrap: wrap;
 }
 .articles{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
   border: 1px solid $base-color;
   padding: 1rem;
   margin:1rem;
@@ -323,6 +316,9 @@ font-size: 1.5rem;
     &--italique{
       font-style: italic;
     }
+}
+#positionBtn{
+
 }
 #titleDisplay{
   padding-top:6rem;
@@ -336,5 +332,13 @@ min-height: 150px;
   &--comment{
     min-height: 115px;
   }
+}
+#imagePostFocus{
+  width: 50%;
+}
+@media screen and (max-width: 1024px){
+#titleDisplay{
+  padding-top: 2rem;
+}
 }
 </style>

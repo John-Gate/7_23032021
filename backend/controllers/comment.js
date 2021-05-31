@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const models = require('../models');
 
-
 ////Creation d'un commentaire
 exports.createComment = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];

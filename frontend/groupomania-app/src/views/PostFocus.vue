@@ -11,6 +11,7 @@
          <p class="postContent textShadow">{{ post.content }}</p>
       </div>
       <!-- <p class="auteurArticle">par: {{ post.User.firstName }}</p> -->
+<!-- DEBUT ZONE LIKES/DISLIKES-->    
  <div class="rowLike">
         <a class="rowLike__icone" type="submit" @click.prevent="likePost">
         <i class="fas fa-thumbs-up" v-if="asLiked == true"></i>
@@ -40,7 +41,6 @@
         </div>
      </div>
   </div>
-
 </template>
 
 <script>
@@ -69,16 +69,6 @@ export default {
    mounted(){
         this.getOnePublication()
    },
-  computed: {
-      dateDuJour() {
-        let currentTime = new Date()
-        let month = currentTime.getMonth() 
-        let day = currentTime.getDate()
-        let year = currentTime.getFullYear()
-        let tab_mois=new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
-        return(day + " " + tab_mois[month] + " " + year)
-		}
-  },
     methods: {
       getOnePublication(){
         const token = sessionStorage.getItem('token');
@@ -116,7 +106,6 @@ export default {
           })
           .catch(error => console.log({error}));
       },
-      
       deletePublication(){
         const token = sessionStorage.getItem('token');
         const data = {
@@ -134,7 +123,6 @@ export default {
           })
           .catch(error => console.log({error}));
       },
-
       modifyPublication(){
       const token = sessionStorage.getItem('token');
       const data = {
@@ -152,7 +140,6 @@ export default {
         })
         .catch(error => console.log({error}));
       },
-
       createCommentary(){
             const data = {
               currentUser: this.user_id,
@@ -164,53 +151,44 @@ export default {
         //Condition: si admin, pas besoin de validé l'article
         if(res.data.status == 1){
         alert('Commentaire publié.');
-        }
-        else{
+        } else{
 				alert('Votre commentaire a bien été créé. Il va être validé prochainement.');
         }
 			})
             .then(() => this.$router.push("/"));
       },
-
         showButton(id){
           window.location.href='/modifypost/?post='+id
       },
-
+      //Permet de liker ou d'annuler un like/1 like par utilisateur permis
       likePost(){
-            axios.post("http://localhost:3000/api/auth/likePost", { postId: this.post_id}, {headers:{Authorization: "Bearer " + sessionStorage.token}})
-			.then((res) => {
-        //Condition: si admin, pas besoin de validé l'article
-        console.log(res.data.newLike)
-          if(res.data.newLike !== null){
-            alert("LIKER!");
-            location.reload();
-          }
-          else{
-            alert("DISLIKER!");
-            location.reload();
-          }
-			})
+        axios.post("http://localhost:3000/api/auth/likePost", { postId: this.post_id}, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+        .then((res) => {
+          //Condition: si admin, pas besoin de validé l'article
+            if(res.data.newLike !== null){
+              alert("LIKER!");
+              location.reload();
+            } else{
+              alert("DISLIKER!");
+              location.reload();
+            }
+        })
       }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
-
 $base-color: #fff;
-
 .imageRow{
   display: flex;
 }
-
 #imagePostFocus{
   border: 1px solid black;
   width: 28rem;
   margin: 1rem;
   max-height: 15rem;
 }
-
 #comment{
 color: $base-color;
 border: 1px solid $base-color;
@@ -273,6 +251,7 @@ box-shadow: 0 0 1px $base-color,
   animation: rubberBand; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
   animation-delay: 3s;
+  margin-top: 1rem;
 }
 .form-control{
   width: 55%;
@@ -306,6 +285,7 @@ box-shadow: 0 0 1px $base-color,
       color: $base-color;
   }
 }
+//MEDIA QUERIES
 @media screen and (max-width: 980px){
   .imageRow{
     flex-direction: column;
@@ -313,6 +293,5 @@ box-shadow: 0 0 1px $base-color,
 #imagePostFocus{
   width: 12rem;
 }
-
 }
 </style>

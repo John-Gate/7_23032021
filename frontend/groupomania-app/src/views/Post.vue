@@ -27,7 +27,6 @@
 
 <script>
 import axios from "axios";
-//import jwt from 'jsonwebtoken'
 export default {
     name: 'CreatePostForm',
     data () {
@@ -42,67 +41,62 @@ export default {
         }
     },
       mounted(){
-        // Verifie si user bien connecte
-        this.connectedUser()
+        this.connectedUser() // Verifie si user bien connecte
    },
     methods:{
-       connectedUser(){                                       
-      if(sessionStorage.token == undefined){
-        this.approuvedConnexion = false;
-        this.$router.push({ name:'Home' })
-      } else {
-        this.connexion = true;
-     
-        this.post.currentUser = 1
-      }
-    },
-
-    createPost() { 
-      let formData = new FormData();
-        formData.append('content', this.post.content);
-        formData.append('title', this.post.title);
-        formData.append('image', this.post.image);
-           
-			axios.post("http://localhost:3000/post/createPost", formData, {headers:{Authorization: "Bearer " + sessionStorage.token}})
-			.then((res) => {
-        //Si admin, pas besoin de validé l'article
-        if(res.data.status == 1){
-        alert('Article publié.');
+      connectedUser(){                                       
+        if(sessionStorage.token == undefined){
+          this.approuvedConnexion = false;
+          this.$router.push({ name:'Home' })
+        } else {
+          this.connexion = true;
+      
+          this.post.currentUser = 1
         }
-        else{
-				alert('Votre article a bien été créé. Il va être validé prochainement.');
-        }
-			})
-			.then(() => this.$router.push("/"));
-		},
-
-    getImage(){
-        let previewImg = document.getElementById('imagePreview');
-        previewImg.innerHTML = '';
-        let file = document.getElementById('imageAccess').files;
-        let image = document.createElement('img');
-        image.file = file[0];
-        previewImg.appendChild(image);
-        var reader = new FileReader();
-        reader.onload = (function(img){
-            return function(e){
-              img.src = e.target.result
-              img.alt = "Apercu de l image"
-              image.width = 100    //a mettre dans le css
-            }
-          })(image);
-          reader.readAsDataURL(file[0]);
-          this.post.image = file[0];
-    },
-
+      },
+      //Creation d'un article par l'utilisateur connecté rataché a celui-ci
+      createPost() { 
+        let formData = new FormData();
+          formData.append('content', this.post.content);
+          formData.append('title', this.post.title);
+          formData.append('image', this.post.image);
+            
+        axios.post("http://localhost:3000/post/createPost", formData, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+        .then((res) => {
+          //Si admin, pas besoin de validé l'article
+          if(res.data.status == 1){
+          alert('Article publié.');
+          } else{
+          alert('Votre article a bien été créé. Il va être validé prochainement.');
+          }
+        })
+        .then(() => this.$router.push("/"));
+      },
+      //Ajout d'une image
+      getImage(){
+          let previewImg = document.getElementById('imagePreview');
+          previewImg.innerHTML = '';
+          let file = document.getElementById('imageAccess').files;
+          let image = document.createElement('img');
+          image.file = file[0];
+          previewImg.appendChild(image);
+          var reader = new FileReader();
+          reader.onload = (function(img){
+              return function(e){
+                img.src = e.target.result
+                img.alt = "Apercu de l image"
+                image.width = 100    //a mettre dans le css
+              }
+            })(image);
+            reader.readAsDataURL(file[0]);
+            this.post.image = file[0];
+      },
     }
 }
 </script>
 
 <style scoped lang="scss">
-
 $base-color:#FFF;
-
 .formControl{
     width: 323px;
 }
@@ -118,7 +112,7 @@ input:active
     -webkit-text-stroke: 2px var(--fill-color);
     color: $base-color;
 }
-//On ecrase le form-control de app.vue:
+//Ici on ecrase le form-control de app.vue:
 .form-control{
   width: 350px;
 }

@@ -35,6 +35,7 @@ export default {
       };
     },
     methods:{
+      //Deconnexion d'un utilisateur de sa session
       deconnexion(){
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('name');
@@ -51,7 +52,6 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Oleo+Script&family=Playball&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
 @import "https://cdn.jsdelivr.net/npm/animate.css@3.5.1";
 $base-color: #fff;
-
 //Placeholder en italique
 ::-webkit-input-placeholder { /* WebKit browsers */
    font-style:italic
@@ -66,7 +66,6 @@ $base-color: #fff;
     font-style:italic
 }
 /////////////////////////
-
 //#app se trouve dans le HTML (path => frontend\groupomania-app\public\index.html)
 #app{
   display:contents;
@@ -78,7 +77,6 @@ $base-color: #fff;
 .linkInscription{
   font-size: 11px;
 }
-
 html {
   height: 100%;
 }
@@ -294,20 +292,28 @@ ul {
   display: flex;
   justify-content: space-around;
   order: 3;
-  &__list{
-    display: flex;
-    justify-content: space-around;
-    width:100%;
-    & :hover{
-      opacity: .8;
-      cursor: pointer;
+  background: #091F43;
+  color: $base-color;
+  
+    &__list{
+      display: flex;
+      justify-content: space-around;
+      width:100%;
+      padding: 0;
+        & :hover{
+          transition: transform .5s;
+          -webkit-transform:scale(1.1); /* Safari et Chrome */
+          -moz-transform:scale(1.1); /* Firefox */
+          -ms-transform:scale(1.1); /* Internet Explorer 9 */
+          -o-transform:scale(1.1); /* Opera */
+          transform:scale(1.1);
+          cursor: pointer;
+        }
+        &--icone{
+          padding: 1rem;
+        }
     }
-    &--icone{
-      padding: 1rem;
-    }
-  }
 }
-
 //MEDIA QUERIES
 @media screen and (max-width: 1212px){
   .navMenu{
@@ -355,6 +361,8 @@ ul {
   }
   .footerBar__list{
     flex-direction: column;
+    text-align: center;
+    align-items: center;
   }
 }
 @media screen and (max-width: 400px){
@@ -363,8 +371,5 @@ ul {
       font-size: 2rem;
     }
   }
-  
-
 }
-
 </style>

@@ -130,63 +130,63 @@ exports.getAllUsers = (req, res, next) => {
   };
 
 ////Afficher tous les nouveaux commentaires pour pouvoir les moderer par la suite
-  exports.getAllComments = (req, res, next) => { 
-    models.Comment.findAll({
-      include:[{ //identifier le post
-          model:models.User, attributes: ["firstName", "lastName"],
-          model:models.Post, attributes: ["title", "content"]
-      }],
-      where:{status:0},  
-      order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
-    })
-    .then((comments) => {
-        if(comments.length > null){
-          return res.status(200).json(comments)
-        } else if(comments.length == 0){
-          return res.status(200).json("Pas de Nouveau Commentaire")
-        } else{
-          return res.status(400).json("Pas de Nouveau Commentaire")
-        }
-    })
-    .catch(error=>res.status(500).json(error))
-  };
+exports.getAllComments = (req, res, next) => { 
+  models.Comment.findAll({
+    include:[{ //identifier le post
+        model:models.User, attributes: ["firstName", "lastName"],
+        model:models.Post, attributes: ["title", "content"]
+    }],
+    where:{status:0},  
+    order:[["createdAt", "DESC"]]//on voit le plus recent d abord pour admin il fadrau n ehere ou status = 0 car ils sont a moderer
+  })
+  .then((comments) => {
+      if(comments.length > null){
+        return res.status(200).json(comments)
+      } else if(comments.length == 0){
+        return res.status(200).json("Pas de Nouveau Commentaire")
+      } else{
+        return res.status(400).json("Pas de Nouveau Commentaire")
+      }
+  })
+  .catch(error=>res.status(500).json(error))
+};
 
 ////Connaitre les statistiques pour moderateur du nombre d utilisateur, articles et commentaires
-  exports.statistics = (req, res, next) => {
-    models.User.findAll({
-        order:[["createdAt", "DESC"]]
-      })
-    .then((users) => {
-        if(users.length > null){
-          models.Post.findAll({
-              order:[["createdAt", "DESC"]]
-            })
-            .then((posts) => {
-                if(posts.length > null){
-                  models.Comment.findAll({
-                      order:[["createdAt", "DESC"]]
-                    })
-                    .then((comments) => {
-                        if(comments.length > null){
-                          const combine = {
-                              "post": posts,
-                              "comment": comments,
-                              "user":users
-                          }
-                          return res.status(200).json(combine)
-                        } else{
-                            return res.status(400).json("Pas de Nouveau Commentaire")
-                        }
-                    })
-                  .catch(error=>res.status(500).json(error))
-                } else{
-                    return res.status(400).json("Pas de nouveau Post")
-                }
-            })
-          .catch(error=>res.status(500).json(error))
-        } else{   
-            return res.status(400).json("Pas de nouveau Utilisateur")
-        }
+exports.statistics = (req, res, next) => {
+  models.User.findAll({
+      order:[["createdAt", "DESC"]]
     })
-    .catch(error=>res.status(500).json(error))
-  };
+  .then((users) => {
+      if(users.length > null){
+        models.Post.findAll({
+            order:[["createdAt", "DESC"]]
+          })
+          .then((posts) => {
+              if(posts.length > null){
+                models.Comment.findAll({
+                    order:[["createdAt", "DESC"]]
+                  })
+                  .then((comments) => {
+                      if(comments.length > null){
+                        const combine = {
+                            "post": posts,
+                            "comment": comments,
+                            "user":users
+                        }
+                        return res.status(200).json(combine)
+                      } else{
+                          return res.status(400).json("Pas de Nouveau Commentaire")
+                      }
+                  })
+                .catch(error=>res.status(500).json(error))
+              } else{
+                  return res.status(400).json("Pas de nouveau Post")
+              }
+          })
+        .catch(error=>res.status(500).json(error))
+      } else{   
+          return res.status(400).json("Pas de nouveau Utilisateur")
+      }
+  })
+  .catch(error=>res.status(500).json(error))
+};
