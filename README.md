@@ -29,6 +29,7 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
 **Démarrage:**  
 *Pour le frontend:*  
   Lancez le frontend avec la commande ``npm run serve``.
+  Se rendre sur: http://localhost:8080/
 
 *Pour le backend:*  
   Lancez le backend avec la commande ``nodemon server``.
@@ -69,6 +70,7 @@ Construire un réseau social interne pour les employés de Groupomania sur le mo
  * Serveur : NodeJS
  * Base de données : MySQL
  * ORM : Sequelize
+ * Serveur Web Local: XAMP
   
 **Frontend:**
  * Framwework: Vuejs
