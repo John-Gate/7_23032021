@@ -8,55 +8,75 @@
 7. [Contact](#Contact)
 
 ### Information Generale
-Création d’une api sécurisée avec JS :
-* Implémenter une logique de données conformément à la réglementation.
-* Stocker des données de manière sécurisée. 
-* Mettre en œuvre des opérations CRUD sécurisés.
+Création d’un réseau social d’entreprise pour améliorer la communication entre collègues : 
+* Développer la première version de l'application.
+* Implémenter un stockage de données sécurisées en utilisant SQL.
+* Gérer un stockage de données l’aide de SQL.
+* Authentifier un utilisateur et maintenir sa session.
+
 
 ### Groupomania
 
 ![Image text](https://github.com/John-Gate/7_23032021/blob/main/frontend/groupomania-app/src/assets/logos/icon-above-font-resize.png)
->Développer une application d’évaluation des sauces piquantes So Pekocko
+>Développer un reseau social d'entreprise
 >.
 >.  
 
 ## Installation
-  
-git clone https://github.com/a-grasso-dev/projet_6.git  
-puis `commande npm i `. 
+  lancer la commande: `npm install` pour chacun des dossiers frontend et backend 
+
 
 **Démarrage:**  
 *Pour le frontend:*  
-commande:`ng serve`.   
-puis se rendre sur:  `http://localhost:4200/`  
+  Lancez le frontend avec la commande ``npm run serve``.
+  Se rendre sur: http://localhost:8080/
 
 *Pour le backend:*  
-commande:`nodemon server`.   
-puis se rendre sur:  `http://localhost:3000/`  
+  Lancez le backend avec la commande ``nodemon server``.
+  
+Les identifiants de l'admin sont :
+- email : admin@theadmin.com
+- mdp : 123456aA! (mdp valable pour tous les emails fournits dans la base de données)
 
-**Uri pour se connecter:**  
- dans app.js puis dans mongoose.connect   
- rajouter : `'mongodb+srv://{username}:{password}@cluster0.opz5w.mongodb.net/hotsauce?retryWrites=true&w=majority'`.
  
 ## Éléments fournis
-Frontend (_Fournit lors de l'installation_)
+*Dossier:
+  Frontend (_Fournit lors de l'installation_)
+  Backend
+*Database SQL
+*
 
 ##  Cahier des charges
-_Pour le MVP, la personnalisation du produit ne sera pas fonctionnelle :_  
-* La page contenant un seul article aura un menu déroulant permettant à l'utilisateur de choisir une option de personnalisation,
-*mais celle-ci ne sera ni envoyée au serveur*
-*ni reflétée dans la réponse du serveur.*
-* Le code source devra être indenté et utiliser des commentaires.
-* Il devra également utiliser des fonctions globales.
-* Des promesses devront être utilisées pour éviter les rappels.
-* Les inputs des utilisateurs doivent être validés avant l’envoi à l’API. (*firstName, lastName, address, city et email*)
+Construire un réseau social interne pour les employés de Groupomania sur le model de Reddit:
+* Les employés pourront écrire et partager des articles avec leurs collègues sur des sujets qui les intéressent.
+* Aucune maquette fournis, projet dont la conception est donc personnel: carte blanche sur la forme.
+* Logos fournis pourl'habillage du site.
+* Organisation "AGILE" adaptée.
+* Bade de donnnées relationnelles utilisait par le client.
+* Sécurié données de connexion.
+* Présentation des fonctionnalités doit être simple.
+* La création d’un compte doit être simple et possible depuis un téléphone mobile.
+* Le profil doit contenir très peu d’informations pour que sa complétion soit rapide.
+* l’accès à un forum où les salariés publient des contenus multimédias doit être présent.
+* les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés.
+* la suppression du compte doit être possible.
+* le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre salariés.
+* Projet codé en JAVASCRIPT.
+* Personnaliser le contenu a envoyer à un client web.
 
 ## Notes
-L'IDE que j'ai utilisé est *Visual Studio Code*.  
-Le site passe le **W3C** pour HTML et CSS.  
+**Backend:**
+ * Framework : Express
+ * Serveur : NodeJS
+ * Base de données : MySQL
+ * ORM : Sequelize
+ * Serveur Web Local: XAMP
+  
+**Frontend:**
+ * Framwework: Vuejs
 
 ## Évaluation
-:heavy_check_mark: Ce projet a été validé par le jury d'OpenClassrooms le vendredi 8 janvier 2021.
+:heavy_check_mark: Ce projet est en cours de validation.
 
 ## Contact
 * [Email](mailto:barrierejc@live.fr?subject=[GitHub]%20Source%20Han%20Sans)
