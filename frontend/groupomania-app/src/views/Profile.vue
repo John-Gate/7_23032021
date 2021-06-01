@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                       <th>Email :</th>
-                      <td>{{ user.email }}</td>
+                      <td> {{user.email}}</td>
                     </tr>
                     <tr>
                       <th class="articles--italique">Créer le:</th>
@@ -288,8 +288,10 @@ export default {
           })
           .catch(error => console.log({error}));
       }
-    }
+
+    
 }
+    }
 </script>
 
 <style  lang="scss">

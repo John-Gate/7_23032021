@@ -14,13 +14,13 @@
             <label>Prénom</label>
           </div>
           <div class="user-box">
-            <input type="email" required="" name="email" v-model="dataSignup.email">
-            <label for="email">Email</label>
+            <input type="email"  name="" required="" v-model="dataSignup.email">
+            <label>Email</label>
           </div>
           <div class="user-box">
             <input id="password" type="password" name="" required=""  v-model="dataSignup.password">
             <label>Mot de passe</label>
-            <p class="password_textDescription">*Votre mot de passe doit contenir au moins 6 caractères dont au minimum une majuscule, une minuscule et un caractère numérique<br>**Tous les champs sont obligatoires</p>
+            <p class="password_textDescription">*Tous les champs sont obligatoires  <br>**Votre Nom et Prénom ne doit comporter que des lettres<br>***Votre mot de passe doit contenir au moins 6 caractères dont au minimum une majuscule, une minuscule et un caractère numérique</p>
           </div>
   </div>
      <div class="textDescription">
@@ -55,24 +55,26 @@ export default {
   methods: {
       //Envoit une requete d admission a valider par l'admin
       sendSignup() {
+        const regexPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})/;
+      const regexEmail = /^[a-z0-9._-]+@[a-z0-9.-]{2,}[.][a-z]{2,3}$/;
+      const usernameRegex = /^[a-zA-Z ,.'-]+$/;
             if (
               (this.dataSignup.email !== null ||
-                  this.dataSignup.lastName !== null ||
-                  this.dataSignup.firstName !== null ||
-                  this.dataSignup.password !== null) 
-          ) {
-              axios
-                  .post(
-                      "http://localhost:3000/api/auth/signup",
-                      this.dataSignup
-                  )
-                  .then(() => {
-                      location.replace(location.origin);
-                  })
-                  .catch((error) => console.log(error));
+              this.dataSignup.lastName !== null ||
+              this.dataSignup.firstName !== null ||
+              this.dataSignup.password !== null)&&
+              regexPassword.test(this.dataSignup.password) &&
+              regexEmail.test(this.dataSignup.email) &&
+              usernameRegex.test(this.dataSignup.username)
+            ){axios.post("http://localhost:3000/api/auth/signup",this.dataSignup)
+            .then(() => {
+              alert("Votre demande d'inscription a bien été enregistrée.")
+              location.replace(location.origin);
+            })
+            .catch((error) => console.log(error));
           } else {
               alert(
-                  "Le mot de passe doit contenir de 8 à 15 caractères,au moins une lettre minuscule, une lettre majuscule, un chiffre et un de ces caractères spéciaux: $ @ % * + - _ !"
+                  "Veuillez verifier vos informations."
               );
           }
       },
@@ -89,7 +91,6 @@ $base-color: #fff;
   font: .9rem italic;
   margin-top: 0;
   text-align: left;
-  opacity: 0.8;
 }
 .fullBlock{
   position: relative;
