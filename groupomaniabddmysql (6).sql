@@ -1,31 +1,9 @@
--- phpMyAdmin SQL Dump
--- version 5.1.0
--- https://www.phpmyadmin.net/
---
--- Hôte : 127.0.0.1
--- Généré le : mer. 02 juin 2021 à 17:23
--- Version du serveur :  10.4.18-MariaDB
--- Version de PHP : 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de données : `groupomaniabddmysql`
---
-
--- --------------------------------------------------------
-
---
--- Structure de la table `comments`
---
 
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL,
@@ -37,9 +15,6 @@ CREATE TABLE `comments` (
   `updatedAt` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Déchargement des données de la table `comments`
---
 
 INSERT INTO `comments` (`id`, `content`, `status`, `PostId`, `UserId`, `createdAt`, `updatedAt`) VALUES
 (1, ' Et l\'amour n\'est pas sans rapport avec l\'humour, non ? Car pour aimer quelqu\'un,', '1', 2, 4, '2021-04-21', '2021-04-21'),
@@ -52,11 +27,7 @@ INSERT INTO `comments` (`id`, `content`, `status`, `PostId`, `UserId`, `createdA
 (53, 'Vous feriez mieux d\'ouvrir la porte, espèce de... répondit-il en m\'appliquant une épithète', '1', 44, 1, '2021-05-22', '2021-05-22'),
 (54, 'Aussi ne saura-t-il jamais comme je l\'aime ; et cela, non parce qu\'il est beau, ', '0', 46, 19, '2021-05-25', '2021-05-25');
 
--- --------------------------------------------------------
 
---
--- Structure de la table `likes`
---
 
 CREATE TABLE `likes` (
   `id` int(11) NOT NULL,
@@ -66,9 +37,6 @@ CREATE TABLE `likes` (
   `UserId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Déchargement des données de la table `likes`
---
 
 INSERT INTO `likes` (`id`, `createdAt`, `updatedAt`, `PostId`, `UserId`) VALUES
 (1, '2021-05-12 15:21:44', '2021-05-12 15:21:44', 2, 1),
@@ -83,11 +51,7 @@ INSERT INTO `likes` (`id`, `createdAt`, `updatedAt`, `PostId`, `UserId`) VALUES
 (39, '2021-05-28 16:20:43', '2021-05-28 16:20:43', 48, 1),
 (40, '2021-05-28 16:21:02', '2021-05-28 16:21:02', 20, 1);
 
--- --------------------------------------------------------
 
---
--- Structure de la table `posts`
---
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
@@ -100,9 +64,7 @@ CREATE TABLE `posts` (
   `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Déchargement des données de la table `posts`
---
+
 
 INSERT INTO `posts` (`id`, `title`, `content`, `image`, `status`, `UserId`, `createdAt`, `updatedAt`) VALUES
 (2, 'Exercice de Confiance', 'Vivre dans cette société, c’est au mieux y mourir d’ennui. Rien dans cette société ne concerne les femmes. Alors, à toutes celles qui ont un brin de civisme, le sens des responsabilités et celui de la rigolade,', NULL, 1, 1, '2021-04-16 00:00:00', '2021-04-21 00:00:00'),
@@ -122,11 +84,7 @@ INSERT INTO `posts` (`id`, `title`, `content`, `image`, `status`, `UserId`, `cre
 (49, 'Substance Mort', 'Je me donnerais volontiers au diable', NULL, 0, 16, '2021-05-24 14:15:23', '2021-05-24 14:15:23'),
 (50, '27 Mai 2048 , le pays arrive a...', 'Je n\'aimais qu\'un seul être et je le perds deux fois !', 'http://localhost:3000/images/slider_puffin_before_mobile.jpg1621983728344.jpg', 0, 19, '2021-05-25 23:02:08', '2021-05-25 23:02:08');
 
--- --------------------------------------------------------
 
---
--- Structure de la table `users`
---
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -139,9 +97,6 @@ CREATE TABLE `users` (
   `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Déchargement des données de la table `users`
---
 
 INSERT INTO `users` (`id`, `email`, `password`, `firstName`, `lastName`, `role`, `createdAt`, `updatedAt`) VALUES
 (1, 'admin@theadmin.com', '$2b$10$Kavty52.OB/PLQRlabxBBuz7Sbih/jFBuuDW56W6DGgZxnfeesZYm', 'Jean-Paul', 'Cluzé', '2', '2021-04-13', '2021-04-13 15:11:47'),
@@ -151,92 +106,50 @@ INSERT INTO `users` (`id`, `email`, `password`, `firstName`, `lastName`, `role`,
 (19, 'c.lancome@live.fr', '$2b$10$tcPPA6pCYn9ZfKtX3guomOttqH6fTLKMsi12zwPEGu70Du3TpBD/e', 'Claudia', 'Lacome', '1', '2021-05-07', '2021-05-11 21:04:44'),
 (20, 'lorcafe@gmail.com', '$2b$10$skLIIITS0giF1kLY0xyXBOaPZkGNiJGsgE7X/Tl7N2QI0qgtYgLj2', 'L\'or', 'Manodoux', '1', '2021-05-19', '2021-05-19 15:08:10');
 
---
--- Index pour les tables déchargées
---
 
---
--- Index pour la table `comments`
---
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_commentaire_post1_idx` (`PostId`),
   ADD KEY `fk_commentaire_users1_idx` (`UserId`);
 
---
--- Index pour la table `likes`
---
 ALTER TABLE `likes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_Like_posts1_idx` (`PostId`),
   ADD KEY `fk_Like_users1_idx` (`UserId`);
 
---
--- Index pour la table `posts`
---
+
 ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_post_users_idx` (`UserId`);
 
---
--- Index pour la table `users`
---
+
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT pour les tables déchargées
---
 
---
--- AUTO_INCREMENT pour la table `comments`
---
 ALTER TABLE `comments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
---
--- AUTO_INCREMENT pour la table `likes`
---
 ALTER TABLE `likes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
---
--- AUTO_INCREMENT pour la table `posts`
---
 ALTER TABLE `posts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
---
--- AUTO_INCREMENT pour la table `users`
---
+
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table `comments`
---
 ALTER TABLE `comments`
   ADD CONSTRAINT `fk_commentaire_post1` FOREIGN KEY (`PostId`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_commentaire_users1` FOREIGN KEY (`UserId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
---
--- Contraintes pour la table `likes`
---
 ALTER TABLE `likes`
   ADD CONSTRAINT `fk_Like_posts1` FOREIGN KEY (`PostId`) REFERENCES `posts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Like_users1` FOREIGN KEY (`UserId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
---
--- Contraintes pour la table `posts`
---
+
 ALTER TABLE `posts`
   ADD CONSTRAINT `fk_post_users` FOREIGN KEY (`UserId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

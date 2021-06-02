@@ -19,8 +19,7 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
 
 ![Image text](https://github.com/John-Gate/7_23032021/blob/main/frontend/groupomania-app/src/assets/logos/icon-above-font-resize.png)
 >Développer un reseau social d'entreprise
->.
->.  
+ 
 
 ## Installation
 Apres avoir cloner le repository
@@ -30,8 +29,14 @@ NODE PACKAGE MANAGER:
     >Pour le frontend dans : cd .\7_23032021\frontend\groupomania-app  
     >Pourle backend: cd .\7_23032021\backend
 
+Pour la BASE DE DONNÉES MySQL:
+  1. Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
+  2. Démarrer XAMPP : `START` les modules Apache ET MySQL.
+  3. Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php)dans le navigateur.
+  4. Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**.
+  5. Importer le fichier: groupomaniabddmysql (6).sql .
 
-
+:partying_face: Félicitation :partying_face:
 
 **Démarrage:**  
 *Pour le frontend:*  
@@ -48,13 +53,13 @@ Les identifiants de l'admin sont :
  
 ## Éléments fournis
 *Dossier:
-  Frontend (_Fournit lors de l'installation_)
+  Frontend 
   Backend
 *Database SQL
-*
+
 
 ##  Cahier des charges
-Construire un réseau social interne pour les employés de Groupomania sur le model de Reddit:
+Construire un réseau social interne pour les employés de Groupomania sur le model de Reddit.
 * Les employés pourront écrire et partager des articles avec leurs collègues sur des sujets qui les intéressent.
 * Aucune maquette fournis, projet dont la conception est donc personnel: carte blanche sur la forme.
 * Logos fournis pourl'habillage du site.
