@@ -303,8 +303,6 @@ export default {
           })
           .catch(error => console.log({error}));
       }
-
-    
 }
     }
 </script>
@@ -333,9 +331,6 @@ font-size: 1.5rem;
     &--italique{
       font-style: italic;
     }
-}
-#positionBtn{
-
 }
 #titleDisplay{
   padding-top:6rem;
