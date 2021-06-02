@@ -33,11 +33,11 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
 - Pour la BASE DE DONNÉES MySQL:
     - Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
     - Démarrer XAMPP : `START` les modules Apache ET MySQL.
-    - Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php)dans le navigateur.
-    - Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**.
-    - Importer le fichier: groupomaniabddmysql (6).sql .
+    - Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php) dans le navigateur.
+    - Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**  
+    - Importer le fichier: groupomaniabddmysql (6).sql 
 
-:partying_face: Félicitation :partying_face:
+                                                                    :partying_face: Félicitation :partying_face:
 
 
 **Démarrage:**  
@@ -81,14 +81,14 @@ Construire un réseau social interne pour les employés de Groupomania sur le mo
 
 ## Notes
 **Backend:**
- * Framework : Express
- * Serveur : NodeJS
- * Base de données : MySQL
- * ORM : Sequelize
- * Serveur Web Local: XAMP
+ * Framework : **Express**
+ * Serveur : **NodeJS**
+ * Base de données : **MySQL**
+ * ORM : **Sequelize**
+ * Serveur Web Local: **XAMP**
   
 **Frontend:**
- * Framwework: Vuejs
+ * Framwework: **Vuejs**, **Vue CLI**
 
 
 ## Évaluation
