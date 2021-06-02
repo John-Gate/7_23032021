@@ -24,24 +24,17 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
 ## Installation
 -Apres avoir cloner le Repository:
 
-<<<<<<< HEAD
--Installation de NODE PACKAGE MANAGER: 
-  1. lancer la commande: `npm install` dans le terminal pour chacun des dossiers frontend et backend:
-    - Pour le frontend dans : cd .\7_23032021\frontend\groupomania-app  
-    - Pourle backend: cd .\7_23032021\backend
-=======
 NODE PACKAGE MANAGER: 
   -lancer la commande: `npm install` dans le terminal pour chacun des dossiers frontend et backend:
     >Pour le frontend dans : cd .\7_23032021\frontend\groupomania-app  
     >Pourle backend: cd .\7_23032021\backend
->>>>>>> 435615091540a9c561f9e3e658fc9ffe36717d50
 
 Pour la BASE DE DONNÉES MySQL:
-  1. [ ]Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
-  2. [ ]Démarrer XAMPP : `START` les modules Apache ET MySQL.
-  3. [ ]Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php)dans le navigateur.
-  4. [ ]Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**.
-  5. [ ]Importer le fichier: groupomaniabddmysql (6).sql .
+  1. Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
+  2. Démarrer XAMPP : `START` les modules Apache ET MySQL.
+  3. Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php)dans le navigateur.
+  4. Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**.
+  5. Importer le fichier: groupomaniabddmysql (6).sql .
 
 :partying_face: Félicitation :partying_face:
 
