@@ -1,21 +1,22 @@
 <template>
-<div class="login-box">
-  <h2 class="cardTitle textShadow">Connexion à Groupomania</h2>
-  <form>
-    <div class="user-box">
-      <input type="email" name="" required="" v-model="dataLogin.email">
-      <label>Email</label>
-    </div>
-    <div class="user-box" @keydown.enter="logIn">
-      <input type="password" name="" required="" v-model="dataLogin.password">
-      <label  >Mot de passe</label>
-    </div>
-     <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
- 
-    <a @click="logIn">Se Connecter</a>
+<!-- Page de Login d'un utilisteur existant et modere -->
+  <div class="login-box">
+    <h2 class="cardTitle textShadow">Connexion à Groupomania</h2>
+    <!-- Formulaire pour le Login -->
+    <form>
+      <div class="user-box">
+        <input type="email" name="" required="" v-model="dataLogin.email">
+        <label>Email</label>
+      </div>
+      <div class="user-box" @keydown.enter="logIn">
+        <input type="password" name="" required="" v-model="dataLogin.password">
+        <label  >Mot de passe</label>
+      </div>
+      <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
+      <a @click="logIn">Se Connecter</a>
       <a href="/Inscription" class="linkInscription">Pas encore inscrit?</a>
-  </form>
-</div>
+    </form>
+  </div>
 </template>
 <script>
 import axios from "axios"

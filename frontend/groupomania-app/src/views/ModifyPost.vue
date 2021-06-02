@@ -1,21 +1,22 @@
 <template>
+<!-- Page de modification d'un article par l'auteur de celui-ci -->
   <div class="main" v-if="token!=null">
      <div class="login-box">
         <div>
-<h2 class="cardTitle textShadow">Modifier Ma publication</h2>
+          <h2 class="cardTitle textShadow">Modifier Ma publication</h2>
             <label for="title" class="labelTitle textShadow">Titre</label>
             <input type="text" class="form-control " id="title" v-model="post.title" required placeholder="Ecrivez votre titre">
         </div>
-          <div>
+        <div>
             <label for="content" class="labelTitle textShadow">Contenu</label>
             <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="modifyPublication"></textarea>
         </div>
-            <div>
-    <label for="title" class="labelTitle textShadow">Photo</label>
-      <input id="imageAccess" type="file" placeholder="Ajouter une image" @change="getImage">
-      <div  id="imagePreview"></div>
-    </div>
-          <a class="showButton modifyButton" type="submit" @click.prevent="modifyPublication">Modifier</a>
+        <div>
+          <label for="title" class="labelTitle textShadow">Photo</label>
+          <input id="imageAccess" type="file" placeholder="Ajouter une image" @change="getImage">
+          <div  id="imagePreview"></div>
+        </div>
+        <a class="showButton modifyButton" type="submit" @click.prevent="modifyPublication">Modifier</a>
      </div>
   </div>
 </template>

@@ -1,28 +1,28 @@
 <template>
-<div class="login-box">
-  <h2 class="cardTitle textShadow">Creer Un Nouvel Article</h2>
-  <form v-if="connexion" enctype="multipart/form-data"> <!-- Va gere le file (supervariable) en plus du texte-->
-    <div>
-            <label for="title" class="labelTitle textShadow">Titre</label>
-            <input type="text" class="form-control " id="title" v-model="post.title" required placeholder="Ecrivez votre titre">
-    </div>
-    <div>
-      <label for="content" class="labelTitle textShadow">Contenu</label>
-      <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createPost"></textarea>
-    </div>
-    <!-- ZONE IMAGE-->
-    <div>
-    <label for="title" class="labelTitle textShadow">Photo</label>
-      <input id="imageAccess" type="file" placeholder="Ajouter une image" @change="getImage">
-      <div  id="imagePreview"></div>
-    </div>
-    <!-- ZONE IMAGE-->
-     <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
- 
-    <a type="submit" @click.prevent="createPost">Partager</a>
+<!-- Page permettant a un utilisateur de devenir auteur d'un article comprenant TITRE CONTENU et possiblement IMAGE -->
+  <div class="login-box">
+    <h2 class="cardTitle textShadow">Creer Un Nouvel Article</h2>
+    <form v-if="connexion" enctype="multipart/form-data"> <!-- Va gere le file (supervariable) en plus du texte-->
+      <div>
+        <label for="title" class="labelTitle textShadow">Titre</label>
+        <input type="text" class="form-control " id="title" v-model="post.title" required placeholder="Ecrivez votre titre">
+      </div>
+      <div>
+        <label for="content" class="labelTitle textShadow">Contenu</label>
+        <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createPost"></textarea>
+      </div>
+      <!-- Debut ZONE IMAGE-->
+      <div>
+        <label for="title" class="labelTitle textShadow">Photo</label>
+        <input id="imageAccess" type="file" placeholder="Ajouter une image" @change="getImage">
+        <div  id="imagePreview"></div>
+      </div>
+      <!-- Fin ZONE IMAGE-->
+      <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
+      <a type="submit" @click.prevent="createPost">Partager</a>
       <a href="/Profile" class="linkInscription">Retour à Mon Profil</a>
-  </form>
-</div>
+    </form>
+  </div>
 </template>
 
 <script>

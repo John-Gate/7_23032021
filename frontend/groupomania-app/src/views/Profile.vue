@@ -3,6 +3,10 @@
     <h2 class="cardTitle textShadow">Mon Profil<div v-if=" role == 2 ">administrateur</div></h2>
     <form>
   <div class="infoUser">
+                                                                 <div id="animated-number-demo">
+                                                              <input v-model.number="number" type="number" step="20">
+                                                              <p>{{ animatedNumber }}</p>
+                                                            </div> 
    <div class="profileInfo">
       <table class="textShadow profileInfo__table">
         <tr>
@@ -104,9 +108,8 @@
 </template>
 
 <script>
-
-
 import axios from "axios";
+import gsap from "gsap";
 export default {
     data () {
       return {
@@ -126,7 +129,9 @@ export default {
            role:'',
            userNumber:'',
            postNumber:'',
-           commentNumber:''
+           commentNumber:'',
+           number: 0,
+    tweenedNumber: 0
         };
     },
      mounted(){
@@ -136,6 +141,16 @@ export default {
        this.moderateComment(),
        this.getStats()  
    },
+       computed: {
+    animatedNumber() {
+      return this.tweenedNumber.toFixed(0);
+    }
+  },
+  watch: {
+    number(newValue) {
+      gsap.to(this.$data, { duration: 0.5, tweenedNumber: newValue });
+    }
+  },
     methods:{
       //Affiche le profile de l'utilisateur
       profileUser(){

@@ -1,41 +1,41 @@
 <template>
-<div class="login-box">
-  <h2 class="cardTitle textShadow">Inscription à Groupomania</h2>
-  <form @keydown.enter="sendSignup">
-<div class="fullBlock">
-  <div class="fullBlock__form">
-      <i class="fas fa-id-card"></i>
-          <div class="user-box" >
-            <input type="lastName" name="" required="" v-model="dataSignup.lastName">
-            <label>Nom</label>
-          </div>
-          <div class="user-box">
-            <input type="firstName" name="" required="" v-model="dataSignup.firstName">
-            <label>Prénom</label>
-          </div>
-          <div class="user-box">
-            <input type="email"  name="" required="" v-model="dataSignup.email">
-            <label>Email</label>
-          </div>
-          <div class="user-box">
-            <input id="password" type="password" name="" required=""  v-model="dataSignup.password">
-            <label>Mot de passe</label>
-            <p class="password_textDescription">*Tous les champs sont obligatoires  <br>**Votre Nom et Prénom ne doit comporter que des lettres<br>***Votre mot de passe doit contenir au moins 6 caractères dont au minimum une majuscule, une minuscule et un caractère numérique</p>
-          </div>
-  </div>
-     <div class="textDescription">
+<!-- Page d'inscription du nouvel utilsiateur -->
+  <div class="login-box">
+    <h2 class="cardTitle textShadow">Inscription à Groupomania</h2>
+    <!-- Formulaire a remplir par nouvel utilisateur pour inscription -->
+    <form @keydown.enter="sendSignup">
+      <div class="fullBlock">
+        <div class="fullBlock__form">
+            <i class="fas fa-id-card"></i>
+              <div class="user-box" >
+                <input type="lastName" name="" required="" v-model="dataSignup.lastName">
+                <label>Nom</label>
+              </div>
+              <div class="user-box">
+                <input type="firstName" name="" required="" v-model="dataSignup.firstName">
+                <label>Prénom</label>
+              </div>
+              <div class="user-box">
+                <input type="email"  name="" required="" v-model="dataSignup.email">
+                <label>Email</label>
+              </div>
+              <div class="user-box">
+                <input id="password" type="password" name="" required=""  v-model="dataSignup.password">
+                <label>Mot de passe</label>
+                <p class="password_textDescription">*Tous les champs sont obligatoires  <br>**Votre Nom et Prénom ne doit comporter que des lettres<br>***Votre mot de passe doit contenir au moins 6 caractères dont au minimum une majuscule, une minuscule et un caractère numérique</p>
+              </div>
+        </div>
+        <!-- Text de Presentation -->
+        <div class="textDescription">
           <i class="fas fa-users"></i>
-         <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connectez, a l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et meme les commenter! </p>
-     </div>
-</div>
- <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
- 
-    <a @click="sendSignup" type="submit">
-      S'Inscrire
-    </a>
-      <a href="/Login" class="linkInscription">Déjà inscrit?</a>
-  </form>
-</div>
+          <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connectez, a l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et meme les commenter! </p>
+        </div>
+      </div>
+        <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
+        <a @click="sendSignup" type="submit">S'Inscrir</a>
+        <a href="/Login" class="linkInscription">Déjà inscrit?</a>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -53,7 +53,7 @@ export default {
       };
   },
   methods: {
-      //Envoit une requete d admission a valider par l'admin
+      //Envoit une requete d'admission d'un nouvel utilisateur a valider par l'admin
       sendSignup() {
         const regexPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})/;
       const regexEmail = /^[a-z0-9._-]+@[a-z0-9.-]{2,}[.][a-z]{2,3}$/;

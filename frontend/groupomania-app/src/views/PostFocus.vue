@@ -1,51 +1,57 @@
 <template>
+<!-- Page de l'article selectionne par l'utilisateur -->
   <div class="main" v-if="token!=null">
-     <div class="login-box">
-       <h2  class="cardTitle animate__animated animate__bounce textShadow ">{{ post.title }}</h2>
-      <div class="imageRow">
-         <div  id="imagePreview">
-           <a id="imageTotal" href="">
-           <img id="imagePostFocus" src="" alt="">
-           </a>
-         </div>
-         <p class="postContent textShadow">{{ post.content }}</p>
-      </div>
-      <!-- <p class="auteurArticle">par: {{ post.User.firstName }}</p> -->
-<!-- DEBUT ZONE LIKES/DISLIKES-->    
- <div class="rowLike">
-        <a class="rowLike__icone" type="submit" @click.prevent="likePost">
-        <i class="fas fa-thumbs-up" v-if="asLiked == true"></i>
-        <i class="far fa-thumbs-up" v-if="asLiked == false"></i>
-        </a>
-      <p class="rowLike__numbers">  {{ numbersLikes }} </p> 
- </div>
-  <div class="likes">
-  </div>
-<!-- FIN ZONE LIKES/DISLIKES-->
-       <a class="showButton"  v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</a>
-       <a  class="showButton" v-if="author==true" @click="deletePublication">SUPPRESSION</a>
-       <div>
+    <div class="login-box">
+      <h2  class="cardTitle animate__animated animate__bounce textShadow ">{{ post.title }}</h2>
+        <div class="imageRow">
+          <div  id="imagePreview">
+            <a id="imageTotal" href="">
+              <img id="imagePostFocus" src="" alt="">
+            </a>
+          </div>
+          <p class="postContent textShadow">{{ post.content }}</p>
+        </div>
+             <!-- <p class="auteurArticle">par: {{ post.User.firstName }}</p>   -->
+        <!-- DEBUT ZONE LIKES-->    
+        <div class="rowLike">
+          <a class="rowLike__icone" type="submit" @click.prevent="likePost">
+            <!-- Icone differente si l'utilisateur a like ou non-->
+            <i class="fas fa-thumbs-up" v-if="asLiked == true"></i>
+            <i class="far fa-thumbs-up" v-if="asLiked == false"></i>
+          </a>
+          <p class="rowLike__numbers">  {{ numbersLikes }} </p> 
+        </div>
+        <div class="likes"></div>
+        <!-- FIN ZONE LIKES-->
+        <!-- Boutton accessible par l'auteur de l'article seulement -->
+        <a class="showButton"  v-if="author==true" type="submit" @click="showButton(post.id)">Modifier</a>
+        <a  class="showButton" v-if="author==true" @click="deletePublication">SUPPRESSION</a>
+        <!-- Debut ZONE COMMENTAIRE -->
+        <div>
           <p class="toDoForm">Laissez un commentaire:</p>
-         <div class="formButtonAlignement">
-            <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createCommentary"></textarea>
-            <a type="submit" @click.prevent="createCommentary" class="buttonShake showButton">Partager</a>
-         </div>
-       </div>
-          <p class="infoComment" v-if="comment.length >= 1">Cet article a été commenté:</p>
+          <div class="formButtonAlignement">
+             <textarea class="form-control form-control__contenu" id="content" v-model="reply" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createCommentary"></textarea>
+             <a type="submit" @click.prevent="createCommentary" class="buttonShake showButton">Partager</a>
+          </div>
+        </div>
+        <!-- Fin ZONE COMMENTAIRE -->
+        <!-- Si commentaire rattache et modere pour cette article: -->
+        <p class="infoComment" v-if="comment.length >= 1">Cet article a été commenté:</p>
         <div id="comment" v-for="commentary in comment" :key="commentary.id">
           <p>{{ commentary.content }}</p>
-         <div class="infoComment__attribute">
-            <p class="infoComment__attribute--dateStamp">poste le: {{ commentary.createdAt.split("-")[2].split("T")[0] }}/{{ commentary.createdAt.split("-")[1] }}/{{ commentary.createdAt.split("-")[0] }}</p>
-            <p class="infoComment__attribute--name">par: {{ commentary.User.firstName }}</p>
-         </div>
+          <div class="infoComment__attribute">
+             <p class="infoComment__attribute--dateStamp">poste le: {{ commentary.createdAt.split("-")[2].split("T")[0] }}/{{ commentary.createdAt.split("-")[1] }}/{{ commentary.createdAt.split("-")[0] }}</p>
+             <p class="infoComment__attribute--name">par: {{ commentary.User.firstName }}</p>
+          </div>
         </div>
-     </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 export default {
+  el: '#animated-number-demo',
    data() {
       return {
         token: sessionStorage.getItem('token'),
@@ -69,7 +75,8 @@ export default {
    mounted(){
         this.getOnePublication()
    },
-    methods: {
+   methods: {
+      //Affiche l'article selectione depuis la page HOME
       getOnePublication(){
         const token = sessionStorage.getItem('token');
         let url = window.location.href.split("?");
@@ -84,6 +91,9 @@ export default {
           .then(res => {
               const data = res.data;
               this.post = data.post;
+              this.post.User = data.post.User
+              console.log(data )
+              console.log(this.post.User.firstName )
               if(this.post.UserId == this.user_id){
                 this.author = true;
               }
@@ -106,6 +116,7 @@ export default {
           })
           .catch(error => console.log({error}));
       },
+      //Boutton de Suppression de l'article par son auteur seulement
       deletePublication(){
         const token = sessionStorage.getItem('token');
         const data = {
@@ -123,6 +134,7 @@ export default {
           })
           .catch(error => console.log({error}));
       },
+      //Boutton de MOdification de l'article par son auteur seulement
       modifyPublication(){
       const token = sessionStorage.getItem('token');
       const data = {
@@ -140,6 +152,7 @@ export default {
         })
         .catch(error => console.log({error}));
       },
+      //Creation d'un commentaire lie a cette article
       createCommentary(){
             const data = {
               currentUser: this.user_id,
@@ -157,10 +170,11 @@ export default {
 			})
             .then(() => this.$router.push("/"));
       },
+      //Redirection vers la page Modification de l'article pour et par son auteur
         showButton(id){
           window.location.href='/modifypost/?post='+id
       },
-      //Permet de liker ou d'annuler un like/1 like par utilisateur permis
+      //Permet de liker ou d'annuler un like/ 1 like permis par utilisateur
       likePost(){
         axios.post("http://localhost:3000/api/auth/likePost", { postId: this.post_id}, {headers:{Authorization: "Bearer " + sessionStorage.token}})
         .then((res) => {

@@ -1,16 +1,18 @@
 <template>
+<!-- Page d'accueil pour la connexion et qui lorsque la session est ouverte, permet l'affichage des differents articles dans l'ordre du plus recent en premier -->
  <div class="main">
-   
       <!-- Si Connecté -->
     <div v-if="token!=null">
       <!-- Si pas d'articles' -->
       <div v-if="posts.length === 0" >
-              <div class="text">Aucun contenu  </div>
+        <div class="text">Aucun contenu  </div>
       </div>
       <!-- Si il y a des articles -->
       <div v-else class="login-box">
+      <!-- Personnalisation du message de bienvenu-->
         <h2 class="cardTitle textShadow">Bienvenu {{ name }}</h2>
         <p class="infoBienvenu textShadow">voici les derniers articles parus: </p>
+        <!-- Boucle permettant l'affichage de tous les articles valider de la BDD -->
           <div  @click="showButton(post.id)" class="articles" v-for="post in posts" :key="post.postId">
           <div id="titleArticle">
               <h2 id="postTitle">{{ post.title }}</h2>
@@ -25,21 +27,21 @@
        <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
       </div>
     </div>
-    <!-- Si pas Connecté -->
+    <!--Affichage si pas connecté -->
     <div v-else> 
        <div class="login-box alignHome">
         <h2 class="cardTitle textShadow">Bienvenu Sur Groupomania</h2>
         <div class="card-date">
         <p>Nous sommes le {{ dateDuJour }}</p>
         </div>
-<div class="blockLogoText">
-              <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connecter, à l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et même les commenter! </p>
-</div>
-  <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
+        <!-- Text de Presentation -->
+        <div class="blockLogoText">
+          <p class="textDescription__User">Voici votre lieu de reflexion dedie a notre structure: votre  réseau social interne propre.<br> Une astuce, une idée, ou encore une pensée? Pourquoi ne pas echanger et en faire profiter vos collegues? <br>Simplement apres vous etre inscrit, vous pourrez vous connecter, à l'aide de votre e-mail et de votre mot de passe, afin de voir les derniers articles parrus, et même les commenter! </p>
+        </div>
+        <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
       </div>
-      </div>
+    </div>
  </div>
- 
 </template>
 
 <script>
@@ -196,6 +198,4 @@ box-shadow: 0 0 1px $base-color,
 transform:scale(1.05);
 }
 }
-
-
 </style>
