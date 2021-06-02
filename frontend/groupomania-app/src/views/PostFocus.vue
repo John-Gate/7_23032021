@@ -11,7 +11,7 @@
           </div>
           <p class="postContent textShadow">{{ post.content }}</p>
         </div>
-             <!-- <p class="auteurArticle">par: {{ post.User.firstName }}</p>   -->
+              <!-- <p class="auteurArticle">par: {{ this.firstName }}</p>    -->
         <!-- DEBUT ZONE LIKES-->    
         <div class="rowLike">
           <a class="rowLike__icone" type="submit" @click.prevent="likePost">
@@ -92,6 +92,7 @@ export default {
               const data = res.data;
               this.post = data.post;
               this.post.User = data.post.User
+              this.firstName = data.post.User.firstName
               console.log(data )
               console.log(this.post.User.firstName )
               if(this.post.UserId == this.user_id){

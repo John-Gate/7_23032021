@@ -23,7 +23,12 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
 >.  
 
 ## Installation
-  lancer la commande: `npm install` pour chacun des dossiers frontend et backend 
+NODE PACKAGE MANAGER: 
+  lancer la commande: `npm install` dans le terminal pour chacun des dossiers frontend et backend:
+    >Pour le frontend dans : cd .\frontend\groupomania-app  
+    >Pourle backend: cd .\backend
+
+
 
 
 **Démarrage:**  
