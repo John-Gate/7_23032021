@@ -7,6 +7,7 @@
 6. [Évaluation](#Évaluation)
 7. [Contact](#Contact)
 
+
 ### Information Generale
 Création d’un réseau social d’entreprise pour améliorer la communication entre collègues : 
 * Développer la première version de l'application.
@@ -29,14 +30,15 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
     - Pour le frontend dans : cd .\7_23032021\frontend\groupomania-app  
     - Pourle backend: cd .\7_23032021\backend
 
-Pour la BASE DE DONNÉES MySQL:
-  1. Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
-  2. Démarrer XAMPP : `START` les modules Apache ET MySQL.
-  3. Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php)dans le navigateur.
-  4. Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**.
-  5. Importer le fichier: groupomaniabddmysql (6).sql .
+- Pour la BASE DE DONNÉES MySQL:
+    1. Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
+    2. Démarrer XAMPP : `START` les modules Apache ET MySQL.
+    3. Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php)dans le navigateur.
+    4. Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**.
+    5. Importer le fichier: groupomaniabddmysql (6).sql .
 
 :partying_face: Félicitation :partying_face:
+
 
 **Démarrage:**  
 *Pour le frontend:*  
@@ -52,10 +54,10 @@ Les identifiants de l'admin sont :
 
  
 ## Éléments fournis
-*Dossier:
-  Frontend 
-  Backend
-*Database SQL
+- *Dossier:
+    - Frontend 
+    - Backend
+- *Database SQL
 
 
 ##  Cahier des charges
@@ -76,6 +78,7 @@ Construire un réseau social interne pour les employés de Groupomania sur le mo
 * Projet codé en JAVASCRIPT.
 * Personnaliser le contenu a envoyer à un client web.
 
+
 ## Notes
 **Backend:**
  * Framework : Express
@@ -87,8 +90,10 @@ Construire un réseau social interne pour les employés de Groupomania sur le mo
 **Frontend:**
  * Framwework: Vuejs
 
+
 ## Évaluation
 :heavy_check_mark: Ce projet est en cours de validation.
+
 
 ## Contact
 * [Email](mailto:barrierejc@live.fr?subject=[GitHub]%20Source%20Han%20Sans)
