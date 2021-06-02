@@ -54,10 +54,10 @@ Les identifiants de l'admin sont :
 
  
 ## Éléments fournis
-- *Dossier:
+ * Dossier:
     - Frontend 
     - Backend
-- *Database SQL
+ * Database SQL
 
 
 ##  Cahier des charges
