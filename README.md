@@ -22,12 +22,12 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
  
 
 ## Installation
--Apres avoir cloner le Repository:
+- Apres avoir cloner le Repository:
 
-NODE PACKAGE MANAGER: 
-  -lancer la commande: `npm install` dans le terminal pour chacun des dossiers frontend et backend:
-    >Pour le frontend dans : cd .\7_23032021\frontend\groupomania-app  
-    >Pourle backend: cd .\7_23032021\backend
+- NODE PACKAGE MANAGER: 
+  1. lancer la commande: `npm install` dans le terminal pour chacun des dossiers frontend et backend:
+    - Pour le frontend dans : cd .\7_23032021\frontend\groupomania-app  
+    - Pourle backend: cd .\7_23032021\backend
 
 Pour la BASE DE DONNÉES MySQL:
   1. Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
