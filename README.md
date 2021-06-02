@@ -37,7 +37,7 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
     - Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**  
     - Importer le fichier: groupomaniabddmysql (6).sql 
 
-                                                                    :partying_face: Félicitation :partying_face:
+ :partying_face: Félicitation :partying_face:
 
 
 **Démarrage:**  
