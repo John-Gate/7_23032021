@@ -220,7 +220,7 @@ exports.updatePublication = (req, res, next) => {
                 })
                 .then(post=>{
                     if(post.UserId == currentUser){ //Verifiaction Utilisateur = Auteur
-                        if (user.role == 2) {   
+                        if (user.role == 2) {  //si user == admin 
                         if(req.file){
                             var data={
                                 title: req.body.title,
@@ -241,7 +241,7 @@ exports.updatePublication = (req, res, next) => {
                         )
                         .then(()=>res.end())
                         .catch(()=>res.status(500).json("Modification Impossible"))
-                        }else{
+                        } else{ //si user == utilisateur non admin
                         if(req.file){
                             var data={
                                 title: req.body.title,

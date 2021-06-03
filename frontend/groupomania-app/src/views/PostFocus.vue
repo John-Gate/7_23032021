@@ -3,14 +3,17 @@
   <div class="main" v-if="token!=null&&post">
     <div class="login-box">
       <h2  class="cardTitle animate__animated animate__bounce textShadow ">{{ post.title }}</h2>
+      <!-- DEBUT ZONE IMAGE-->  
         <div class="imageRow">
           <div  id="imagePreview">
             <a id="imageTotal" :href=post.image>
-              <img id="imagePostFocus" :src=post.image alt="">
+              <img v-if="post.image" id="imagePostFocus" :src=post.image alt="">
+              <!-- v-if necessaire pour eviter d avoir un residuel (point ou ligne noire) lié au Border de #imagePostFocus -->
             </a>
           </div>
           <p class="postContent textShadow">{{ post.content }}</p>
         </div>
+      <!-- FIN ZONE IMAGE-->  
                 <p class="auteurArticle"> par: {{post.User.firstName}}</p>  
         <!-- DEBUT ZONE LIKES-->    
         <div class="rowLike">
@@ -193,9 +196,28 @@ $base-color: #fff;
 }
 #imagePostFocus{
   border: 1px solid black;
-  width: 28rem;
+  // width: 28rem;
   margin: 1rem;
+  max-height: 8rem;
+  transition: transform .5s;
+  &:hover{
+    -webkit-transform:scale(1.08); /* Safari et Chrome */
+    -moz-transform:scale(1.08); /* Firefox */
+    -ms-transform:scale(1.08); /* Internet Explorer 9 */
+    -o-transform:scale(1.08); /* Opera */
+    transform:scale(1.08);
+  }
 }
+#imagePreview{
+  display: flex;
+}
+ #imageTotal{
+  display: flex; 
+  &:hover{ // Empecher l'effet apporter par les <a> 
+      background: none;
+      box-shadow: none;
+  }
+ }
 #comment{
 color: $base-color;
 border: 1px solid $base-color;
@@ -242,8 +264,8 @@ box-shadow: 0 0 1px $base-color,
 }
 .postContent{
   font-family: "Playball", sans-serif;
-      word-spacing: .2rem;
-    letter-spacing: .1rem;
+      word-spacing: .4rem;
+    letter-spacing: .15rem;
     display: flex;
     align-items: center;
 }
@@ -271,10 +293,6 @@ box-shadow: 0 0 1px $base-color,
     flex-direction: column;
     align-items: center;
 }
- #imageTotal:hover{ // Empecher l'effet apporter par les <a> 
-    background: none;
-    box-shadow: none;
- }
 .rowLike{
   display: flex;
   justify-content: flex-end ;
@@ -299,8 +317,11 @@ box-shadow: 0 0 1px $base-color,
   .imageRow{
     flex-direction: column;
 }
-#imagePostFocus{
-  width: 12rem;
+.postContent{
+  justify-content: center;
+}
+#imagePreview{
+  justify-content: center;
 }
 }
 </style>

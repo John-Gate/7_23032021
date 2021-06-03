@@ -40,7 +40,7 @@ export default {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('name');
         sessionStorage.removeItem('id');
-        alert('Vous avez été déconnecté. Merci de votre visite.');
+        alert('Vous vous etes déconnecté. Merci de votre visite.');
         location.replace("/")
       }
     }
@@ -323,21 +323,24 @@ ul {
     flex-direction: column;
      position: static;
   }
+  .notConnected{
+    display: flex;
+    flex-direction: column;
+  }
 }
 @media screen and (max-width: 1024px){
   .alignLogo{
     flex-wrap: wrap;
   }
-    .connected{
+  .connected{
     flex-wrap: wrap;
   }
   .infoUsersDisplay {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 }
 @media screen and (max-width: 980px){
- 
   .profileInfo{
     flex-direction: column;
     align-items: center;
@@ -357,7 +360,7 @@ ul {
     flex-direction: column;
   }
 .textShadow{
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   .footerBar__list{
     flex-direction: column;

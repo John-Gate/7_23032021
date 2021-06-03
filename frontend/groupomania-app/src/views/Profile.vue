@@ -51,7 +51,7 @@
                       <td>{{ user.lastName }}</td>
                     </tr>
                     <tr>
-                      <th class="articles--italique">Créer le:</th>
+                      <th class="articles--italique">Créé le:</th>
                       <td>{{ user.createdAt.split("-")[2] }}/{{ user.createdAt.split("-")[1] }}/{{ user.createdAt.split("-")[0] }}</td>
                     </tr>
                   </table>
@@ -70,7 +70,7 @@
                     <img id="imagePostFocus" :src= post.image alt="" >
                 </div>
                 <div class="diplayAttribute">
-                  <p class="dateStamp articles--italique" >Créé le: {{ post.createdAt.split("-")[2].split("T")[0] }}/{{ post.createdAt.split("-")[1] }}/{{ post.createdAt.split("-")[0] }}</p>
+                  <p class="dateStamp articles--italique" >Datant du: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
                 </div>
                 <p class="auteur" >par : {{ post.User.firstName }} {{ post.User.lastName }}</p>
               </div>
@@ -105,60 +105,59 @@ import gsap from "gsap";
 export default {
     data () {
       return {
-          token: sessionStorage.getItem('token'),
-           user_id:sessionStorage.getItem("id"),
-           posts: '',
-           post:'',
-           post_id:'',
-           users: '',
-           user: '',
-           comments:'',
-           image:'',
-           email:'',
-           firstName:'',
-           lastName:'',
-           createdAt:'',
-           role:'',
-           userNumber:'',
-           postNumber:'',
-           commentNumber:'',
-    postNumberAnimated : 0,
-    userNumberAnimated : 0,
-    commentNumberAnimated : 0
-    
+        token: sessionStorage.getItem('token'),
+        user_id:sessionStorage.getItem("id"),
+        posts: '',
+        post:'',
+        post_id:'',
+        users: '',
+        user: '',
+        comments:'',
+        image:'',
+        email:'',
+        firstName:'',
+        lastName:'',
+        createdAt:'',
+        role:'',
+        userNumber:'',
+        postNumber:'',
+        commentNumber:'',
+        postNumberAnimated : 0,
+        userNumberAnimated : 0,
+        commentNumberAnimated : 0
         };
     },
-     mounted(){
+    mounted(){
        this.profileUser(),
        this.moderatePost(),
        this.moderateUser(),
        this.moderateComment(),
        this.getStats()  
-   },
-   //Debut Animation des stats
+    },
+    //Debut Animation des stats
     computed: {
-    postReallyAnimated(){
-      return this.postNumberAnimated.toFixed(0);
+      postReallyAnimated(){
+        return this.postNumberAnimated.toFixed(0);
+      },
+      commentReallyAnimated(){
+        return this.commentNumberAnimated.toFixed(0);
+      },
+      userReallyAnimated(){
+        return this.userNumberAnimated.toFixed(0);
+      }
     },
-     commentReallyAnimated(){
-      return this.commentNumberAnimated.toFixed(0);
-    },
-     userReallyAnimated(){
-      return this.userNumberAnimated.toFixed(0);
-    }
-  },
     watch: {
-    postNumber(newValue) {
+      postNumber(newValue) {
         gsap.to(this.$data, { duration: .75, postNumberAnimated: newValue });
       },
-        userNumber(newValue) {
+      userNumber(newValue) {
         gsap.to(this.$data, { duration: .75, userNumberAnimated: newValue });
       },
-        commentNumber(newValue) {
+      commentNumber(newValue) {
         gsap.to(this.$data, { duration: .75, commentNumberAnimated: newValue });
       }
-      //Fin Animation des stats
-  },
+    //Fin Animation des stats
+    },
     methods:{
       //Affiche le profile de l'utilisateur
       profileUser(){
@@ -174,7 +173,7 @@ export default {
             const data = res.data;
               this.firstName = data.firstName;
               this.lastName = data.lastName;
-              this.createdAt = data.createdAt;
+              this.updatedAt = data.updatedAt;
               this.role = data.Role;
               if(this.user.UserId == this.user_id){
                 this.author = true;
@@ -312,8 +311,8 @@ export default {
           })
           .catch(error => console.log({error}));
       }
-}
     }
+}
 </script>
 
 <style  lang="scss">

@@ -9,7 +9,7 @@
       </div>
       <div>
         <label for="content" class="labelTitle textShadow">Contenu</label>
-        <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici ( maximum 255 characteres)" @keydown.enter="createPost"></textarea>
+        <textarea class="form-control form-control__contenu" id="content" v-model="post.content" rows=8  required placeholder="Ecrivez votre contenu ici         ( maximum 255 characteres)" @keydown.enter="createPost"></textarea>
       </div>
       <!-- Debut ZONE IMAGE-->
       <div>
@@ -118,6 +118,14 @@ input:active
 }
 #imagePreview{
     padding: 1rem;
+}
+#imageAccess{
+  color: $base-color;
+}
+@media screen and (max-width: 500px){
+  .form-control{
+    width: auto;
+  }
 }
 </style>
 

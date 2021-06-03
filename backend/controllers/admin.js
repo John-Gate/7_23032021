@@ -97,7 +97,7 @@ exports.getAllPublications = (req, res, next) => {
         attributes: ["firstName", "lastName"]
     }],
     where:{status:0},  
-    order:[["createdAt", "DESC"]]//le plus recent d abord
+    order:[["updatedAt", "DESC"]]//le plus recent d abord
   })
   .then((posts) => {
       if(posts.length > null){
