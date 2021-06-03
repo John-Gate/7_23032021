@@ -24,7 +24,6 @@ exports.createPublication = (req, res, next) => {
                     this.posts = data;
                 }
                 if (user.role == 2) {
-                    
                     if(req.file){
                         imageName =`${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
                     } else{
@@ -157,7 +156,7 @@ exports.getOnePublication = (req, res, next) => {
           attributes: ["firstName", "lastName"]
       }],
       where:{status:1},  
-      order:[["createdAt", "DESC"]]//on voit le plus recent d abord 
+      order:[["updatedAt", "DESC"]]//on voit le plus recent d abord 
     })
     .then((posts) => {
         if(posts.length > null){
@@ -168,7 +167,7 @@ exports.getOnePublication = (req, res, next) => {
   .catch(error=>res.status(500).json(error))
  };
 
- ////Permet a l'auteur de l'article de le supprimer
+////Permet a l'auteur de l'article de le supprimer
 exports.deletePublication = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
@@ -208,7 +207,7 @@ exports.updatePublication = (req, res, next) => {
     const postId = req.body.postId;
     currentUser = decodedToken.userId;
             models.User.findOne({
-                attributes: ["id"],
+                attributes: ["id","role"],
                 where: {id: currentUser}
             })
         .then(user => {
@@ -221,6 +220,28 @@ exports.updatePublication = (req, res, next) => {
                 })
                 .then(post=>{
                     if(post.UserId == currentUser){ //Verifiaction Utilisateur = Auteur
+                        if (user.role == 2) {   
+                        if(req.file){
+                            var data={
+                                title: req.body.title,
+                                content: req.body.content,
+                                image : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                                status: 1
+                            }
+                        } else {
+                            var data={
+                                title: req.body.title,
+                                content: req.body.content,
+                                status: 1
+                            }
+                        }
+                        models.Post.update(
+                           data,                        
+                           {where: {id: postId}}
+                        )
+                        .then(()=>res.end())
+                        .catch(()=>res.status(500).json("Modification Impossible"))
+                        }else{
                         if(req.file){
                             var data={
                                 title: req.body.title,
@@ -240,7 +261,8 @@ exports.updatePublication = (req, res, next) => {
                            {where: {id: postId}}
                         )
                         .then(()=>res.end())
-                        .catch(error=>res.status(500).json("Modification Impossible"))
+                        .catch(()=>res.status(500).json("Modification Impossible"))
+                        }
                     } else{
                         return res.status(500).json("L'utilisateur n a pas les droits")
                     }

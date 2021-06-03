@@ -2,23 +2,19 @@
   <div class="login-box">
     <h2 class="cardTitle textShadow">Mon Profil<div v-if=" role == 2 ">administrateur</div></h2>
     <form>
-  <div class="infoUser">
-                                                                 <div id="animated-number-demo">
-                                                              <input v-model.number="number" type="number" step="20">
-                                                              <p>{{ animatedNumber }}</p>
-                                                            </div> 
+  <div class="infoUser">                   
    <div class="profileInfo">
       <table class="textShadow profileInfo__table">
         <tr>
-          <th>Prénom :</th>
+          <th>Prénom:</th>
           <td>{{ firstName }}</td>
         </tr>
         <tr>
-          <th>Nom :</th>
+          <th>Nom:</th>
           <td>{{ lastName }}</td>
         </tr>
         <tr>
-          <th>Date d'inscription :</th>
+          <th>Date d'inscription:</th>
           <td>{{ createdAt.split("-")[2] }}/{{ createdAt.split("-")[1] }}/{{ createdAt.split("-")[0] }}</td>
         </tr>
       </table>
@@ -26,15 +22,15 @@
             <table class="textShadow profileInfo__table">
         <tr>
           <th>Nombre d'articles Totales:</th>
-          <td>{{ postNumber }}</td>
+          <td> {{ postReallyAnimated }}</td>
         </tr>
         <tr>
           <th>Nombre de commentaires Totales:</th>
-          <td>{{ commentNumber }}</td>
+          <td>{{ commentReallyAnimated }}</td>
         </tr>
         <tr>
           <th>Nombre d'utilisateurs Totales:</th>
-          <td>{{ userNumber }}</td>
+          <td>{{ userReallyAnimated }}</td>
         </tr>
       </table>
    </div>
@@ -53,10 +49,6 @@
                     <tr>
                       <th>Nom :</th>
                       <td>{{ user.lastName }}</td>
-                    </tr>
-                    <tr>
-                      <th>Email :</th>
-                      <td> {{user.email}}</td>
                     </tr>
                     <tr>
                       <th class="articles--italique">Créer le:</th>
@@ -130,8 +122,10 @@ export default {
            userNumber:'',
            postNumber:'',
            commentNumber:'',
-           number: 0,
-    tweenedNumber: 0
+    postNumberAnimated : 0,
+    userNumberAnimated : 0,
+    commentNumberAnimated : 0
+    
         };
     },
      mounted(){
@@ -141,15 +135,29 @@ export default {
        this.moderateComment(),
        this.getStats()  
    },
-       computed: {
-    animatedNumber() {
-      return this.tweenedNumber.toFixed(0);
+   //Debut Animation des stats
+    computed: {
+    postReallyAnimated(){
+      return this.postNumberAnimated.toFixed(0);
+    },
+     commentReallyAnimated(){
+      return this.commentNumberAnimated.toFixed(0);
+    },
+     userReallyAnimated(){
+      return this.userNumberAnimated.toFixed(0);
     }
   },
-  watch: {
-    number(newValue) {
-      gsap.to(this.$data, { duration: 0.5, tweenedNumber: newValue });
-    }
+    watch: {
+    postNumber(newValue) {
+        gsap.to(this.$data, { duration: .75, postNumberAnimated: newValue });
+      },
+        userNumber(newValue) {
+        gsap.to(this.$data, { duration: .75, userNumberAnimated: newValue });
+      },
+        commentNumber(newValue) {
+        gsap.to(this.$data, { duration: .75, commentNumberAnimated: newValue });
+      }
+      //Fin Animation des stats
   },
     methods:{
       //Affiche le profile de l'utilisateur
@@ -299,6 +307,7 @@ export default {
               sessionStorage.removeItem('token');
               sessionStorage.removeItem('name');
               sessionStorage.removeItem('id');
+              alert("Votre compte a bien été supprimé.")
               window.location.replace("/")
           })
           .catch(error => console.log({error}));

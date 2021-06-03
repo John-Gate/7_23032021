@@ -16,7 +16,7 @@ sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.
 //Etablir la connexion 
 sequelize.authenticate()
   .then(() => console.log('La connexion est établie.'))
-  .catch((error) => console.log('La connexion a échoué', error));
+  .catch((error) => ('La connexion a échoué', error));
 
 fs//FileSystem comment deocupe le nom des fichiers pour trouvers les differents models
   .readdirSync(__dirname) //Récupère tous les fichiers du répertoire du script en cours d'exécution de manière synchrone

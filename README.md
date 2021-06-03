@@ -34,8 +34,8 @@ Création d’un réseau social d’entreprise pour améliorer la communication 
     - Utilisation de [XAMP](https://www.apachefriends.org/fr/index.html)(*Lien pour effectuer l'installation*).
     - Démarrer XAMPP : `START` les modules Apache ET MySQL.
     - Se rendre sur [phpMyAdmin](http://localhost/phpmyadmin/index.php) dans le navigateur.
-    - Créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**  
-    - Importer le fichier: groupomaniabddmysql (6).sql 
+    - Dans *phpMyAdmin*, créer une nouvelle base de données dont le nom sera:  **groupomaniabddmysql**  
+    - Importer le fichier: groupomaniabddmysql.sql 
 
  :partying_face: Félicitation :partying_face:
 

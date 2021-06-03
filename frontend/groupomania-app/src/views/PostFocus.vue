@@ -1,17 +1,17 @@
 <template>
 <!-- Page de l'article selectionne par l'utilisateur -->
-  <div class="main" v-if="token!=null">
+  <div class="main" v-if="token!=null&&post">
     <div class="login-box">
       <h2  class="cardTitle animate__animated animate__bounce textShadow ">{{ post.title }}</h2>
         <div class="imageRow">
           <div  id="imagePreview">
-            <a id="imageTotal" href="">
-              <img id="imagePostFocus" src="" alt="">
+            <a id="imageTotal" :href=post.image>
+              <img id="imagePostFocus" :src=post.image alt="">
             </a>
           </div>
           <p class="postContent textShadow">{{ post.content }}</p>
         </div>
-              <!-- <p class="auteurArticle">par: {{ this.firstName }}</p>    -->
+                <p class="auteurArticle"> par: {{post.User.firstName}}</p>  
         <!-- DEBUT ZONE LIKES-->    
         <div class="rowLike">
           <a class="rowLike__icone" type="submit" @click.prevent="likePost">
@@ -55,11 +55,8 @@ export default {
    data() {
       return {
         token: sessionStorage.getItem('token'),
-        post: '',
+        post: {},
         posts:'',
-        User:{
-          firstName:''
-        },
         user_id:sessionStorage.getItem("id"),
         comment:'',
         reply:'',
@@ -72,7 +69,7 @@ export default {
         author: false
       };
     },
-   mounted(){
+   created(){
         this.getOnePublication()
    },
    methods: {
@@ -89,17 +86,12 @@ export default {
               }
           })
           .then(res => {
-              const data = res.data;
-              this.post = data.post;
-              this.post.User = data.post.User
-              this.firstName = data.post.User.firstName
-              console.log(data )
-              console.log(this.post.User.firstName )
+              this.post = res.data.post
               if(this.post.UserId == this.user_id){
                 this.author = true;
               }
-              this.comment = data.comment;
-              this.like = data.like;
+              this.comment = res.data.comment;
+              this.like = res.data.like;
               this.numbersLikes = this.like.length
               for(let likeUser in this.like ){
                 if(this.like[likeUser].UserId == sessionStorage.getItem("id")){
@@ -131,6 +123,7 @@ export default {
               }
           })
           .then(() => {
+            alert("Votre article a été supprimé.")
               window.location.replace("/")
           })
           .catch(error => console.log({error}));
@@ -181,10 +174,10 @@ export default {
         .then((res) => {
           //Condition: si admin, pas besoin de validé l'article
             if(res.data.newLike !== null){
-              alert("LIKER!");
+              alert("Vous avez LIKÉ cet article!");
               location.reload();
             } else{
-              alert("DISLIKER!");
+              alert("Article DISLIKÉ!");
               location.reload();
             }
         })
@@ -202,7 +195,6 @@ $base-color: #fff;
   border: 1px solid black;
   width: 28rem;
   margin: 1rem;
-  max-height: 15rem;
 }
 #comment{
 color: $base-color;
@@ -252,6 +244,8 @@ box-shadow: 0 0 1px $base-color,
   font-family: "Playball", sans-serif;
       word-spacing: .2rem;
     letter-spacing: .1rem;
+    display: flex;
+    align-items: center;
 }
 .toDoForm{
   color: $base-color;
@@ -277,10 +271,10 @@ box-shadow: 0 0 1px $base-color,
     flex-direction: column;
     align-items: center;
 }
-#imageTotal:hover{ // Empecher l'effet apporter par les <a> 
-  background: none;
-  box-shadow: none;
-}
+ #imageTotal:hover{ // Empecher l'effet apporter par les <a> 
+    background: none;
+    box-shadow: none;
+ }
 .rowLike{
   display: flex;
   justify-content: flex-end ;

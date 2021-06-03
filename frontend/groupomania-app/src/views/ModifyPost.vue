@@ -79,6 +79,7 @@ export default {
               }
               })
               .then(() => {
+                alert("Votre article a bien été modifié.")
                   window.location.replace("/")
               })
               .catch(error => console.log({error}));
