@@ -1,28 +1,30 @@
 <template>
-  <router-view/>
-    <div class="alignLogo">
-      <a href="/">
-      <img  class="logoGroupo" src="../src/assets/logos/icon-above-font-resize.png" alt="logo Groupomania">
-      </a>
-        <ul class="navMenu">
-          <li><a href="/">Accueil</a></li>
-            <li  v-if="token!=null" class="connected"><a href="/Profile">Mon Profil</a></li> 
-            <li  v-if="token!=null" class="connected"><a href="/Post">Publier</a></li>  
-            <li  v-if="token!=null" class="connected"><a @click="deconnexion">Se déconnecter</a></li>
-          <div v-else class="notConnected">
-            <li><a href="/Login" >S'IDENTIFIER</a></li> 
-            <li><a href="/Inscription">S'Inscrire</a></li> 
-          </div>
-        </ul>
-    </div>
-    <div class="footerBar">
-        <ul class="footerBar__list" >
-          <li><i class="fas fa-satellite-dish footerBar__list--icone"></i>Contactez-nous</li>
-          <li><i class="fas fa-file footerBar__list--icone"></i>Reglement</li>
-          <li><i class="fas fa-pen-fancy footerBar__list--icone"></i>Modalité</li>
-          <li><i class="fas fa-question footerBar__list--icone"></i>FAQ</li>
-        </ul>
-    </div>
+  <div class="encapsulate">
+    <router-view/>
+      <div class="alignLogo">
+        <a href="/">
+        <img  class="logoGroupo" src="../src/assets/logos/icon-above-font-resize.png" alt="logo Groupomania">
+        </a>
+          <ul class="navMenu">
+            <li><a href="/">Accueil</a></li>
+              <li  v-if="token!=null" class="connected"><a href="/Profile">Mon Profil</a></li> 
+              <li  v-if="token!=null" class="connected"><a href="/Post">Publier</a></li>  
+              <li  v-if="token!=null" class="connected"><a @click="deconnexion">Se déconnecter</a></li>
+            <div v-else class="notConnected">
+              <li><a href="/Login" >S'IDENTIFIER</a></li> 
+              <li><a href="/Inscription">S'Inscrire</a></li> 
+            </div>
+          </ul>
+      </div>
+      <div class="footerBar">
+          <ul class="footerBar__list" >
+            <li><i class="fas fa-satellite-dish footerBar__list--icone"></i>Contactez-nous</li>
+            <li><i class="fas fa-file footerBar__list--icone"></i>Reglement</li>
+            <li><i class="fas fa-pen-fancy footerBar__list--icone"></i>Modalité</li>
+            <li><i class="fas fa-question footerBar__list--icone"></i>FAQ</li>
+          </ul>
+      </div>
+  </div>
 </template>
 
 <script>
@@ -67,6 +69,10 @@ $base-color: #fff;
 //#app se trouve dans le HTML (path => frontend\groupomania-app\public\index.html)
 #app{
   display:contents;
+}
+.encapsulate{
+  display: flex;
+  flex-direction: column;
 }
 .card-date{
   color: white;
