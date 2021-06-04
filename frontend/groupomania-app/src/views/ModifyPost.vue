@@ -17,6 +17,7 @@
           <div  id="imagePreview"></div>
         </div>
         <a class="showButton modifyButton" type="submit" @click.prevent="modifyPublication">Modifier</a>
+     <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
      </div>
   </div>
 </template>

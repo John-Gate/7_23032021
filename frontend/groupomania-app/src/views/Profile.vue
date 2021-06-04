@@ -67,7 +67,7 @@
                 <h3>{{ post.title }}</h3>
                 <p class="postContent textShadow">{{ post.content }}</p>
                 <div class="imageRow">
-                    <img id="imagePostFocus" :src= post.image alt="" >
+                    <img id="imagePostFocus" :src= "post.image" alt="" >
                 </div>
                 <div class="diplayAttribute">
                   <p class="dateStamp articles--italique" >Datant du: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
@@ -83,7 +83,7 @@
             <div class="articles" id="comment" v-for="comment in comments" :key="comment">
               <div class="infoHeight--comment">
                 <p>{{ comment.content }}</p>
-                <p class="dateStamp articles--italique">Créé le: {{ comment.createdAt }}</p>
+                <p class="dateStamp articles--italique">Créé le: {{ comment.createdAt.split("-")[2] }}/{{ comment.createdAt.split("-")[1] }}/{{comment.createdAt.split("-")[0] }}</p>
               </div>
                 <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validateComment(comment.id)">Authoriser le commentaire</a>
           </div>
@@ -173,6 +173,7 @@ export default {
             const data = res.data;
               this.firstName = data.firstName;
               this.lastName = data.lastName;
+              this.createdAt = data.createdAt;
               this.updatedAt = data.updatedAt;
               this.role = data.Role;
               if(this.user.UserId == this.user_id){

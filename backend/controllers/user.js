@@ -1,7 +1,7 @@
 // Fonction concernant le Login, Signup, Acces aux infos d un utilisateur, 
 // suppression d un utilisateur et Like d'une publication.
 
-// Le statut d'un utilisateur est : 
+// Le role d'un utilisateur est : 
 // 0 : s'il a créé un compte mais n'est pas encore modéré.
 // 1 : s'il est modéré, et peut donc avoir accés aux fonctionnalités de base
 // (Creer un Article, un Commentaire, liker, modifier/supprimer sa publication ou

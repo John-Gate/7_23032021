@@ -18,7 +18,7 @@ sequelize.authenticate()
   .then(() => console.log('La connexion est établie.'))
   .catch((error) => ('La connexion a échoué', error));
 
-fs//FileSystem comment deocupe le nom des fichiers pour trouvers les differents models
+fs//FileSystem comment decoupe le nom des fichiers pour trouvers les differents models
   .readdirSync(__dirname) //Récupère tous les fichiers du répertoire du script en cours d'exécution de manière synchrone
   .filter(file => { //Filtre les fichiers qui commencent avec " . " different de basename et retire le " .js " a la fin.
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');

@@ -6,15 +6,15 @@
       <!-- DEBUT ZONE IMAGE-->  
         <div class="imageRow">
           <div  id="imagePreview">
-            <a id="imageTotal" :href=post.image>
-              <img v-if="post.image" id="imagePostFocus" :src=post.image alt="">
-              <!-- v-if necessaire pour eviter d avoir un residuel (point ou ligne noire) lié au Border de #imagePostFocus -->
+            <a id="imageTotal" :href="post.image">
+              <img v-if="post.image" id="imagePostFocus" :src="post.image" alt="">
+              <!-- v-if necessaire pour eviter d avoir un residuel (point ou ligne noire) lié au STYLE : Border de #imagePostFocus -->
             </a>
           </div>
           <p class="postContent textShadow">{{ post.content }}</p>
         </div>
       <!-- FIN ZONE IMAGE-->  
-                <p class="auteurArticle"> par: {{post.User.firstName}}</p>  
+                <p class="auteurArticle" v-if="post.User"> par: {{post.User.firstName}}</p>  
         <!-- DEBUT ZONE LIKES-->    
         <div class="rowLike">
           <a class="rowLike__icone" type="submit" @click.prevent="likePost">
@@ -47,6 +47,7 @@
              <p class="infoComment__attribute--name">par: {{ commentary.User.firstName }}</p>
           </div>
         </div>
+    <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
     </div>
   </div>
 </template>
@@ -100,14 +101,7 @@ export default {
                 if(this.like[likeUser].UserId == sessionStorage.getItem("id")){
                   this.asLiked = true
                   //cible elemtn du a changer la class toggleclass // atclass remove class
-              }
-              }
-              if(this.post.image){
-                let image = document.getElementById('imagePostFocus');
-                image.src = this.post.image
-                image.alt = "Apercu de l image" 
-                let link = document.getElementById('imageTotal');
-                link.href = this.post.image;
+                }
               }
           })
           .catch(error => console.log({error}));
