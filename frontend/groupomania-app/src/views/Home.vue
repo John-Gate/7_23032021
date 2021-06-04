@@ -197,5 +197,8 @@ box-shadow: 0 0 1px $base-color,
 -o-transform:scale(1.05); /* Opera */
 transform:scale(1.05);
 }
+.infoBienvenu{
+  text-align: center;
+}
 }
 </style>
