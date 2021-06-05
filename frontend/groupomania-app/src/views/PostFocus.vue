@@ -8,7 +8,7 @@
           <div  id="imagePreview">
             <a id="imageTotal" :href="post.image">
               <img v-if="post.image" id="imagePostFocus" :src="post.image" alt="">
-              <!-- v-if necessaire pour eviter d avoir un residuel (point ou ligne noire) lié au STYLE : Border de #imagePostFocus -->
+              <!-- v-if necessaire pour eviter d avoir un residuel (point ou ligne noire) lié au STYLE : Border de imagePostFocus -->
             </a>
           </div>
           <p class="postContent textShadow">{{ post.content }}</p>
@@ -158,6 +158,7 @@ export default {
         } else{
 				alert('Votre commentaire a bien été créé. Il va être validé prochainement.');
         }
+        location.reload();
 			})
             .then(() => this.$router.push("/"));
       },

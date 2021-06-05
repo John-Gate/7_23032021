@@ -14,8 +14,8 @@
         <p class="infoBienvenu textShadow">voici les derniers articles parus: </p>
         <!-- Boucle permettant l'affichage de tous les articles valider de la BDD -->
           <div  @click="showButton(post.id)" class="articles" v-for="post in posts" :key="post.postId">
-          <div id="titleArticle">
-              <h2 id="postTitle">{{ post.title }}</h2>
+          <div class="titleArticle">
+              <h2 class="postTitle">{{ post.title }}</h2>
               <p class="auteur">par: {{ post.User.firstName }}</p>
           </div>
           <p class="postContent ">{{ post.content.split(" ", 10).join(" ") }}... </p>
@@ -105,10 +105,10 @@ $base-color: #fff;
       padding: 1rem;
     }
 }
-#titleArticle{
+.titleArticle{
   text-align: left;
 }
-#postTitle{
+.postTitle{
   font-family: "raleway";
   text-align: left;
   margin-bottom: 0%;
@@ -199,6 +199,11 @@ transform:scale(1.05);
 }
 .infoBienvenu{
   text-align: center;
+}
+@media screen and (max-width: 640px){
+  .textDescription__User{
+    font-size: 1rem;
+  }
 }
 }
 </style>

@@ -43,7 +43,7 @@
           <h2 id="titleDisplay" class="textShadow">Nouveaux Utilisateurs</h2>
           <div class="infoUsersDisplay">
             <p v-if="users.length == 0">Aucun Nouvel Utilisateur</p>
-            <div class="articles" id="user" v-for="user in users" :key="user.userId">
+            <div class="articles user"  v-for="user in users" :key="user.userId">
 <div class="infoHeight">
                   <table>
                     <tr>
@@ -60,36 +60,36 @@
                     </tr>
                   </table>
 </div>
-                <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validateUser(user.id)">Authoriser l'utilisateur</a>
+                <a class="showButton borderBtn"  type="submit" @click.prevent="validateUser(user.id)">Authoriser l'utilisateur</a>
             </div>
           </div>
           <h2 id="titleDisplay" class="textShadow">Nouveaux Articles</h2>
           <div class="infoUsersDisplay">
             <p v-if="posts.length == 0">Aucun Nouvel Article</p>
-            <div class="articles" id="post" v-for="post in posts" :key="post">
+            <div class="articles post"  v-for="post in posts" :key="post">
               <div class="infoHeight--post">
                 <h3>{{ post.title }}</h3>
                 <p class="postContent textShadow">{{ post.content }}</p>
                 <div class="imageRow">
-                    <img id="imagePostFocus" :src= "post.image" alt="" >
+                    <img class="imagePostFocus" :src= "post.image" alt="" >
                 </div>
                 <div class="diplayAttribute">
                   <p class="dateStamp articles--italique" >Datant du: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
                 </div>
                 <p class="auteur" >par: {{ post.User.firstName }} {{ post.User.lastName }}</p>
               </div>
-                <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</a>
+                <a class="showButton borderBtn"  type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</a>
             </div>
           </div>
           <h2  id="titleDisplay" class=" textShadow">Nouveaux Commentaires</h2>
           <div class="infoUsersDisplay">
             <p v-if="comments.length == 0">Aucun Nouveau Commentaire</p>
-            <div class="articles" id="comment" v-for="comment in comments" :key="comment">
+            <div class="articles comment" v-for="comment in comments" :key="comment">
               <div class="infoHeight--comment">
                 <p>{{ comment.content }}</p>
                 <p class="dateStamp articles--italique">Créé le: {{  comment.createdAt.split("-")[2].split("T")[0] }}/{{ comment.createdAt.split("-")[1] }}/{{ comment.createdAt.split("-")[0] }}</p>
               </div>
-                <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validateComment(comment.id)">Authoriser le commentaire</a>
+                <a class="showButton borderBtn"  type="submit" @click.prevent="validateComment(comment.id)">Authoriser le commentaire</a>
           </div>
           </div>
       </div>
@@ -358,7 +358,7 @@ min-height: 150px;
     min-height: 115px;
   }
 }
-#imagePostFocus{
+.imagePostFocus{
   width: 50%;
 }
 @media screen and (max-width: 1024px){
