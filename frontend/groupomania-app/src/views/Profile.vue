@@ -1,8 +1,12 @@
 <template>
+ <!-- Page renseignant infos de l'utilisteur. 
+ Sert au moderateur pour avoir acces aux ARTICLES UTILISATEURS COMMENTAIRES a moderer
+ Affiche aussi les stats  -->
   <div class="login-box">
     <h2 class="cardTitle textShadow">Mon Profil<div v-if=" role == 2 ">administrateur</div></h2>
     <form>
-  <div class="infoUser">                   
+  <div class="infoUser"> 
+    <!-- Info utilisateur -->
    <div class="profileInfo">
       <table class="textShadow profileInfo__table">
         <tr>
@@ -15,7 +19,7 @@
         </tr>
         <tr>
           <th>Date d'inscription:</th>
-          <td>{{ createdAt.split("-")[2] }}/{{ createdAt.split("-")[1] }}/{{ createdAt.split("-")[0] }}</td>
+          <td v-if="createdAt"> {{ createdAt.split("-")[2].split("T")[0] }}/{{ createdAt.split("-")[1] }}/{{ createdAt.split("-")[0] }}</td>
         </tr>
       </table>
         <div v-if=" role == 2 ">
@@ -43,16 +47,16 @@
 <div class="infoHeight">
                   <table>
                     <tr>
-                      <th>Prénom :</th>
+                      <th>Prénom:</th>
                       <td>{{ user.firstName }}</td>
                     </tr>
                     <tr>
-                      <th>Nom :</th>
+                      <th>Nom:</th>
                       <td>{{ user.lastName }}</td>
                     </tr>
                     <tr>
                       <th class="articles--italique">Créé le:</th>
-                      <td>{{ user.createdAt.split("-")[2] }}/{{ user.createdAt.split("-")[1] }}/{{ user.createdAt.split("-")[0] }}</td>
+                      <td>{{ user.createdAt.split("-")[2].split("T")[0] }}/{{ user.createdAt.split("-")[1] }}/{{ user.createdAt.split("-")[0] }}</td>
                     </tr>
                   </table>
 </div>
@@ -72,7 +76,7 @@
                 <div class="diplayAttribute">
                   <p class="dateStamp articles--italique" >Datant du: {{ post.updatedAt.split("-")[2].split("T")[0] }}/{{ post.updatedAt.split("-")[1] }}/{{ post.updatedAt.split("-")[0] }}</p>
                 </div>
-                <p class="auteur" >par : {{ post.User.firstName }} {{ post.User.lastName }}</p>
+                <p class="auteur" >par: {{ post.User.firstName }} {{ post.User.lastName }}</p>
               </div>
                 <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validatePost(post.id)">Authoriser la Publication</a>
             </div>
@@ -83,7 +87,7 @@
             <div class="articles" id="comment" v-for="comment in comments" :key="comment">
               <div class="infoHeight--comment">
                 <p>{{ comment.content }}</p>
-                <p class="dateStamp articles--italique">Créé le: {{ comment.createdAt.split("-")[2] }}/{{ comment.createdAt.split("-")[1] }}/{{comment.createdAt.split("-")[0] }}</p>
+                <p class="dateStamp articles--italique">Créé le: {{  comment.createdAt.split("-")[2].split("T")[0] }}/{{ comment.createdAt.split("-")[1] }}/{{ comment.createdAt.split("-")[0] }}</p>
               </div>
                 <a class="showButton borderBtn" id="positionBtn" type="submit" @click.prevent="validateComment(comment.id)">Authoriser le commentaire</a>
           </div>

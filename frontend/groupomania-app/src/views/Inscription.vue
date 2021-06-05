@@ -32,7 +32,7 @@
         </div>
       </div>
         <img class="logoProfile" src="../assets/logos/icon-left-font-monochrome-black.svg" alt="">
-        <a @click="sendSignup" type="submit">S'Inscrir</a>
+        <a @click="sendSignup" type="submit">S'Inscrire</a>
         <a href="/Login" class="linkInscription">Déjà inscrit?</a>
     </form>
   </div>
@@ -56,8 +56,8 @@ export default {
       //Envoit une requete d'admission d'un nouvel utilisateur a valider par l'admin
       sendSignup() {
         const regexPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})/;
-      const regexEmail = /^[a-z0-9._-]+@[a-z0-9.-]{2,}[.][a-z]{2,3}$/;
-      const usernameRegex = /^[a-zA-Z ,.'-]+$/;
+        const regexEmail = /^[a-z0-9._-]+@[a-z0-9.-]{2,}[.][a-z]{2,3}$/;
+        const usernameRegex = /^[a-zA-Z ,.'-]+$/;
             if (
               (this.dataSignup.email !== null ||
               this.dataSignup.lastName !== null ||
