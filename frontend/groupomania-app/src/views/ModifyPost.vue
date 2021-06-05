@@ -118,13 +118,11 @@ $base-color: #fff;
     -webkit-text-stroke: 2px var(--fill-color);
     color: $base-color;
 }
-.form-control{
-  width: 350px;
-}
 .modifyButton{
   margin-top: 2rem;
 }
 #imageAccess{
   margin: 1rem;
+  color: $base-color;
 }
 </style>

@@ -97,9 +97,6 @@ export default {
 
 <style scoped lang="scss">
 $base-color:#FFF;
-.formControl{
-    width: 323px;
-}
 input:active
 {
     border: none;
@@ -122,10 +119,7 @@ input:active
 #imageAccess{
   color: $base-color;
 }
-@media screen and (max-width: 500px){
-  .form-control{
-    width: auto;
-  }
-}
+
+
 </style>
 
