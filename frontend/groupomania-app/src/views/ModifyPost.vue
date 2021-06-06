@@ -27,12 +27,12 @@ import axios from "axios";
 export default {
    data() {
       return {
-        token: sessionStorage.getItem('token'),
+        token: localStorage.getItem('token'),
          post:{
               title: '',
               content: ''
             },
-        user_id:sessionStorage.getItem("id"),
+        user_id:localStorage.getItem("id"),
         comment:'',
         connexion: false,
         post_id:'',
@@ -45,7 +45,7 @@ export default {
    methods: {
       //Affiche l'article que l'on souhaite modifier
        getOnePublication(){
-         const token = sessionStorage.getItem('token');
+         const token = localStorage.getItem('token');
          let url = window.location.href.split("?");
          let id = url[1].split("=");
          this.post_id = id[1];//pour delete publication later
@@ -72,7 +72,7 @@ export default {
           formData.append('title', this.post.title);
           formData.append('image', this.post.image);
           formData.append('postId', this.post_id);
-          const token = sessionStorage.getItem('token');
+          const token = localStorage.getItem('token');
             axios.put("http://localhost:3000/post/updatePost", formData, {
               headers: {
                       'Content-Type': 'application/json',

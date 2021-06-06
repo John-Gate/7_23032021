@@ -15,7 +15,6 @@ const jwt = require('jsonwebtoken');
 const models = require('../models');
 const utilsjwtoken = require('../utils/jwtoken');
 const checkinput = require('../utils/checkinput');
-const fs = require("fs");
 
 ////Creation d un compte en cryptant password, creer un nouvel utilisateur et enregistre données.
 exports.signup = (req, res) => {
@@ -96,10 +95,15 @@ exports.login = (req, res) => {
 
 ////Acquisition du profil de l'utilisateur 
 exports.getUser = (req, res, next) => {
-    const idUser = req.params.id 
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+    const userId = decodedToken.userId; 
+    let id = req.params.id 
+    //Permet d empecher le changement d id dans la session et d avoir acces a des infos confidentiels
+    if(id == userId){
     models.User.findOne ({
         attributes: ["email", "firstName", "lastName", "Role", "createdAt", "id"],
-        where: {id: idUser}
+        where: {id: userId}
     })
     .then((user) => {
         if(user == null){
@@ -110,6 +114,7 @@ exports.getUser = (req, res, next) => {
       })
       
   .catch(error=>res.status(500).json(error))
+    } 
 };
 
 ////Suppression du profil de l'utilisateur
@@ -125,20 +130,7 @@ exports.deleteUser = (req, res, next) => {
               //On vérifie le retour de la requête sql
             if (null == user) {
                  return res.status(400).json("Suppression de l'utilisateur non-authorisée")
-             } else{  
-                // models.Post.findAll({
-                //     where:{image: !null} 
-                //   })
-                //     .then((post) => {     
-                //     filename = post.image.split('/images/')[1] 
-                //         fs.unlink(`images/${filename}`, () => {
-                //           post.destroy({ _id: req.params.id })
-                //             .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
-                //             .catch(error => res.status(400).json({ error }));
-                //         });
-                //     })
-                //     .catch((error) =>res.status(500).json("Article Introuvable")
-                // );  
+             } else{    
                 models.Post.destroy({
                     where: { userId: user.id }
                 })

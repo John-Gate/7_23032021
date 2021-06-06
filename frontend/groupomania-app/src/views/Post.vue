@@ -45,7 +45,7 @@ export default {
    },
     methods:{
       connectedUser(){                                       
-        if(sessionStorage.token == undefined){
+        if(localStorage.token == undefined){
           this.approuvedConnexion = false;
           this.$router.push({ name:'Home' })
         } else {
@@ -61,7 +61,7 @@ export default {
           formData.append('title', this.post.title);
           formData.append('image', this.post.image);
             
-        axios.post("http://localhost:3000/post/createPost", formData, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+        axios.post("http://localhost:3000/post/createPost", formData, {headers:{Authorization: "Bearer " + localStorage.token}})
         .then((res) => {
           //Si admin, pas besoin de validé l'article
           if(res.data.status == 1){

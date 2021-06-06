@@ -31,15 +31,16 @@
 export default {
   data() {
       return {
-        token: sessionStorage.getItem('token')
+        token: localStorage.getItem('token')
       };
     },
+
     methods:{
       //Deconnexion d'un utilisateur de sa session
       deconnexion(){
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('name');
-        sessionStorage.removeItem('id');
+        localStorage.removeItem('token');
+        localStorage.removeItem('name');
+        localStorage.removeItem('id');
         alert('Vous vous etes déconnecté. Merci de votre visite.');
         location.replace("/")
       }

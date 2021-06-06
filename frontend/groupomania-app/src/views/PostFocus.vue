@@ -58,10 +58,10 @@ export default {
   el: '#animated-number-demo',
    data() {
       return {
-        token: sessionStorage.getItem('token'),
+        token: localStorage.getItem('token'),
         post: {},
         posts:'',
-        user_id:sessionStorage.getItem("id"),
+        user_id: localStorage.getItem("id"),
         comment:'',
         reply:'',
         image:'',
@@ -79,7 +79,7 @@ export default {
    methods: {
       //Affiche l'article selectione depuis la page HOME
       getOnePublication(){
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
         let url = window.location.href.split("?");
         let id = url[1].split("=");
         this.post_id = id[1];//pour delete publication later
@@ -98,7 +98,7 @@ export default {
               this.like = res.data.like;
               this.numbersLikes = this.like.length
               for(let likeUser in this.like ){
-                if(this.like[likeUser].UserId == sessionStorage.getItem("id")){
+                if(this.like[likeUser].UserId == localStorage.getItem("id")){
                   this.asLiked = true
                   //cible elemtn du a changer la class toggleclass // atclass remove class
                 }
@@ -108,7 +108,7 @@ export default {
       },
       //Boutton de Suppression de l'article par son auteur seulement
       deletePublication(){
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
         const data = {
           currentUser: this.user_id,
           postId: this.post_id
@@ -127,7 +127,7 @@ export default {
       },
       //Boutton de MOdification de l'article par son auteur seulement
       modifyPublication(){
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const data = {
         currentUser: this.user_id,
         postId: this.post_id
@@ -150,7 +150,7 @@ export default {
               postId: this.post_id,
               comment:this.reply
       }
-            axios.post("http://localhost:3000/comment/reply", data, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+            axios.post("http://localhost:3000/comment/reply", data, {headers:{Authorization: "Bearer " + localStorage.token}})
 			.then((res) => {
         //Condition: si admin, pas besoin de validé l'article
         if(res.data.status == 1){
@@ -168,7 +168,7 @@ export default {
       },
       //Permet de liker ou d'annuler un like/ 1 like permis par utilisateur
       likePost(){
-        axios.post("http://localhost:3000/api/auth/likePost", { postId: this.post_id}, {headers:{Authorization: "Bearer " + sessionStorage.token}})
+        axios.post("http://localhost:3000/api/auth/likePost", { postId: this.post_id}, {headers:{Authorization: "Bearer " + localStorage.token}})
         .then((res) => {
           //Condition: si admin, pas besoin de validé l'article
             if(res.data.newLike !== null){

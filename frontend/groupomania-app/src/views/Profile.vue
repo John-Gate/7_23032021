@@ -22,6 +22,7 @@
           <td v-if="createdAt"> {{ createdAt.split("-")[2].split("T")[0] }}/{{ createdAt.split("-")[1] }}/{{ createdAt.split("-")[0] }}</td>
         </tr>
       </table>
+     <!-- Debut Extension du profile pour ADMIN -->
         <div v-if=" role == 2 ">
             <table class="textShadow profileInfo__table">
         <tr>
@@ -109,8 +110,8 @@ import gsap from "gsap";
 export default {
     data () {
       return {
-        token: sessionStorage.getItem('token'),
-        user_id:sessionStorage.getItem("id"),
+        token: localStorage.getItem('token'),
+        user_id:localStorage.getItem("id"),
         posts: '',
         post:'',
         post_id:'',
@@ -165,8 +166,8 @@ export default {
     methods:{
       //Affiche le profile de l'utilisateur
       profileUser(){
-        const token = sessionStorage.getItem('token');
-        const user_id = sessionStorage.getItem("id");
+        const token = localStorage.getItem('token');
+        const user_id = localStorage.getItem("id");
         axios.get("http://localhost:3000/api/auth/infouser/"+user_id, {
           headers: {
                   'Content-Type': 'application/json',
@@ -189,7 +190,7 @@ export default {
       //moderate### Permet a l'admin d'afficher les ARTICLES, UTILISATEURS et COMMENTAIRES a moderer
       //validate### Permet a l'admin d'authoriser la publication des ARTICLES, UTILISATEURS et COMMENTAIRES 
       moderatePost(){
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
           axios.get("http://localhost:3000/admin/showPost", {
                 headers: {
                     'Content-Type': 'application/json',
@@ -220,7 +221,7 @@ export default {
                     .catch((error) => console.log(error));
       },
       moderateUser(){
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
             axios.get("http://localhost:3000/admin/showUser", {
               headers: {
                 'Content-Type': 'application/json',
@@ -250,7 +251,7 @@ export default {
                     .catch((error) => console.log(error));
       },
       moderateComment(){
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
         axios.get("http://localhost:3000/admin/showComment", {
               headers: {
                   'Content-Type': 'application/json',
@@ -281,7 +282,7 @@ export default {
       },
       //Affiche les statistiques, soit le nombre des ARTICLES, UTILISATEURS et COMMENTAIRES existant
       getStats(){
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
             axios.get("http://localhost:3000/admin/statistics", {
                   headers: {
                       'Content-Type': 'application/json',
@@ -311,9 +312,9 @@ export default {
               }
           })
           .then(() => {
-              sessionStorage.removeItem('token');
-              sessionStorage.removeItem('name');
-              sessionStorage.removeItem('id');
+              localStorage.removeItem('token');
+              localStorage.removeItem('name');
+              localStorage.removeItem('id');
               alert("Votre compte a bien été supprimé.")
               window.location.replace("/")
           })

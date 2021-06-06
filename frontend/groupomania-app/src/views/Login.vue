@@ -31,8 +31,8 @@ export default {
       };
    },
     mounted() {
-      if (sessionStorage.token) {
-        this.token = sessionStorage.token;
+      if (localStorage.token) {
+        this.token = localStorage.token;
       }
     },
   methods: {
@@ -44,9 +44,10 @@ export default {
         axios
           .post("http://localhost:3000/api/auth/login", this.dataLogin)
           .then(response => {
-            sessionStorage.setItem('token',response.data.token)
-            sessionStorage.setItem('name', response.data.name)
-            sessionStorage.setItem('id', response.data.userId)
+            localStorage.setItem('token',response.data.token)
+            localStorage.setItem('name', response.data.name)
+            localStorage.setItem('id', response.data.userId)
+             localStorage.setItem('token',response.data.token)
             location.replace("/")
           })
           .catch(error => { 

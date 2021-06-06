@@ -13,11 +13,11 @@ let currentUser ;
 exports.createPublication = (req, res, next) => {
     let imageName
     const token = req.headers.authorization.split(' ')[1];
-    const userId = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);
+    const userId = decodedToken.userId;
         models.User.findOne({
             attributes: ["id", "role"],
-            where: {id: decodedToken.userId}
+            where: {id: userId}
         })
         .then(user => {
             // On vérifie le retour de la requête sql
@@ -37,7 +37,7 @@ exports.createPublication = (req, res, next) => {
                         imageName = null;
                     }
                     models.Post.create({
-                        UserId: decodedToken.userId,
+                        UserId: userId,
                         title: req.body.title,
                         content: req.body.content,
                         image: imageName,
@@ -64,7 +64,7 @@ exports.createPublication = (req, res, next) => {
                         imageName = null;
                     }
                     models.Post.create({
-                        UserId: decodedToken.userId,
+                        UserId: userId,
                         title: req.body.title,
                         content: req.body.content,
                         image: imageName

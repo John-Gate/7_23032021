@@ -49,10 +49,10 @@ import axios from "axios";
 export default {
     data() {
         return {
-          token: sessionStorage.getItem('token'),
+          token: localStorage.getItem('token'),
           posts: '',
           connexion: false,
-          name : sessionStorage.getItem("name")
+          name : localStorage.getItem("name")
         };
       },
     mounted(){
@@ -72,7 +72,7 @@ export default {
     methods: {
       //Affiche toutes les articles
         getAllPublications(){
-          const token = sessionStorage.getItem('token');
+          const token = localStorage.getItem('token');
           if (token !== null){
           axios.get("http://localhost:3000/post/", {
                 headers: {
