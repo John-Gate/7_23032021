@@ -214,6 +214,7 @@ export default {
                    }
          } )
                     .then(() => {
+                      alert("L'article selectionné a bien été validé")
                         location.reload();
                     })
                     .catch((error) => console.log(error));
@@ -243,6 +244,7 @@ export default {
                    }
          } )
                     .then(() => {
+                       alert("L'utilisateur selectionné a bien été validé")
                         location.reload();
                     })
                     .catch((error) => console.log(error));
@@ -272,6 +274,7 @@ export default {
                    }
          } )
                     .then(() => {
+                        alert("Le commentaire selectionné a bien été validé")
                         location.reload();
                     })
                     .catch((error) => console.log(error));

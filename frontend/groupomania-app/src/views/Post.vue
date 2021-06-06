@@ -109,10 +109,6 @@ input:active
     -webkit-text-stroke: 2px var(--fill-color);
     color: $base-color;
 }
-//Ici on ecrase le form-control de app.vue:
-.form-control{
-  width: 350px;
-}
 #imagePreview{
     padding: 1rem;
 }
