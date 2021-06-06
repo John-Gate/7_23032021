@@ -1,5 +1,12 @@
+// Fonction concernant la creation, la suppression, l'affichage (1 ou plusieurs) et la modification d'un article. 
+
+// Les Posts peuvent avoir comme status : 
+// 0 : il a été créé mais n'est pas encore modéré.
+// 1 : il est modéré, et est donc s'affiché 
+
 const jwt = require('jsonwebtoken');
 const models = require('../models');
+const fs = require("fs");
 let currentUser ;
 
 ////Creation d'un article
@@ -184,7 +191,14 @@ exports.deletePublication = (req, res, next) => {
                 models.Post.findOne({
                     where: {id:req.body.postId}
                 })
-                .then((post) => {
+                .then((post) => {     
+                    filename = post.image.split('/images/')[1] 
+                        fs.unlink(`images/${filename}`, () => {
+                          post.destroy({ _id: req.params.id })
+                            .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+                            .catch(error => res.status(400).json({ error }));
+                        });
+                     
                     models.Post.destroy({
                         where: {id:post.id}
                     })

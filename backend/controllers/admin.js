@@ -1,3 +1,5 @@
+//Fonction concernant la modération: Affichage et Validation des Articles, Utilisateurs et Commentaires à modérés. 
+
 const jwt = require('jsonwebtoken');
 const models = require('../models');;
 let currentUser ;

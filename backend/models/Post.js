@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {//Appel sequelize
     image: DataTypes.STRING,
     title: DataTypes.STRING,
     status: DataTypes.INTEGER,
-    
   },
     {});
     //Association de l'article a son utilisateur

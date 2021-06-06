@@ -1,7 +1,10 @@
+////Creation d'un commentaire
+// Les commentaires peuvent avoir comme status : 
+// 0 : il a été créé mais n'est pas encore modéré.
+// 1 : il est modéré, et va donc s'afficher 
 const jwt = require('jsonwebtoken');
 const models = require('../models');
 
-////Creation d'un commentaire
 exports.createComment = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, process.env.KEY_TOKEN);

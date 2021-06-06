@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken');
 const models = require('../models');
 const utilsjwtoken = require('../utils/jwtoken');
 const checkinput = require('../utils/checkinput');
-
+const fs = require("fs");
 
 ////Creation d un compte en cryptant password, creer un nouvel utilisateur et enregistre données.
 exports.signup = (req, res) => {
@@ -124,10 +124,25 @@ exports.deleteUser = (req, res, next) => {
          .then(user => {
               //On vérifie le retour de la requête sql
             if (null == user) {
-                
                  return res.status(400).json("Suppression de l'utilisateur non-authorisée")
              } else{  
+                // models.Post.findAll({
+                //     where:{image: !null} 
+                //   })
+                //     .then((post) => {     
+                //     filename = post.image.split('/images/')[1] 
+                //         fs.unlink(`images/${filename}`, () => {
+                //           post.destroy({ _id: req.params.id })
+                //             .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+                //             .catch(error => res.status(400).json({ error }));
+                //         });
+                //     })
+                //     .catch((error) =>res.status(500).json("Article Introuvable")
+                // );  
                 models.Post.destroy({
+                    where: { userId: user.id }
+                })
+                models.Like.destroy({
                     where: { userId: user.id }
                 })
                 .then(() => {
