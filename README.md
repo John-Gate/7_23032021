@@ -92,7 +92,7 @@ Construire un réseau social interne pour les employés de Groupomania sur le mo
 
 
 ## Évaluation
-:heavy_check_mark: Ce projet est en cours de validation.
+:heavy_check_mark: Ce projet a été validé le 06 Juin 2021.
 
 
 ## Contact
